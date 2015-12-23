@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Fun on Tobias Bayer</title>
+    <link>http://tobiasbayer.com/categories/fun/</link>
+    <description>Recent content in Fun on Tobias Bayer</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Wed, 27 Jun 2012 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://tobiasbayer.com/categories/fun/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Git Commit Snapshots</title>
+      <link>http://tobiasbayer.com/post/2012-06-27-git-commit-snapshots/</link>
+      <pubDate>Wed, 27 Jun 2012 00:00:00 +0000</pubDate>
+      
+      <guid>http://tobiasbayer.com/post/2012-06-27-git-commit-snapshots/</guid>
+      <description>&lt;p&gt;I tried &lt;a href=&#34;http://coderwall.com/p/xlatfq&#34;&gt;this&lt;/a&gt; today and came up with this:&lt;/p&gt;
+
+&lt;p&gt;{% youtube dPxGm7L94Q4 %}&lt;/p&gt;
+
+&lt;p&gt;25 commits to the repository in total.&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

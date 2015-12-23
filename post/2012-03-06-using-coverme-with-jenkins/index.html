@@ -1,0 +1,157 @@
+
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+
+  
+  <meta charset="UTF-8">
+  <title>
+    Using CoverMe with Jenkins | Tobias Bayer
+  </title>
+
+
+  
+  <meta name="viewport" content="width=device-width,user-scalable=no,maximum-scale=1,initial-scale=1">
+
+  
+  <link rel="canonical" href="http://tobiasbayer.com/post/2012-03-06-using-coverme-with-jenkins/"/>
+
+  
+  <link rel="stylesheet" href="http://tobiasbayer.com/css/sanitize.css">
+  <link rel="stylesheet" href="http://tobiasbayer.com/css/responsive.css">
+  <link rel="stylesheet" href="http://tobiasbayer.com/css/theme.css">
+  <link rel="stylesheet" href="http://tobiasbayer.com/css/custom.css">
+  <link rel="stylesheet" href="https://yandex.st/highlightjs/8.0/styles/default.min.css">
+  
+  
+  <link href="http://tobiasbayer.com/index.xml" rel="alternate" type="application/rss+xml" title="Tobias Bayer" />
+  <link href="http://tobiasbayer.com/index.xml" rel="feed" type="application/rss+xml" title="Tobias Bayer" />
+
+  
+  <script type="text/javascript">var switchTo5x=true;</script>
+  <script type="text/javascript" src="https://ws.sharethis.com/button/buttons.js"></script>
+  <script type="text/javascript">stLight.options({publisher: "2b9fffc6-b3fe-4988-a0ef-4f9dcce98eaa", doNotHash: true, doNotCopy: true, hashAddressBar: false});</script>
+
+  <script src="https://yandex.st/highlightjs/8.0/highlight.min.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+</head>
+
+
+
+<body>
+<div class="container">
+
+  
+  <header role="banner">
+    <div class="row gutters">
+      <div id="site-title" class="col span_6">
+        <h1><a href="http://tobiasbayer.com/">Tobias Bayer</a></h1>
+        <h2>I put the FTW in software</h2>
+      </div>
+      <div id="social" class="col span_6">
+        <ul>
+	  <li><a href="http://tobiasbayer.com/about">About</a></li>
+          
+          
+          <li><a href="https://github.com/tobiasbayer" target="_blank">GitHub</a></li>
+          <li><a href="http://tobiasbayer.com/index.xml" type="application/rss+xml" target="_blank">RSS</a></li>
+        </ul>
+      </div>
+    </div>
+  </header>
+
+
+  
+  <main id="single" role="main">
+    <div class="article-header">
+      <h1>Using CoverMe with Jenkins</h1>
+      <div class="meta">
+        
+          Mar 6, 2012 &nbsp;
+        
+        
+          #<a href="http://tobiasbayer.com/categories/jenkins">jenkins</a>&nbsp;
+        
+          #<a href="http://tobiasbayer.com/categories/ci">ci</a>&nbsp;
+        
+          #<a href="http://tobiasbayer.com/categories/ruby">ruby</a>&nbsp;
+        
+          #<a href="http://tobiasbayer.com/categories/rails">rails</a>&nbsp;
+        
+          #<a href="http://tobiasbayer.com/categories/coverage">coverage</a>&nbsp;
+        
+          #<a href="http://tobiasbayer.com/categories/testing">testing</a>&nbsp;
+        
+      </div>
+    </div>
+    <article>
+      <p><a href="https://github.com/markbates/cover_me">CoverMe</a> is a code coverage tool for Ruby 1.9.</p>
+
+<p>Using <a href="http://jenkins-ci.org/">Jenkins</a> for CI, you can display the coverage results in your project overview even though Jenkins does not support the original output format of CoverMe.</p>
+
+<ul>
+<li>Download and install the Emma plugin via the Plugins page of your Jenkins installation.</li>
+<li>Install CoverMe for your Rails project as described on the project page on <a href="https://github.com/markbates/cover_me">GitHub</a>.</li>
+
+<li><p>Edit <code>lib/tasks/cover_me.rake</code> and make the <code>:report</code> task look like this:
+{% codeblock lang:ruby%}
+task :report do
+require &lsquo;cover_me&rsquo;
+CoverMe.config.formatter = CoverMe::EmmaFormatter
+CoverMe.config.at_exit = Proc.new {}
+CoverMe.complete!
+end
+```</p></li>
+
+<li><p>Configure your build job in Jenkins to publish the Emma coverage results from <code>coverage/coverage.xml</code>.</p></li>
+</ul>
+
+      
+      
+      <div id="share-this" class="col span_10">
+        <span class='st_twitter_large' displayText='Tweet'></span>
+        <span class='st_facebook_large' displayText='Facebook'></span>
+        <span class='st_googleplus_large' displayText='Google +'></span>
+        <span class='st_pocket_large' displayText='Pocket'></span>
+        <span class='st_sharethis_large' displayText='ShareThis'></span>
+        <span class='st_email_large' displayText='Email'></span>  
+      </div>
+    </article>
+    
+
+
+<script type="text/javascript">
+     
+    var disqus_shortname = '';
+
+     
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+
+  </main>
+  
+
+  
+  <footer role="contentinfo">
+    <div style="text-align:center;">
+      
+      
+    </div>
+  </footer>
+
+
+</div>
+
+<script src="http://tobiasbayer.com/js/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+
+
+</body>
+</html>
+

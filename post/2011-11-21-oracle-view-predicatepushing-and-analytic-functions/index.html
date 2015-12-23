@@ -1,0 +1,168 @@
+
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+
+  
+  <meta charset="UTF-8">
+  <title>
+    Oracle View Predicate Pushing and Analytic Functions | Tobias Bayer
+  </title>
+
+
+  
+  <meta name="viewport" content="width=device-width,user-scalable=no,maximum-scale=1,initial-scale=1">
+
+  
+  <link rel="canonical" href="http://tobiasbayer.com/post/2011-11-21-oracle-view-predicatepushing-and-analytic-functions/"/>
+
+  
+  <link rel="stylesheet" href="http://tobiasbayer.com/css/sanitize.css">
+  <link rel="stylesheet" href="http://tobiasbayer.com/css/responsive.css">
+  <link rel="stylesheet" href="http://tobiasbayer.com/css/theme.css">
+  <link rel="stylesheet" href="http://tobiasbayer.com/css/custom.css">
+  <link rel="stylesheet" href="https://yandex.st/highlightjs/8.0/styles/default.min.css">
+  
+  
+  <link href="http://tobiasbayer.com/index.xml" rel="alternate" type="application/rss+xml" title="Tobias Bayer" />
+  <link href="http://tobiasbayer.com/index.xml" rel="feed" type="application/rss+xml" title="Tobias Bayer" />
+
+  
+  <script type="text/javascript">var switchTo5x=true;</script>
+  <script type="text/javascript" src="https://ws.sharethis.com/button/buttons.js"></script>
+  <script type="text/javascript">stLight.options({publisher: "2b9fffc6-b3fe-4988-a0ef-4f9dcce98eaa", doNotHash: true, doNotCopy: true, hashAddressBar: false});</script>
+
+  <script src="https://yandex.st/highlightjs/8.0/highlight.min.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+</head>
+
+
+
+<body>
+<div class="container">
+
+  
+  <header role="banner">
+    <div class="row gutters">
+      <div id="site-title" class="col span_6">
+        <h1><a href="http://tobiasbayer.com/">Tobias Bayer</a></h1>
+        <h2>I put the FTW in software</h2>
+      </div>
+      <div id="social" class="col span_6">
+        <ul>
+	  <li><a href="http://tobiasbayer.com/about">About</a></li>
+          
+          
+          <li><a href="https://github.com/tobiasbayer" target="_blank">GitHub</a></li>
+          <li><a href="http://tobiasbayer.com/index.xml" type="application/rss+xml" target="_blank">RSS</a></li>
+        </ul>
+      </div>
+    </div>
+  </header>
+
+
+  
+  <main id="single" role="main">
+    <div class="article-header">
+      <h1>Oracle View Predicate Pushing and Analytic Functions</h1>
+      <div class="meta">
+        
+          Nov 21, 2011 &nbsp;
+        
+        
+          #<a href="http://tobiasbayer.com/categories/oracle">oracle</a>&nbsp;
+        
+          #<a href="http://tobiasbayer.com/categories/sql">sql</a>&nbsp;
+        
+      </div>
+    </div>
+    <article>
+      <p>With <a href="http://download.oracle.com/docs/cd/B10501_01/server.920/a96533/optimops.htm#47932">predicate pushing</a> the Oracle optimizer ensures that predicates are evaluated as soon as possible when one or more views are stacked upon each other. This often leads to far better performance compared to evaluating the predicates only after querying the view.</p>
+
+<p>There&rsquo;s one gotcha when using <a href="http://docs.oracle.com/cd/B19306_01/server.102/b14223/analysis.htm">Oracle Analytic Functions</a> and expecting the optimizer to push predicates down the views: It only works when all the predicates that should be pushed down are included in the <code>PARTITION BY</code> clause of the analytic function.</p>
+
+<p>Consider the following example:</p>
+
+<pre><code>CREATE OR REPLACE VIEW TOP_VIEW
+AS
+SELECT
+V.*,
+MAX(V.SOME_COL) OVER (PARTITION BY COL0) AS MAXIMUM
+FROM BOTTOM_VIEW V;
+</code></pre>
+
+<p>Depending on the complexity of <code>BOTTOM_VIEW</code>, the following <code>SELECT</code> could lead to dramatic performance issues because the predicates will not be pushed down the view.</p>
+
+<pre><code>SELECT 
+T.*
+FROM TOPVIEW T
+WHERE T.COL1 = 1
+AND T.COL2 = 2
+AND T.COL3 = 'FOOBAR';
+</code></pre>
+
+<p>The reason for not pushing the predicates is that they are not included in the partition of the analytic function (<code>MAX(V.SOME_COL) OVER (PARTITION BY COL0) AS MAXIMUM</code>).</p>
+
+<p>There are cases where including your predicates in the partition of the analytic function won&rsquo;t change the functional output of the query.</p>
+
+<p>So whenever functionally possible, you should define the view like this:</p>
+
+<pre><code>CREATE OR REPLACE VIEW TOP_VIEW
+AS
+SELECT
+V.*,
+MAX(V.SOME_COL) OVER (PARTITION BY COL0, COL1, COL2, COL3) AS MAXIMUM
+FROM BOTTOM_VIEW V;
+</code></pre>
+
+<p>This ensures that all three predicates get pushed into the view which leads to far better performance in most cases.</p>
+
+      
+      
+      <div id="share-this" class="col span_10">
+        <span class='st_twitter_large' displayText='Tweet'></span>
+        <span class='st_facebook_large' displayText='Facebook'></span>
+        <span class='st_googleplus_large' displayText='Google +'></span>
+        <span class='st_pocket_large' displayText='Pocket'></span>
+        <span class='st_sharethis_large' displayText='ShareThis'></span>
+        <span class='st_email_large' displayText='Email'></span>  
+      </div>
+    </article>
+    
+
+
+<script type="text/javascript">
+     
+    var disqus_shortname = '';
+
+     
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+
+  </main>
+  
+
+  
+  <footer role="contentinfo">
+    <div style="text-align:center;">
+      
+      
+    </div>
+  </footer>
+
+
+</div>
+
+<script src="http://tobiasbayer.com/js/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+
+
+</body>
+</html>
+

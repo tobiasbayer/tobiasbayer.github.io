@@ -1,0 +1,876 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Java on Tobias Bayer</title>
+    <link>http://tobiasbayer.com/categories/java/</link>
+    <description>Recent content in Java on Tobias Bayer</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Wed, 25 Mar 2015 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://tobiasbayer.com/categories/java/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Pattern Matching with Pact</title>
+      <link>http://tobiasbayer.com/post/2015-03-25-pattern-matching-with-pact/</link>
+      <pubDate>Wed, 25 Mar 2015 00:00:00 +0000</pubDate>
+      
+      <guid>http://tobiasbayer.com/post/2015-03-25-pattern-matching-with-pact/</guid>
+      <description>&lt;p&gt;It seems the internet is missing an example of how to match the JSON body against a regex when testing your microservices with &lt;a href=&#34;https://github.com/DiUS/pact-jvm&#34;&gt;Pact-JVM&lt;/a&gt;. So I made one myself.&lt;/p&gt;
+
+&lt;!-- more --&gt;
+
+&lt;p&gt;Our consumer contract expects the provider to return three fields in the response body: &lt;code&gt;id&lt;/code&gt;, &lt;code&gt;description&lt;/code&gt; and &lt;code&gt;random&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;While &lt;code&gt;id&lt;/code&gt; and &lt;code&gt;description&lt;/code&gt; can be specified exactly by the consumer, the &lt;code&gt;random&lt;/code&gt;-field cannot. We just know the provider will return a random 6-digit number as a string. So we create a regular expression for that inside a &lt;code&gt;PactDslJsonBody&lt;/code&gt;.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;@Override
+protected PactFragment createFragment(final ConsumerPactBuilder.PactDslWithProvider builder) {
+    Map&amp;lt;String, String&amp;gt; headers = new HashMap&amp;lt;&amp;gt;();
+    headers.put(&amp;quot;Content-Type&amp;quot;, &amp;quot;application/json;charset=UTF-8&amp;quot;);
+
+    DslPart body = 
+            new PactDslJsonBody()
+                .numberValue(&amp;quot;id&amp;quot;, 1)
+                .stringValue(&amp;quot;description&amp;quot;, &amp;quot;This is the description for product 1&amp;quot;)
+                .stringMatcher(&amp;quot;random&amp;quot;, &amp;quot;[0-9]{6}&amp;quot;);
+
+    return builder
+            .uponReceiving(&amp;quot;a request for product details&amp;quot;)
+            .path(&amp;quot;/productdetails/1&amp;quot;)
+            .method(&amp;quot;GET&amp;quot;)
+            .willRespondWith()
+            .headers(headers)
+            .status(200)
+            .body(body)
+            .toFragment();
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;When the consumer test is run, this Pactfile is created:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;{
+  &amp;quot;provider&amp;quot; : {
+    &amp;quot;name&amp;quot; : &amp;quot;Product_Details_Service&amp;quot;
+  },
+  &amp;quot;consumer&amp;quot; : {
+    &amp;quot;name&amp;quot; : &amp;quot;Product_Service&amp;quot;
+  },
+  &amp;quot;interactions&amp;quot; : [ {
+    &amp;quot;description&amp;quot; : &amp;quot;a request for product details&amp;quot;,
+    &amp;quot;request&amp;quot; : {
+      &amp;quot;method&amp;quot; : &amp;quot;GET&amp;quot;,
+      &amp;quot;path&amp;quot; : &amp;quot;/productdetails/1&amp;quot;
+    },
+    &amp;quot;response&amp;quot; : {
+      &amp;quot;status&amp;quot; : 200,
+      &amp;quot;headers&amp;quot; : {
+        &amp;quot;Content-Type&amp;quot; : &amp;quot;application/json;charset=UTF-8&amp;quot;
+      },
+      &amp;quot;body&amp;quot; : {
+        &amp;quot;id&amp;quot; : 1,
+        &amp;quot;description&amp;quot; : &amp;quot;This is the description for product 1&amp;quot;,
+        &amp;quot;random&amp;quot; : &amp;quot;413558&amp;quot;
+      },
+      &amp;quot;responseMatchingRules&amp;quot; : {
+        &amp;quot;$.body.random&amp;quot; : {
+          &amp;quot;regex&amp;quot; : &amp;quot;[0-9]{6}&amp;quot;
+        }
+      }
+    }
+  } ],
+  &amp;quot;metadata&amp;quot; : {
+    &amp;quot;pact-specification&amp;quot; : {
+      &amp;quot;version&amp;quot; : &amp;quot;2.0.0&amp;quot;
+    },
+    &amp;quot;pact-jvm&amp;quot; : {
+      &amp;quot;version&amp;quot; : &amp;quot;2.1.7&amp;quot;
+    }
+  }
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Note that Pact magically replaced the regex with a matching string inside the &lt;code&gt;body&lt;/code&gt; definition. This makes sure the provider-stub returns something useful for the consumer when the consumer tests are run. But when the pact is verified against the provider, Pact will use the regular expression inside &lt;code&gt;responseMatchingRules&lt;/code&gt; instead of just matching against the final string for each field in &lt;code&gt;body&lt;/code&gt; that has a corresponding regex.&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Sneaking Custom CSS into a GXT Grid</title>
+      <link>http://tobiasbayer.com/post/2014-07-03-sneaking-custom-css-into-a-gxt-grid/</link>
+      <pubDate>Thu, 03 Jul 2014 00:00:00 +0000</pubDate>
+      
+      <guid>http://tobiasbayer.com/post/2014-07-03-sneaking-custom-css-into-a-gxt-grid/</guid>
+      <description>&lt;p&gt;Every time I try to add some custom CSS to a Sencha GXT 3 &lt;code&gt;Grid&lt;/code&gt; I have to look up the details again
+because of the relatively large amount of unintuitive code that is necessary for that simple task.&lt;/p&gt;
+
+&lt;p&gt;So I decided to write a short wrap-up of the process as a reference.&lt;/p&gt;
+
+&lt;p&gt;First create a file in the client classpath with your custom CSS in it.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;
+.cellDisabled {
+  background-color: #EEEEEE !important;
+  color: #000000;
+}
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Next, create a custom &lt;code&gt;MyGridAppearance&lt;/code&gt; that extends the &lt;code&gt;GridAppearance&lt;/code&gt; your application
+is using (e.g. &lt;code&gt;GrayGridAppearance&lt;/code&gt;).&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;
+public class MyGridAppearance extends GrayGridAppearance {
+
+}
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;In this &lt;code&gt;Appearance&lt;/code&gt; include an interface that extends the style of the component you want
+to add your custom style to. The interface must include a method named after your custom
+CSS style.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;
+public class MyGridAppearance extends GrayGridAppearance {
+
+    public interface MyGridStyle extends GrayGridStyle {
+        String cellDisabled();
+    }
+}
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Now include another interface that pulls your CSS file into the bundle. It must have a
+&lt;code&gt;@Source&lt;/code&gt; annotation with all the CSS files along the inheritance path and your custom CSS
+file as well.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;
+public class MyGridAppearance extends GrayGridAppearance {
+
+    public interface MyGridStyle extends GrayGridStyle {
+        String cellDisabled();
+    }
+
+    public interface MyGridResources extends GrayGridResources, ClientBundle {
+
+        @Override
+        @Source({ &amp;quot;com/sencha/gxt/theme/base/client/grid/Grid.css&amp;quot;,
+                &amp;quot;com/sencha/gxt/theme/gray/client/grid/GrayGrid.css&amp;quot;,
+                &amp;quot;com/codebrickie/sample/client/css/MyGrid.css&amp;quot; })
+        MyGridStyle css();
+    }
+}
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;The last step for the &lt;code&gt;Appearance&lt;/code&gt; is to implement two constructors.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;
+public class MyGridAppearance extends GrayGridAppearance {
+
+    public interface MyGridStyle extends GrayGridStyle {
+        String cellDisabled();
+    }
+
+    public interface MyGridResources extends GrayGridResources, ClientBundle {
+
+        @Override
+        @Source({ &amp;quot;com/sencha/gxt/theme/base/client/grid/Grid.css&amp;quot;,
+                &amp;quot;com/sencha/gxt/theme/gray/client/grid/GrayGrid.css&amp;quot;,
+                &amp;quot;com/codebrickie/sample/client/css/MyGrid.css&amp;quot; })
+        MyGridStyle css();
+    }
+    
+    public MyGridAppearance() {
+        this(GWT.&amp;lt;MyGridResources&amp;gt; create(MyGridResources.class));
+    }
+
+    public MyGridAppearance(final MyGridResources resources) {
+        super(resources);
+    }
+}
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Now that the &lt;code&gt;Appearance&lt;/code&gt; is finished, you have to set it to your grid upon creation.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;//...
+
+grid = new Grid&amp;lt;MyModel&amp;gt;(store, columnModel, new GridView&amp;lt;MyModel&amp;gt;(
+                new MyGridAppearance()));
+//...
+}
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Afterwards you can use your custom style e.g. in &lt;code&gt;getColStyle()&lt;/code&gt;.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;//...
+
+GridViewConfig&amp;lt;MyModel&amp;gt; viewConfig = new GridViewConfig&amp;lt;MyModel&amp;gt;() {
+
+	final MyGridStyle styles = (MyGridStyle) ((MyGridAppearance) grid
+		.getView().getAppearance())
+		.styles();
+
+	@Override
+	public String getColStyle(final MyModel model,
+			final ValueProvider&amp;lt;? super MyModel, ?&amp;gt; valueProvider, final int rowIndex,
+			final int colIndex) {
+		String style = null;
+
+		if (!model.isEnabled()) {
+			style = styles.cellDisabled();
+		}
+
+		return style;
+	}
+
+	@Override
+	public String getRowStyle(final MyModel model, final int rowIndex) {
+		return null;
+	}
+};
+        
+//...
+&lt;/code&gt;&lt;/pre&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Using Vaadin 7 with Clojure</title>
+      <link>http://tobiasbayer.com/post/2013-02-12-using-vaadin-7-with-clojure/</link>
+      <pubDate>Tue, 12 Feb 2013 00:00:00 +0000</pubDate>
+      
+      <guid>http://tobiasbayer.com/post/2013-02-12-using-vaadin-7-with-clojure/</guid>
+      <description>&lt;p&gt;There are some good examples on how to compose a web application with Clojure and Vaadin &amp;lt; 7.
+However, the web application bootstrapping process has changed for Vaadin 7.
+In this post I will show you how to create a Clojure/Vaadin 7 web application.&lt;/p&gt;
+
+&lt;p&gt;First we need a &lt;code&gt;web.xml&lt;/code&gt; file in &lt;code&gt;src/main/webapp/WEB-INF&lt;/code&gt; that defines the Vaadin servlet and parametrizes
+it with our main UI class.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;lt;?xml version=&amp;quot;1.0&amp;quot; encoding=&amp;quot;UTF-8&amp;quot;?&amp;gt;
+&amp;lt;web-app xmlns=&amp;quot;http://java.sun.com/xml/ns/javaee&amp;quot;
+	xmlns:xsi=&amp;quot;http://www.w3.org/2001/XMLSchema-instance&amp;quot;
+	xsi:schemaLocation=&amp;quot;http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd&amp;quot;
+	version=&amp;quot;2.5&amp;quot;&amp;gt;
+    &amp;lt;display-name&amp;gt;Clojure Vaadin 7 Application&amp;lt;/display-name&amp;gt;
+    &amp;lt;context-param&amp;gt;
+        &amp;lt;description&amp;gt;Vaadin production mode&amp;lt;/description&amp;gt;
+        &amp;lt;param-name&amp;gt;productionMode&amp;lt;/param-name&amp;gt;
+        &amp;lt;param-value&amp;gt;false&amp;lt;/param-value&amp;gt;
+    &amp;lt;/context-param&amp;gt;
+    &amp;lt;servlet&amp;gt;
+        &amp;lt;servlet-name&amp;gt;Clojure Vaadin 7 Application&amp;lt;/servlet-name&amp;gt;
+        &amp;lt;servlet-class&amp;gt;com.vaadin.server.VaadinServlet&amp;lt;/servlet-class&amp;gt;
+        &amp;lt;init-param&amp;gt;
+            &amp;lt;description&amp;gt;Vaadin UI&amp;lt;/description&amp;gt;
+            &amp;lt;param-name&amp;gt;UI&amp;lt;/param-name&amp;gt;
+            &amp;lt;param-value&amp;gt;cljvaadin7.MyApplicationUI&amp;lt;/param-value&amp;gt;
+        &amp;lt;/init-param&amp;gt;
+    &amp;lt;/servlet&amp;gt;
+    &amp;lt;servlet-mapping&amp;gt;
+        &amp;lt;servlet-name&amp;gt;Clojure Vaadin 7 Application&amp;lt;/servlet-name&amp;gt;
+        &amp;lt;url-pattern&amp;gt;/*&amp;lt;/url-pattern&amp;gt;
+    &amp;lt;/servlet-mapping&amp;gt;
+&amp;lt;/web-app&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;As there is no such thing as a class in Clojure, we will use its Java interoperability to create
+a Java class that serves as our Vaadin UI main class.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;(ns cljvaadin7.MyApplicationUI
+  (import [com.vaadin.ui VerticalLayout Label Button Button$ClickListener Notification])
+  (:gen-class
+    :extends com.vaadin.ui.UI))
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;code&gt;:gen-class&lt;/code&gt; will make the namespace available as a Java class.&lt;/p&gt;
+
+&lt;p&gt;We override the init method of &lt;code&gt;com.vaadin.ui.UI&lt;/code&gt;.
+This is the entry point for our web application. &lt;code&gt;init&lt;/code&gt; in &lt;code&gt;com.vaadin.ui.UI&lt;/code&gt;
+has only one argument (&lt;code&gt;request&lt;/code&gt;). However, our Clojure &lt;code&gt;-init&lt;/code&gt; function has two arguments.
+The reason is that the function will receive &amp;ldquo;&lt;code&gt;this&lt;/code&gt;&amp;rdquo; as the first argument.
+Now we can build our UI.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;(defn- create-button
+  [caption action]
+  (doto (Button. caption) (add-action action)))
+
+(defn- create-main-layout
+  []
+  (doto (VerticalLayout.)
+	        (.addComponent (Label. &amp;quot;Hello Clojure-Vaadin 7!&amp;quot;))
+	        (.addComponent (create-button &amp;quot;Push me!&amp;quot; show-click-message))))
+
+(defn -init
+  [main-ui request]
+  (doto main-ui (.setContent (create-main-layout))))
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;In Java, button actions are triggered by registering a click handler for the button. We have to do this in
+Clojure as well but we will hide the actual &lt;code&gt;ClickListener&lt;/code&gt; and use a more functional approach.
+We create a new function &lt;code&gt;add-action&lt;/code&gt; that expects a button and an action as arguments. &lt;code&gt;action&lt;/code&gt; can be any Clojure function
+we want to be executed when the button is clicked.
+The helper function &lt;code&gt;create-button-click-listener&lt;/code&gt; wraps a Vaadin &lt;code&gt;ClickListener&lt;/code&gt; around the &lt;code&gt;action&lt;/code&gt; function.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;(defn- show-click-message
+  []
+  (Notification/show &amp;quot;Button clicked&amp;quot;))
+
+(defn- create-button-click-listener 
+  [action]
+  (reify Button$ClickListener 
+            (buttonClick 
+              [_ evt]
+              (action))))
+
+(defn- add-action
+  [button action]
+  (.addListener button (create-button-click-listener action)))
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;The project file for building with Leiningen (and packaging with Maven) looks like this:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;(defproject cljvaadin7 &amp;quot;0.1.0-SNAPSHOT&amp;quot;
+  :description &amp;quot;Demonstrates how to integrate Clojure and Vaadin 7&amp;quot;
+  :url &amp;quot;https://github.com/codebrickie/cljvaadin7&amp;quot;
+  :license {:name &amp;quot;Eclipse Public License&amp;quot;
+            :url &amp;quot;http://www.eclipse.org/legal/epl-v10.html&amp;quot;}
+  :dependencies [[org.clojure/clojure &amp;quot;1.4.0&amp;quot;]
+                 [com.vaadin/vaadin-server &amp;quot;7.0.0&amp;quot;]
+                 [com.vaadin/vaadin-client-compiled &amp;quot;7.0.0&amp;quot;]
+                 [com.vaadin/vaadin-themes &amp;quot;7.0.0&amp;quot;]
+                 [javax.servlet/servlet-api &amp;quot;2.5&amp;quot;]]
+  :aot [cljvaadin7.MyApplicationUI])
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;You can find the complete project on &lt;a href=&#34;https://github.com/codebrickie/cljvaadin7&#34;&gt;GitHub&lt;/a&gt;.&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Integrating Vaadin 7 and Spring</title>
+      <link>http://tobiasbayer.com/post/2012-11-11-integrating-vaadin-7-and-spring/</link>
+      <pubDate>Sun, 11 Nov 2012 00:00:00 +0000</pubDate>
+      
+      <guid>http://tobiasbayer.com/post/2012-11-11-integrating-vaadin-7-and-spring/</guid>
+      <description>&lt;p&gt;I am currently building an administration interface for &lt;a href=&#34;http://tweetsqueue.com&#34;&gt;TweetsQueue&lt;/a&gt; with Vaadin 7.
+Fortunately Spring integration for Vaadin 7 is available as a &lt;a href=&#34;http://vaadin.com/directory#addon/springvaadinintegration&#34;&gt;Vaadin add-on&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;Only two simple steps are necessary to get full autowiring support for your Vaadin classes.&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Add the Spring integration as a dependency. Here&amp;rsquo;s the relevant excerpt of my &lt;code&gt;build.gradle&lt;/code&gt;:&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;pre&gt;&lt;code&gt;...
+repositories {
+	mavenRepo url: &#39;http://repo1.maven.org/maven2/&#39;, artifactUrls: [&#39;http://maven.springframework.org/milestone&#39;, &#39;http://maven.vaadin.com/vaadin-addons&#39;]
+}
+
+
+dependencies {
+	...
+	
+	runtime &#39;ru.xpoft.vaadin:spring-vaadin-integration:1.6.2&#39;
+	
+	...
+}
+...
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Define the Spring integration servlet and your main UI bean in your &lt;code&gt;web.xml&lt;/code&gt;:&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;lt;?xml version=&amp;quot;1.0&amp;quot; encoding=&amp;quot;UTF-8&amp;quot;?&amp;gt;
+&amp;lt;web-app id=&amp;quot;WebApp_ID&amp;quot; version=&amp;quot;2.4&amp;quot;
+	xmlns=&amp;quot;http://java.sun.com/xml/ns/j2ee&amp;quot; xmlns:xsi=&amp;quot;http://www.w3.org/2001/XMLSchema-instance&amp;quot;
+	xsi:schemaLocation=&amp;quot;http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd&amp;quot;&amp;gt;
+	&amp;lt;context-param&amp;gt;
+		&amp;lt;param-name&amp;gt;contextConfigLocation&amp;lt;/param-name&amp;gt;
+		&amp;lt;param-value&amp;gt;classpath*:applicationContext*.xml&amp;lt;/param-value&amp;gt;
+	&amp;lt;/context-param&amp;gt;
+
+	&amp;lt;listener&amp;gt;
+		&amp;lt;listener-class&amp;gt;org.springframework.web.context.ContextLoaderListener&amp;lt;/listener-class&amp;gt;
+	&amp;lt;/listener&amp;gt;
+	
+	&amp;lt;servlet&amp;gt;
+        &amp;lt;servlet-name&amp;gt;VaadinServlet&amp;lt;/servlet-name&amp;gt;
+        &amp;lt;servlet-class&amp;gt;ru.xpoft.vaadin.SpringVaadinServlet&amp;lt;/servlet-class&amp;gt;
+        &amp;lt;init-param&amp;gt;
+            &amp;lt;param-name&amp;gt;beanName&amp;lt;/param-name&amp;gt;
+            &amp;lt;!-- 
+            	This is the name of your main Vaadin UI class.
+            	You should declare it as a prototype-scoped component (e.g. @Component @Scope(&amp;quot;protoype&amp;quot;)).
+            --&amp;gt;
+            &amp;lt;param-value&amp;gt;mainUI&amp;lt;/param-value&amp;gt; 
+        &amp;lt;/init-param&amp;gt;
+    &amp;lt;/servlet&amp;gt;
+
+    &amp;lt;servlet-mapping&amp;gt;
+        &amp;lt;servlet-name&amp;gt;VaadinServlet&amp;lt;/servlet-name&amp;gt;
+        &amp;lt;url-pattern&amp;gt;/*&amp;lt;/url-pattern&amp;gt;
+    &amp;lt;/servlet-mapping&amp;gt;
+&amp;lt;/web-app&amp;gt;    
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;You can now autowire your views (declared as Spring beans) into your main ui class and display them as needed.&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Getting the Liferay User in a Standalone App</title>
+      <link>http://tobiasbayer.com/post/2012-06-11-getting-the-liferay-user-in-a-standalone-app/</link>
+      <pubDate>Mon, 11 Jun 2012 00:00:00 +0000</pubDate>
+      
+      <guid>http://tobiasbayer.com/post/2012-06-11-getting-the-liferay-user-in-a-standalone-app/</guid>
+      <description>&lt;p&gt;You can deploy a standard webapp in &lt;a href=&#34;http://www.liferay.com&#34;&gt;Liferay&lt;/a&gt; without making it a portlet.&lt;/p&gt;
+
+&lt;p&gt;If you do that, it is not so easy to get the currently logged in Liferay user in your standalone webapp.
+There is &lt;a href=&#34;https://www.everit.biz/web/guest/everit-blog/-/blogs/getting-current-liferay-user-in-a-standalone-webapp&#34;&gt;another article&lt;/a&gt; which suggests reconstructing the user with the information the Liferay login cookie provides.
+This solution has one blemish: It does only work when the user checks the &amp;ldquo;Remember me&amp;rdquo; box at the login screen. Otherwise the cookie won&amp;rsquo;t contain the password that is used in this approach for retrieving the user from Liferay.&lt;/p&gt;
+
+&lt;p&gt;I changed the solution mentioned above to only use the company key and the user id. This works even if the user did not check the &amp;ldquo;Remember me&amp;rdquo; box at the login screen.
+I made this a servlet filter which can be easily used by registering it in your &lt;code&gt;web.xml&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;Here&amp;rsquo;s what I came up with:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;package com.codebrickie.filter;
+
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.security.Key;
+
+import javax.servlet.Filter;
+import javax.servlet.FilterChain;
+import javax.servlet.FilterConfig;
+import javax.servlet.ServletException;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+
+import com.liferay.portal.kernel.util.WebKeys;
+import com.liferay.portal.model.Company;
+import com.liferay.portal.model.User;
+import com.liferay.portal.security.auth.PrincipalThreadLocal;
+import com.liferay.portal.security.permission.PermissionChecker;
+import com.liferay.portal.security.permission.PermissionCheckerFactoryUtil;
+import com.liferay.portal.security.permission.PermissionThreadLocal;
+import com.liferay.portal.service.CompanyLocalServiceUtil;
+import com.liferay.portal.service.UserLocalServiceUtil;
+import com.liferay.util.Encryptor;
+
+public class LiferayUserFilter implements Filter {
+
+    @Override
+    public void doFilter(ServletRequest request, ServletResponse response,
+            FilterChain filterChain) throws IOException, ServletException {
+        if (request instanceof HttpServletRequest) {
+            Cookie[] cookies = ((HttpServletRequest) request).getCookies();
+            String userId = null;
+            String companyId = null;
+            if (cookies != null) {
+                for (Cookie c : cookies) {
+                    if (&amp;quot;COMPANY_ID&amp;quot;.equals(c.getName())) {
+                        companyId = c.getValue();
+                    } else if (&amp;quot;ID&amp;quot;.equals(c.getName())) {
+                        userId = hexStringToStringByAscii(c.getValue());
+                    }
+                }
+
+                if (userId != null &amp;amp;&amp;amp; companyId != null) {
+                    try {
+                        Company company = CompanyLocalServiceUtil.getCompany(Long
+                                .parseLong(companyId));
+                        Key key = company.getKeyObj();
+
+                        String userIdPlain = Encryptor.decrypt(key, userId);
+
+                        User liferayUser = UserLocalServiceUtil.getUser(Long.valueOf(userIdPlain));
+                        
+                        // Now you can set the liferayUser into a thread local for later use or 
+                        // something like that.
+
+                    } catch (Exception pException) {
+                        throw new RuntimeException(pException);
+                    }
+                }
+            }
+        }
+        filterChain.doFilter(request, response);
+    }
+
+    private String hexStringToStringByAscii(String hexString) {
+        byte[] bytes = new byte[hexString.length() / 2];
+        for (int i = 0; i &amp;lt; hexString.length() / 2; i++) {
+            String oneHexa = hexString.substring(i * 2, i * 2 + 2);
+            bytes[i] = Byte.parseByte(oneHexa, 16);
+        }
+        try {
+            return new String(bytes, &amp;quot;ASCII&amp;quot;);
+        } catch (UnsupportedEncodingException e) {
+            throw new RuntimeException(e);
+        }
+    }
+    
+    @Override
+    public void destroy() {
+        
+    }
+    
+    @Override
+    public void init(FilterConfig pArg0) throws ServletException {
+        
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Ext GWT 3 ComboBox not firing ValueChangeEvent</title>
+      <link>http://tobiasbayer.com/post/2012-03-17-ext-gwt-3-combobox-not-firing-valuechangeevent/</link>
+      <pubDate>Sat, 17 Mar 2012 00:00:00 +0000</pubDate>
+      
+      <guid>http://tobiasbayer.com/post/2012-03-17-ext-gwt-3-combobox-not-firing-valuechangeevent/</guid>
+      <description>&lt;p&gt;In the current beta version of &lt;a href=&#34;http://www.sencha.com/forum/showthread.php?184557-Ext-GWT-3.0-Beta-4-Now-Available&#34;&gt;Ext GWT 3 (beta4)&lt;/a&gt;, a &lt;code&gt;ComboBox&lt;/code&gt; does not fire a &lt;code&gt;ValueChangeEvent&lt;/code&gt; immediately after a value is selected. The event is only fired when the &lt;code&gt;ComboBox&lt;/code&gt; loses its focus or the return key is pressed inside the &lt;code&gt;ComboBox&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;To fire the &lt;code&gt;ValueChangeEvent&lt;/code&gt; immediately upon selection, you can add a &lt;code&gt;CollapseHandler&lt;/code&gt; as a workaround:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;
+combobox.addCollapseHandler(new CollapseHandler() {
+	@Override
+	public void onCollapse(CollapseEvent event) {
+		combobox.setValue(combobox.getCurrentValue(), true);
+	}
+});
+
+&lt;/code&gt;&lt;/pre&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>5 Reasons why the technical debt in Java EE projects is much higher than in COBOL projects</title>
+      <link>http://tobiasbayer.com/post/2011-12-25-5-reasons-why-the-technical-debt-in-java-ee-projects-is-much-higher-than-in-cobol-projects/</link>
+      <pubDate>Sun, 25 Dec 2011 00:00:00 +0000</pubDate>
+      
+      <guid>http://tobiasbayer.com/post/2011-12-25-5-reasons-why-the-technical-debt-in-java-ee-projects-is-much-higher-than-in-cobol-projects/</guid>
+      <description>
+
+&lt;p&gt;According to the recent &lt;a href=&#34;http://www.castsoftware.com/resources/resource/whitepapers/cast-report-on-application-software-health&#34;&gt;CRASH Report (&lt;sup&gt;2011&lt;/sup&gt;&amp;frasl;&lt;sub&gt;12&lt;/sub&gt;) (CAST Report on Application Software Health)&lt;/a&gt;, the technical debt in Java EE projects is much higher than in COBOL projects.&lt;/p&gt;
+
+&lt;p&gt;The core thesis of this report is: The worse the code quality of a software project, the higher the maintenance costs (which is no new insight anyway).&lt;/p&gt;
+
+&lt;p&gt;So the question is: Why is code quality in Java EE projects worse than in COBOL projects?&lt;/p&gt;
+
+&lt;p&gt;Here are five reasons why this might be the case in my opinion:&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;J2EE vs. Java EE &lt;sup&gt;5&lt;/sup&gt;&amp;frasl;&lt;sub&gt;6&lt;/sub&gt;
+&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;ndash;
+The report does not tell how many of the Java projects considered were actually J2EE (&amp;lt; 1.5) and how many were Java EE (&amp;gt;= 1.5) projects. J2EE can be considered a flawed standard in many cases.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;The main concern is the incredibly high invasiveness of the technical framework code. In J2EE you cannot achieve separation of technical and functional code without a huge amount of layering and pattern application. This leads to polluted and hard to maintain code all the way.&lt;/p&gt;
+
+&lt;p&gt;In Java EE &lt;sup&gt;5&lt;/sup&gt;&amp;frasl;&lt;sub&gt;6&lt;/sub&gt; &lt;a href=&#34;http://www.oracle.com/technetwork/issue-archive/2011/11-jan/o11java-195110.html&#34;&gt;things got much better&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;Depending on the ratio of J2EE to Java EE projects considered in the report, the view on Java based applications may be biased towards the worse standard at present time.&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;&lt;h2 id=&#34;technology-and-framework-diversity:c655ccedcb24e7918c55996cd19f8a43&#34;&gt;Technology and Framework Diversity&lt;/h2&gt;
+
+&lt;p&gt;The huge amount of possibly applicable technologies and frameworks in all of the layers of a typical Java project raises complexity when different products are used without proper evaluation (and even if proper evaluation has been done).
+In COBOL there is e.g. no such thing as the web layer (as in the Java EE sense) with all its additional complexity.&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;h2 id=&#34;new-and-immature-frameworks:c655ccedcb24e7918c55996cd19f8a43&#34;&gt;New and Immature Frameworks&lt;/h2&gt;
+
+&lt;p&gt;Because of missing experience with new frameworks or the usage of half baked frameworks developers tend to implement their own solutions that break the intentions of the framework and open side channels. Architecture incompatible code structures are the result.&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;h2 id=&#34;developer-experience-and-quality:c655ccedcb24e7918c55996cd19f8a43&#34;&gt;Developer Experience and Quality&lt;/h2&gt;
+
+&lt;p&gt;There are many bad Java developers compared to the COBOL world. The average COBOL developer is much older and much more experienced in software engineering than the average Java developer. Computer science graduates with only basic Java knowledge are way too often put on a project without proper guidance by a senior developer just to get the thing done quick and dirty.&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;h2 id=&#34;maintenance-vs-new-projects:c655ccedcb24e7918c55996cd19f8a43&#34;&gt;Maintenance vs. New Projects&lt;/h2&gt;
+
+&lt;p&gt;The number of new green field projects done in COBOL is vanishingly low. The majority of COBOL projects is maintenance stuff in long grown and mature applications. Over the years many chances have been taken to fix bugs and refactor code. So the main factors for technical debt have been ironed out long before the authors of the CRASH report took a look at these projects.&lt;/p&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2 id=&#34;conclusion:c655ccedcb24e7918c55996cd19f8a43&#34;&gt;Conclusion&lt;/h2&gt;
+
+&lt;p&gt;While the basic notion of higher technical debt in Java projects compared to COBOL may be certainly true at the time the snapshot was taken for some good reasons, I doubt the reliability of an almighty automatic code analysis tool which is able to produce such testimonies about overall quality of projects with very different technical and organizational backgrounds.&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Mocking JavaMail</title>
+      <link>http://tobiasbayer.com/post/2011-12-08-mocking-javamail/</link>
+      <pubDate>Thu, 08 Dec 2011 00:00:00 +0000</pubDate>
+      
+      <guid>http://tobiasbayer.com/post/2011-12-08-mocking-javamail/</guid>
+      <description>&lt;p&gt;I had to test the mail sending capabilities of my code without having a mail server at hand.
+I came across &lt;a href=&#34;http://java.net/projects/mock-javamail&#34;&gt;Mock-JavaMail&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;It mocks the whole &lt;a href=&#34;http://www.oracle.com/technetwork/java/javamail/index.html&#34;&gt;JavaMail API&lt;/a&gt; so that all mail messages are not
+sent to a SMTP server but to in-memory mailboxes.&lt;/p&gt;
+
+&lt;p&gt;To include it in your tests, you just have to add this dependency in your &lt;code&gt;pom.xml&lt;/code&gt; if you are using &lt;a href=&#34;http://maven.apache.org&#34;&gt;Maven&lt;/a&gt;:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;lt;dependency&amp;gt;
+	&amp;lt;groupId&amp;gt;org.jvnet.mock-javamail&amp;lt;/groupId&amp;gt;
+	&amp;lt;artifactId&amp;gt;mock-javamail&amp;lt;/artifactId&amp;gt;
+	&amp;lt;version&amp;gt;1.9&amp;lt;/version&amp;gt;
+	&amp;lt;scope&amp;gt;test&amp;lt;/scope&amp;gt;
+&amp;lt;/dependency&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;(Make sure to add the &lt;em&gt;test&lt;/em&gt; scope or otherwise your production configuration will not send real emails.)&lt;/p&gt;
+
+&lt;p&gt;After sending mail from your application code in your test cases, you can easily access the
+mailboxes and check the messages and their content like this:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;List&amp;lt;Message&amp;gt; inbox = org.jvnet.mock_javamail.Mailbox.get(&amp;quot;tobias@codebrickie.com&amp;quot;);
+
+assertFalse(inbox.isEmpty());
+
+Message message = inbox.get(0);
+assertEquals(&amp;quot;Expected Subject&amp;quot;, message.getSubject());
+...
+&lt;/code&gt;&lt;/pre&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Desktop.open() and java.io.IOException</title>
+      <link>http://tobiasbayer.com/post/desktop-open-and-java-io-ioexception/</link>
+      <pubDate>Mon, 11 Apr 2011 00:00:00 +0000</pubDate>
+      
+      <guid>http://tobiasbayer.com/post/desktop-open-and-java-io-ioexception/</guid>
+      <description>&lt;p&gt;Trying to open a file with &lt;code&gt;java.awt.Desktop.open()&lt;/code&gt; sometimes results
+in a &lt;code&gt;java.io.IOException&lt;/code&gt; with the error message:
+&lt;code&gt;Parameter is incorrect&lt;/code&gt;. This is a &lt;a href=&#34;http://bugs.sun.com/view_bug.do?bug_id=6764271&#34;&gt;Java
+Bug&lt;/a&gt;. As a workaround
+you can call&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;Runtime.getRuntime().exec(&amp;quot;rundll32 SHELL32.DLL,ShellExec_RunDLL &amp;quot; + file);
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;instead on Windows systems.&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Apache CXF UsernameToken authentication with Nonce</title>
+      <link>http://tobiasbayer.com/post/apache-cxf-usernametoken-authentication-with-nonce/</link>
+      <pubDate>Mon, 20 Dec 2010 00:00:00 +0000</pubDate>
+      
+      <guid>http://tobiasbayer.com/post/apache-cxf-usernametoken-authentication-with-nonce/</guid>
+      <description>&lt;p&gt;&lt;a href=&#34;http://www.jroller.com/gmazza/entry/cxf_usernametoken_profile&#34;&gt;Glen&lt;/a&gt;
+describes how to use the UsernameToken profile with Apache CXF.&lt;/p&gt;
+
+&lt;p&gt;I had the additional requirement of putting a message nonce and a &amp;ldquo;created&amp;rdquo;
+timestamp into the SOAP header to prevent message replay attacks.&lt;/p&gt;
+
+&lt;p&gt;Adding these two tags and their content requires only one additional line of
+code compared to Glen&amp;rsquo;s example. This is how you do it:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;...
+HashMap outProps = new HashMap();
+Client client = org.apache.cxf.frontend.ClientProxy.getClient(portInterface);
+Endpoint cxfEndpoint = client.getEndpoint();
+
+outProps.put(WSHandlerConstants.ACTION, WSHandlerConstants.USERNAME_TOKEN);
+outProps.put(WSHandlerConstants.USER, &amp;quot;Username&amp;quot;);
+outProps.put(WSHandlerConstants.PASSWORD_TYPE, WSConstants.PW_TEXT);
+// Automatically adds a Base64 encoded message nonce and a created timestamp
+outProps.put(WSHandlerConstants.ADD_UT_ELEMENTS, WSConstants.NONCE_LN + &amp;quot; &amp;quot; + WSConstants.CREATED_LN); 
+// You must implement the PasswordCallback class yourself. See Glen&#39;s page mentioned above for how 
+outProps.put(WSHandlerConstants.PW_CALLBACK_CLASS, PasswordCallback.class.getName()); to do it
+
+WSS4JOutInterceptor wssOut = new WSS4JOutInterceptor(outProps);
+cxfEndpoint.getOutInterceptors().add(wssOut);
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;And this is what you get:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;lt;soap:Header&amp;gt;
+    &amp;lt;wsse:Security xmlns:wsse=&amp;quot;http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd&amp;quot;
+    soap:mustUnderstand=&amp;quot;1&amp;quot;&amp;gt;
+      &amp;lt;wsse:UsernameToken xmlns:wsse=&amp;quot;http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd&amp;quot;
+      xmlns:wsu=&amp;quot;http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd&amp;quot;
+      wsu:Id=&amp;quot;UsernameToken-1&amp;quot;&amp;gt;
+        &amp;lt;wsse:Username&amp;gt;Username&amp;lt;/wsse:Username&amp;gt;
+        &amp;lt;wsse:Password Type=&amp;quot;http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-username-token-profile-1.0#PasswordText&amp;quot;&amp;gt;
+        myPassword1234&amp;lt;/wsse:Password&amp;gt;
+        &amp;lt;wsse:Nonce EncodingType=&amp;quot;http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-soap-message-security-1.0#Base64Binary&amp;quot;&amp;gt;
+        6hn0vYMlV7OoBy+TjmKMrw==&amp;lt;/wsse:Nonce&amp;gt;
+        &amp;lt;wsu:Created&amp;gt;2010-12-20T11:53:41.790Z&amp;lt;/wsu:Created&amp;gt;
+      &amp;lt;/wsse:UsernameToken&amp;gt;
+    &amp;lt;/wsse:Security&amp;gt;
+  &amp;lt;/soap:Header&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>NOT EXISTS subquery with JPA 2.0 CriteriaBuilder</title>
+      <link>http://tobiasbayer.com/post/not-exists-subquery-with-jpa-2-0-criteriabuilder/</link>
+      <pubDate>Mon, 13 Dec 2010 00:00:00 +0000</pubDate>
+      
+      <guid>http://tobiasbayer.com/post/not-exists-subquery-with-jpa-2-0-criteriabuilder/</guid>
+      <description>&lt;p&gt;Assume you have a data model where you have a n:1 relationship from
+addresses to persons. The relationship is only navigable from addresses
+to persons (just as an example, please don&amp;rsquo;t think twice if this is good
+data modelling here).&lt;/p&gt;
+
+&lt;p&gt;Now you want to find all persons that do not have
+any addresses. In SQL, you would use a RIGHT JOIN in this case.&lt;/p&gt;
+
+&lt;p&gt;In JPA
+2.0 the implementation of RIGHT JOINS is optional for the persistence
+provider. The very popular ORM &lt;a href=&#34;http://www.hibernate.org&#34;&gt;Hibernate&lt;/a&gt;
+does not support RIGHT JOIN operations. In order to complete the task
+described above, you have to use a subquery. Here&amp;rsquo;s how to do it:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;CriteriaBuilder criteriaBuilder = mEntityManager.getCriteriaBuilder();
+
+CriteriaQuery query = criteriaBuilder.createQuery(Person.class);
+Root person = query.from(Person.class);
+query.select(person);
+
+Subquery subquery = query.subquery(Address.class);
+Root subRootEntity = subquery.from(Address.class);
+subquery.select(subRootEntity);
+
+Predicate correlatePredicate = criteriaBuilder.equal(subRootEntity.get(&amp;quot;Person&amp;quot;), person);
+subquery.where(correlatePredicate);
+query.where(criteriaBuilder.not(criteriaBuilder.exists(subquery)));
+
+TypedQuery typedQuery = mEntityManager.createQuery(query);
+List unreferencedPersons = typedQuery.getResultList();
+&lt;/code&gt;&lt;/pre&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Hibernate&#39;s optimistic locking and DTOs</title>
+      <link>http://tobiasbayer.com/post/hibernates-optimistic-locking-and-dtos/</link>
+      <pubDate>Sun, 26 Sep 2010 00:00:00 +0000</pubDate>
+      
+      <guid>http://tobiasbayer.com/post/hibernates-optimistic-locking-and-dtos/</guid>
+      <description>&lt;p&gt;Hibernate can do optimistic locking and detect version conflicts by
+&lt;a href=&#34;http://docs.jboss.org/hibernate/core/3.5/reference/en/html/transactions.html#transactions-optimistic&#34;&gt;using a version column&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;However, if you are using
+&lt;a href=&#34;http://en.wikipedia.org/wiki/Data_transfer_object&#34;&gt;DTOs&lt;/a&gt; and you expect
+Hibernate to detect version conflicts based on the version you are
+merging back from the DTO into your entity object, this will not work.&lt;/p&gt;
+
+&lt;p&gt;Hibernate will ignore the version you are setting in your DTO2Entity
+mapper and overwrite any changes that may have been made to the entity
+before your DTO arrives back at the application core. You have to
+do version checking by your own.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;//...
+entity = entityDAO.findById(dto.getId());
+if (entity.getVersion() &amp;gt; dto.getVersion()) {
+    throw new Exception(&amp;quot;Optimistic Lock Exception&amp;quot;);
+}
+else {
+    // Map and merge entity...
+}
+&lt;/code&gt;&lt;/pre&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>OpenEntityManagerInViewFilter</title>
+      <link>http://tobiasbayer.com/post/openentitymanagerinviewfilter/</link>
+      <pubDate>Mon, 16 Aug 2010 00:00:00 +0000</pubDate>
+      
+      <guid>http://tobiasbayer.com/post/openentitymanagerinviewfilter/</guid>
+      <description>&lt;p&gt;When using Spring and Hibernate you may be facing
+&lt;code&gt;org.hibernate.LazyInitializationException&lt;/code&gt;s because your view has no
+open database session. You may often see the recommendation to use an
+&lt;code&gt;OpenSessionInViewFilter&lt;/code&gt; to cope with this problem. But what if you are
+using an &lt;code&gt;EntityManager&lt;/code&gt; rather than a session? Just use the
+&lt;code&gt;OpenEntityManagerInViewFilter&lt;/code&gt; instead!&lt;/p&gt;
+
+&lt;p&gt;Here is how to do it:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;     &amp;lt;filter&amp;gt;
+         &amp;lt;filter-name&amp;gt;openEntityManagerFilter&amp;lt;/filter-name&amp;gt;
+          &amp;lt;filter-class&amp;gt;
+              org.springframework.orm.jpa.support.OpenEntityManagerInViewFilter
+          &amp;lt;/filter-class&amp;gt;
+          &amp;lt;init-param&amp;gt;
+              &amp;lt;param-name&amp;gt;entityManagerFactoryBeanName&amp;lt;/param-name&amp;gt;
+              &amp;lt;param-value&amp;gt;entityManagerFactory&amp;lt;/param-value&amp;gt;
+          &amp;lt;/init-param&amp;gt;
+      &amp;lt;/filter&amp;gt;
+ 
+      &amp;lt;filter-mapping&amp;gt;
+          &amp;lt;filter-name&amp;gt;openEntityManagerFilter&amp;lt;/filter-name&amp;gt;
+          &amp;lt;url-pattern&amp;gt;/requestPathToApplyFilterTo/*&amp;lt;/url-pattern&amp;gt;
+      &amp;lt;/filter-mapping&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;DISCLAIMER: While being an easy way to avoid
+&lt;code&gt;org.hibernate.LazyInitializationException&lt;/code&gt;s, using an open database
+connection in view pattern is not always a good solution when it comes
+to &lt;a href=&#34;http://heapdump.wordpress.com/2010/04/04/should-i-use-open-session-in-view/&#34;&gt;performance and memory efficency&lt;/a&gt;.
+Use with care!&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Custom annotations not accessible</title>
+      <link>http://tobiasbayer.com/post/custom-annotations-not-accessible/</link>
+      <pubDate>Sat, 07 Aug 2010 00:00:00 +0000</pubDate>
+      
+      <guid>http://tobiasbayer.com/post/custom-annotations-not-accessible/</guid>
+      <description>&lt;p&gt;You have written your own Java annotation and annotated a class with it
+but you cannot access the annotation via reflection during runtime? Most
+likely you have forgotten to set the right retention annotation for your
+own annotation. Try this:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;@Retention(RetentionPolicy.RUNTIME)
+public @interface MyAnnotation {
+    public String property();
+}
+&lt;/code&gt;&lt;/pre&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>PropertyPlaceholderConfigurer only works with ApplicationContext</title>
+      <link>http://tobiasbayer.com/post/propertyplaceholderconfigurer-only-works-with-applicationcontext/</link>
+      <pubDate>Sun, 04 Jul 2010 00:00:00 +0000</pubDate>
+      
+      <guid>http://tobiasbayer.com/post/propertyplaceholderconfigurer-only-works-with-applicationcontext/</guid>
+      <description>&lt;p&gt;In a Spring application, you can use the &lt;code&gt;PropertyPlaceholderConfigurer&lt;/code&gt;
+to use properties in your Spring configuration.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;lt;bean class=&amp;quot;org.springframework.beans.factory.config.PropertyPlaceholderConfigurer&amp;quot;&amp;gt;
+    &amp;lt;property name=&amp;quot;location&amp;quot;&amp;gt;
+        &amp;lt;value&amp;gt;common.properties&amp;lt;/value&amp;gt;
+    &amp;lt;/property&amp;gt;
+&amp;lt;/bean&amp;gt;
+      
+&amp;lt;bean id=&amp;quot;clientProxyFactory&amp;quot; class=&amp;quot;org.apache.cxf.jaxws.JaxWsProxyFactoryBean&amp;quot;&amp;gt;
+    &amp;lt;property name=&amp;quot;serviceClass&amp;quot; value=&amp;quot;com.sample.Service&amp;quot;/&amp;gt;
+    &amp;lt;property name=&amp;quot;address&amp;quot; value=&amp;quot;${address}&amp;quot;/&amp;gt;
+&amp;lt;/bean&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;But beware: Replacing the properties with the values from the property
+file only works if you use an &lt;code&gt;ApplicationContext&lt;/code&gt; for retrieving your
+beans. It will not work when using a &lt;code&gt;BeanFactory&lt;/code&gt;.&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

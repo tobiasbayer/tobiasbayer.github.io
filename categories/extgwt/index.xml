@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Extgwt on Tobias Bayer</title>
+    <link>http://tobiasbayer.com/categories/extgwt/</link>
+    <description>Recent content in Extgwt on Tobias Bayer</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sat, 17 Mar 2012 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://tobiasbayer.com/categories/extgwt/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Ext GWT 3 ComboBox not firing ValueChangeEvent</title>
+      <link>http://tobiasbayer.com/post/2012-03-17-ext-gwt-3-combobox-not-firing-valuechangeevent/</link>
+      <pubDate>Sat, 17 Mar 2012 00:00:00 +0000</pubDate>
+      
+      <guid>http://tobiasbayer.com/post/2012-03-17-ext-gwt-3-combobox-not-firing-valuechangeevent/</guid>
+      <description>&lt;p&gt;In the current beta version of &lt;a href=&#34;http://www.sencha.com/forum/showthread.php?184557-Ext-GWT-3.0-Beta-4-Now-Available&#34;&gt;Ext GWT 3 (beta4)&lt;/a&gt;, a &lt;code&gt;ComboBox&lt;/code&gt; does not fire a &lt;code&gt;ValueChangeEvent&lt;/code&gt; immediately after a value is selected. The event is only fired when the &lt;code&gt;ComboBox&lt;/code&gt; loses its focus or the return key is pressed inside the &lt;code&gt;ComboBox&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;To fire the &lt;code&gt;ValueChangeEvent&lt;/code&gt; immediately upon selection, you can add a &lt;code&gt;CollapseHandler&lt;/code&gt; as a workaround:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;
+combobox.addCollapseHandler(new CollapseHandler() {
+	@Override
+	public void onCollapse(CollapseEvent event) {
+		combobox.setValue(combobox.getCurrentValue(), true);
+	}
+});
+
+&lt;/code&gt;&lt;/pre&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

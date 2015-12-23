@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Hibernate on Tobias Bayer</title>
+    <link>http://tobiasbayer.com/categories/hibernate/</link>
+    <description>Recent content in Hibernate on Tobias Bayer</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Mon, 13 Dec 2010 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://tobiasbayer.com/categories/hibernate/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>NOT EXISTS subquery with JPA 2.0 CriteriaBuilder</title>
+      <link>http://tobiasbayer.com/post/not-exists-subquery-with-jpa-2-0-criteriabuilder/</link>
+      <pubDate>Mon, 13 Dec 2010 00:00:00 +0000</pubDate>
+      
+      <guid>http://tobiasbayer.com/post/not-exists-subquery-with-jpa-2-0-criteriabuilder/</guid>
+      <description>&lt;p&gt;Assume you have a data model where you have a n:1 relationship from
+addresses to persons. The relationship is only navigable from addresses
+to persons (just as an example, please don&amp;rsquo;t think twice if this is good
+data modelling here).&lt;/p&gt;
+
+&lt;p&gt;Now you want to find all persons that do not have
+any addresses. In SQL, you would use a RIGHT JOIN in this case.&lt;/p&gt;
+
+&lt;p&gt;In JPA
+2.0 the implementation of RIGHT JOINS is optional for the persistence
+provider. The very popular ORM &lt;a href=&#34;http://www.hibernate.org&#34;&gt;Hibernate&lt;/a&gt;
+does not support RIGHT JOIN operations. In order to complete the task
+described above, you have to use a subquery. Here&amp;rsquo;s how to do it:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;CriteriaBuilder criteriaBuilder = mEntityManager.getCriteriaBuilder();
+
+CriteriaQuery query = criteriaBuilder.createQuery(Person.class);
+Root person = query.from(Person.class);
+query.select(person);
+
+Subquery subquery = query.subquery(Address.class);
+Root subRootEntity = subquery.from(Address.class);
+subquery.select(subRootEntity);
+
+Predicate correlatePredicate = criteriaBuilder.equal(subRootEntity.get(&amp;quot;Person&amp;quot;), person);
+subquery.where(correlatePredicate);
+query.where(criteriaBuilder.not(criteriaBuilder.exists(subquery)));
+
+TypedQuery typedQuery = mEntityManager.createQuery(query);
+List unreferencedPersons = typedQuery.getResultList();
+&lt;/code&gt;&lt;/pre&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Hibernate&#39;s optimistic locking and DTOs</title>
+      <link>http://tobiasbayer.com/post/hibernates-optimistic-locking-and-dtos/</link>
+      <pubDate>Sun, 26 Sep 2010 00:00:00 +0000</pubDate>
+      
+      <guid>http://tobiasbayer.com/post/hibernates-optimistic-locking-and-dtos/</guid>
+      <description>&lt;p&gt;Hibernate can do optimistic locking and detect version conflicts by
+&lt;a href=&#34;http://docs.jboss.org/hibernate/core/3.5/reference/en/html/transactions.html#transactions-optimistic&#34;&gt;using a version column&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;However, if you are using
+&lt;a href=&#34;http://en.wikipedia.org/wiki/Data_transfer_object&#34;&gt;DTOs&lt;/a&gt; and you expect
+Hibernate to detect version conflicts based on the version you are
+merging back from the DTO into your entity object, this will not work.&lt;/p&gt;
+
+&lt;p&gt;Hibernate will ignore the version you are setting in your DTO2Entity
+mapper and overwrite any changes that may have been made to the entity
+before your DTO arrives back at the application core. You have to
+do version checking by your own.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;//...
+entity = entityDAO.findById(dto.getId());
+if (entity.getVersion() &amp;gt; dto.getVersion()) {
+    throw new Exception(&amp;quot;Optimistic Lock Exception&amp;quot;);
+}
+else {
+    // Map and merge entity...
+}
+&lt;/code&gt;&lt;/pre&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>OpenEntityManagerInViewFilter</title>
+      <link>http://tobiasbayer.com/post/openentitymanagerinviewfilter/</link>
+      <pubDate>Mon, 16 Aug 2010 00:00:00 +0000</pubDate>
+      
+      <guid>http://tobiasbayer.com/post/openentitymanagerinviewfilter/</guid>
+      <description>&lt;p&gt;When using Spring and Hibernate you may be facing
+&lt;code&gt;org.hibernate.LazyInitializationException&lt;/code&gt;s because your view has no
+open database session. You may often see the recommendation to use an
+&lt;code&gt;OpenSessionInViewFilter&lt;/code&gt; to cope with this problem. But what if you are
+using an &lt;code&gt;EntityManager&lt;/code&gt; rather than a session? Just use the
+&lt;code&gt;OpenEntityManagerInViewFilter&lt;/code&gt; instead!&lt;/p&gt;
+
+&lt;p&gt;Here is how to do it:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;     &amp;lt;filter&amp;gt;
+         &amp;lt;filter-name&amp;gt;openEntityManagerFilter&amp;lt;/filter-name&amp;gt;
+          &amp;lt;filter-class&amp;gt;
+              org.springframework.orm.jpa.support.OpenEntityManagerInViewFilter
+          &amp;lt;/filter-class&amp;gt;
+          &amp;lt;init-param&amp;gt;
+              &amp;lt;param-name&amp;gt;entityManagerFactoryBeanName&amp;lt;/param-name&amp;gt;
+              &amp;lt;param-value&amp;gt;entityManagerFactory&amp;lt;/param-value&amp;gt;
+          &amp;lt;/init-param&amp;gt;
+      &amp;lt;/filter&amp;gt;
+ 
+      &amp;lt;filter-mapping&amp;gt;
+          &amp;lt;filter-name&amp;gt;openEntityManagerFilter&amp;lt;/filter-name&amp;gt;
+          &amp;lt;url-pattern&amp;gt;/requestPathToApplyFilterTo/*&amp;lt;/url-pattern&amp;gt;
+      &amp;lt;/filter-mapping&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;DISCLAIMER: While being an easy way to avoid
+&lt;code&gt;org.hibernate.LazyInitializationException&lt;/code&gt;s, using an open database
+connection in view pattern is not always a good solution when it comes
+to &lt;a href=&#34;http://heapdump.wordpress.com/2010/04/04/should-i-use-open-session-in-view/&#34;&gt;performance and memory efficency&lt;/a&gt;.
+Use with care!&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

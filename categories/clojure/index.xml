@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Clojure on Tobias Bayer</title>
+    <link>http://tobiasbayer.com/categories/clojure/</link>
+    <description>Recent content in Clojure on Tobias Bayer</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Tue, 22 Dec 2015 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://tobiasbayer.com/categories/clojure/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Clojure Intro Talk</title>
+      <link>http://tobiasbayer.com/post/clojure-intro-talk/</link>
+      <pubDate>Tue, 22 Dec 2015 00:00:00 +0000</pubDate>
+      
+      <guid>http://tobiasbayer.com/post/clojure-intro-talk/</guid>
+      <description>&lt;p&gt;Here&amp;rsquo;s a (german) video of the Clojure intro talk I recently gave at the &lt;a href=&#34;http://www.meetup.com/de/inovex-karlsruhe/events/226101150/&#34;&gt;inovex meetup&lt;/a&gt;.&lt;/p&gt;
+
+&lt;iframe width=&#34;640&#34; height=&#34;480&#34; src=&#34;http://www.youtube.com/embed/cm0PqT53azk?autoplay=0&#34;&gt;&lt;/iframe&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Using Clojure&#39;s core.cache</title>
+      <link>http://tobiasbayer.com/post/2014-11-12-using-clojures-core-dot-cache/</link>
+      <pubDate>Wed, 12 Nov 2014 00:00:00 +0000</pubDate>
+      
+      <guid>http://tobiasbayer.com/post/2014-11-12-using-clojures-core-dot-cache/</guid>
+      <description>&lt;p&gt;&lt;a href=&#34;https://github.com/clojure/core.cache&#34;&gt;core.cache&lt;/a&gt; is a great Clojure library for caching
+arbitrary values in your application. Unfortunately, its examples
+have a minor dissent that can make it hard for a first time user to interact with it.&lt;/p&gt;
+
+&lt;!-- more --&gt;
+
+&lt;p&gt;The usage examples tell you to do this:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;(def C (cache/fifo-cache-factory {:a 1, :b 2}))
+
+(if (cache/has? C :c)
+  (cache/hit C :c)
+  (cache/miss C :c 42))
+  
+; =&amp;gt; {:a 1, :b 2, :c 42}    
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;The naive first time user (that I was) could now assume that there&amp;rsquo;s some magic going
+on behind the doors which does some state manipulation and another call to &lt;code&gt;(cache/has? C :c)&lt;/code&gt;
+should return &lt;code&gt;true&lt;/code&gt;.
+But as you guessed it: No magic to see here.&lt;/p&gt;
+
+&lt;p&gt;The point is, that &lt;code&gt;cache/miss&lt;/code&gt; and &lt;code&gt;cache/hit&lt;/code&gt; return a &lt;strong&gt;new&lt;/strong&gt; cache instance with the new
+value associated. You&amp;rsquo;ll have to do the state manipulation yourself (e.g. by using an atom):&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;(def C (atom (cache/fifo-cache-factory {:a 1, :b 2})))
+
+(if (cache/has? @C :c)
+  (swap! C #(cache/hit % :c))
+  (swap! C #(cache/miss % :c 42)))
+
+; =&amp;gt; {:a 1, :b 2, :c 42}
+
+(cache/has? @C :c)
+
+; =&amp;gt; true
+&lt;/code&gt;&lt;/pre&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Using Vaadin 7 with Clojure</title>
+      <link>http://tobiasbayer.com/post/2013-02-12-using-vaadin-7-with-clojure/</link>
+      <pubDate>Tue, 12 Feb 2013 00:00:00 +0000</pubDate>
+      
+      <guid>http://tobiasbayer.com/post/2013-02-12-using-vaadin-7-with-clojure/</guid>
+      <description>&lt;p&gt;There are some good examples on how to compose a web application with Clojure and Vaadin &amp;lt; 7.
+However, the web application bootstrapping process has changed for Vaadin 7.
+In this post I will show you how to create a Clojure/Vaadin 7 web application.&lt;/p&gt;
+
+&lt;p&gt;First we need a &lt;code&gt;web.xml&lt;/code&gt; file in &lt;code&gt;src/main/webapp/WEB-INF&lt;/code&gt; that defines the Vaadin servlet and parametrizes
+it with our main UI class.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;lt;?xml version=&amp;quot;1.0&amp;quot; encoding=&amp;quot;UTF-8&amp;quot;?&amp;gt;
+&amp;lt;web-app xmlns=&amp;quot;http://java.sun.com/xml/ns/javaee&amp;quot;
+	xmlns:xsi=&amp;quot;http://www.w3.org/2001/XMLSchema-instance&amp;quot;
+	xsi:schemaLocation=&amp;quot;http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd&amp;quot;
+	version=&amp;quot;2.5&amp;quot;&amp;gt;
+    &amp;lt;display-name&amp;gt;Clojure Vaadin 7 Application&amp;lt;/display-name&amp;gt;
+    &amp;lt;context-param&amp;gt;
+        &amp;lt;description&amp;gt;Vaadin production mode&amp;lt;/description&amp;gt;
+        &amp;lt;param-name&amp;gt;productionMode&amp;lt;/param-name&amp;gt;
+        &amp;lt;param-value&amp;gt;false&amp;lt;/param-value&amp;gt;
+    &amp;lt;/context-param&amp;gt;
+    &amp;lt;servlet&amp;gt;
+        &amp;lt;servlet-name&amp;gt;Clojure Vaadin 7 Application&amp;lt;/servlet-name&amp;gt;
+        &amp;lt;servlet-class&amp;gt;com.vaadin.server.VaadinServlet&amp;lt;/servlet-class&amp;gt;
+        &amp;lt;init-param&amp;gt;
+            &amp;lt;description&amp;gt;Vaadin UI&amp;lt;/description&amp;gt;
+            &amp;lt;param-name&amp;gt;UI&amp;lt;/param-name&amp;gt;
+            &amp;lt;param-value&amp;gt;cljvaadin7.MyApplicationUI&amp;lt;/param-value&amp;gt;
+        &amp;lt;/init-param&amp;gt;
+    &amp;lt;/servlet&amp;gt;
+    &amp;lt;servlet-mapping&amp;gt;
+        &amp;lt;servlet-name&amp;gt;Clojure Vaadin 7 Application&amp;lt;/servlet-name&amp;gt;
+        &amp;lt;url-pattern&amp;gt;/*&amp;lt;/url-pattern&amp;gt;
+    &amp;lt;/servlet-mapping&amp;gt;
+&amp;lt;/web-app&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;As there is no such thing as a class in Clojure, we will use its Java interoperability to create
+a Java class that serves as our Vaadin UI main class.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;(ns cljvaadin7.MyApplicationUI
+  (import [com.vaadin.ui VerticalLayout Label Button Button$ClickListener Notification])
+  (:gen-class
+    :extends com.vaadin.ui.UI))
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;code&gt;:gen-class&lt;/code&gt; will make the namespace available as a Java class.&lt;/p&gt;
+
+&lt;p&gt;We override the init method of &lt;code&gt;com.vaadin.ui.UI&lt;/code&gt;.
+This is the entry point for our web application. &lt;code&gt;init&lt;/code&gt; in &lt;code&gt;com.vaadin.ui.UI&lt;/code&gt;
+has only one argument (&lt;code&gt;request&lt;/code&gt;). However, our Clojure &lt;code&gt;-init&lt;/code&gt; function has two arguments.
+The reason is that the function will receive &amp;ldquo;&lt;code&gt;this&lt;/code&gt;&amp;rdquo; as the first argument.
+Now we can build our UI.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;(defn- create-button
+  [caption action]
+  (doto (Button. caption) (add-action action)))
+
+(defn- create-main-layout
+  []
+  (doto (VerticalLayout.)
+	        (.addComponent (Label. &amp;quot;Hello Clojure-Vaadin 7!&amp;quot;))
+	        (.addComponent (create-button &amp;quot;Push me!&amp;quot; show-click-message))))
+
+(defn -init
+  [main-ui request]
+  (doto main-ui (.setContent (create-main-layout))))
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;In Java, button actions are triggered by registering a click handler for the button. We have to do this in
+Clojure as well but we will hide the actual &lt;code&gt;ClickListener&lt;/code&gt; and use a more functional approach.
+We create a new function &lt;code&gt;add-action&lt;/code&gt; that expects a button and an action as arguments. &lt;code&gt;action&lt;/code&gt; can be any Clojure function
+we want to be executed when the button is clicked.
+The helper function &lt;code&gt;create-button-click-listener&lt;/code&gt; wraps a Vaadin &lt;code&gt;ClickListener&lt;/code&gt; around the &lt;code&gt;action&lt;/code&gt; function.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;(defn- show-click-message
+  []
+  (Notification/show &amp;quot;Button clicked&amp;quot;))
+
+(defn- create-button-click-listener 
+  [action]
+  (reify Button$ClickListener 
+            (buttonClick 
+              [_ evt]
+              (action))))
+
+(defn- add-action
+  [button action]
+  (.addListener button (create-button-click-listener action)))
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;The project file for building with Leiningen (and packaging with Maven) looks like this:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;(defproject cljvaadin7 &amp;quot;0.1.0-SNAPSHOT&amp;quot;
+  :description &amp;quot;Demonstrates how to integrate Clojure and Vaadin 7&amp;quot;
+  :url &amp;quot;https://github.com/codebrickie/cljvaadin7&amp;quot;
+  :license {:name &amp;quot;Eclipse Public License&amp;quot;
+            :url &amp;quot;http://www.eclipse.org/legal/epl-v10.html&amp;quot;}
+  :dependencies [[org.clojure/clojure &amp;quot;1.4.0&amp;quot;]
+                 [com.vaadin/vaadin-server &amp;quot;7.0.0&amp;quot;]
+                 [com.vaadin/vaadin-client-compiled &amp;quot;7.0.0&amp;quot;]
+                 [com.vaadin/vaadin-themes &amp;quot;7.0.0&amp;quot;]
+                 [javax.servlet/servlet-api &amp;quot;2.5&amp;quot;]]
+  :aot [cljvaadin7.MyApplicationUI])
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;You can find the complete project on &lt;a href=&#34;https://github.com/codebrickie/cljvaadin7&#34;&gt;GitHub&lt;/a&gt;.&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

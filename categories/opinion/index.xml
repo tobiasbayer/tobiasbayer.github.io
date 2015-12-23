@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Opinion on Tobias Bayer</title>
+    <link>http://tobiasbayer.com/categories/opinion/</link>
+    <description>Recent content in Opinion on Tobias Bayer</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sun, 25 Dec 2011 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://tobiasbayer.com/categories/opinion/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>5 Reasons why the technical debt in Java EE projects is much higher than in COBOL projects</title>
+      <link>http://tobiasbayer.com/post/2011-12-25-5-reasons-why-the-technical-debt-in-java-ee-projects-is-much-higher-than-in-cobol-projects/</link>
+      <pubDate>Sun, 25 Dec 2011 00:00:00 +0000</pubDate>
+      
+      <guid>http://tobiasbayer.com/post/2011-12-25-5-reasons-why-the-technical-debt-in-java-ee-projects-is-much-higher-than-in-cobol-projects/</guid>
+      <description>
+
+&lt;p&gt;According to the recent &lt;a href=&#34;http://www.castsoftware.com/resources/resource/whitepapers/cast-report-on-application-software-health&#34;&gt;CRASH Report (&lt;sup&gt;2011&lt;/sup&gt;&amp;frasl;&lt;sub&gt;12&lt;/sub&gt;) (CAST Report on Application Software Health)&lt;/a&gt;, the technical debt in Java EE projects is much higher than in COBOL projects.&lt;/p&gt;
+
+&lt;p&gt;The core thesis of this report is: The worse the code quality of a software project, the higher the maintenance costs (which is no new insight anyway).&lt;/p&gt;
+
+&lt;p&gt;So the question is: Why is code quality in Java EE projects worse than in COBOL projects?&lt;/p&gt;
+
+&lt;p&gt;Here are five reasons why this might be the case in my opinion:&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;J2EE vs. Java EE &lt;sup&gt;5&lt;/sup&gt;&amp;frasl;&lt;sub&gt;6&lt;/sub&gt;
+&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;ndash;
+The report does not tell how many of the Java projects considered were actually J2EE (&amp;lt; 1.5) and how many were Java EE (&amp;gt;= 1.5) projects. J2EE can be considered a flawed standard in many cases.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;The main concern is the incredibly high invasiveness of the technical framework code. In J2EE you cannot achieve separation of technical and functional code without a huge amount of layering and pattern application. This leads to polluted and hard to maintain code all the way.&lt;/p&gt;
+
+&lt;p&gt;In Java EE &lt;sup&gt;5&lt;/sup&gt;&amp;frasl;&lt;sub&gt;6&lt;/sub&gt; &lt;a href=&#34;http://www.oracle.com/technetwork/issue-archive/2011/11-jan/o11java-195110.html&#34;&gt;things got much better&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;Depending on the ratio of J2EE to Java EE projects considered in the report, the view on Java based applications may be biased towards the worse standard at present time.&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;&lt;h2 id=&#34;technology-and-framework-diversity:c655ccedcb24e7918c55996cd19f8a43&#34;&gt;Technology and Framework Diversity&lt;/h2&gt;
+
+&lt;p&gt;The huge amount of possibly applicable technologies and frameworks in all of the layers of a typical Java project raises complexity when different products are used without proper evaluation (and even if proper evaluation has been done).
+In COBOL there is e.g. no such thing as the web layer (as in the Java EE sense) with all its additional complexity.&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;h2 id=&#34;new-and-immature-frameworks:c655ccedcb24e7918c55996cd19f8a43&#34;&gt;New and Immature Frameworks&lt;/h2&gt;
+
+&lt;p&gt;Because of missing experience with new frameworks or the usage of half baked frameworks developers tend to implement their own solutions that break the intentions of the framework and open side channels. Architecture incompatible code structures are the result.&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;h2 id=&#34;developer-experience-and-quality:c655ccedcb24e7918c55996cd19f8a43&#34;&gt;Developer Experience and Quality&lt;/h2&gt;
+
+&lt;p&gt;There are many bad Java developers compared to the COBOL world. The average COBOL developer is much older and much more experienced in software engineering than the average Java developer. Computer science graduates with only basic Java knowledge are way too often put on a project without proper guidance by a senior developer just to get the thing done quick and dirty.&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;h2 id=&#34;maintenance-vs-new-projects:c655ccedcb24e7918c55996cd19f8a43&#34;&gt;Maintenance vs. New Projects&lt;/h2&gt;
+
+&lt;p&gt;The number of new green field projects done in COBOL is vanishingly low. The majority of COBOL projects is maintenance stuff in long grown and mature applications. Over the years many chances have been taken to fix bugs and refactor code. So the main factors for technical debt have been ironed out long before the authors of the CRASH report took a look at these projects.&lt;/p&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2 id=&#34;conclusion:c655ccedcb24e7918c55996cd19f8a43&#34;&gt;Conclusion&lt;/h2&gt;
+
+&lt;p&gt;While the basic notion of higher technical debt in Java projects compared to COBOL may be certainly true at the time the snapshot was taken for some good reasons, I doubt the reliability of an almighty automatic code analysis tool which is able to produce such testimonies about overall quality of projects with very different technical and organizational backgrounds.&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

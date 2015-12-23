@@ -1,0 +1,173 @@
+
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+
+  
+  <meta charset="UTF-8">
+  <title>
+    Apache CXF UsernameToken authentication with Nonce | Tobias Bayer
+  </title>
+
+
+  
+  <meta name="viewport" content="width=device-width,user-scalable=no,maximum-scale=1,initial-scale=1">
+
+  
+  <link rel="canonical" href="http://tobiasbayer.com/post/apache-cxf-usernametoken-authentication-with-nonce/"/>
+
+  
+  <link rel="stylesheet" href="http://tobiasbayer.com/css/sanitize.css">
+  <link rel="stylesheet" href="http://tobiasbayer.com/css/responsive.css">
+  <link rel="stylesheet" href="http://tobiasbayer.com/css/theme.css">
+  <link rel="stylesheet" href="http://tobiasbayer.com/css/custom.css">
+  <link rel="stylesheet" href="https://yandex.st/highlightjs/8.0/styles/default.min.css">
+  
+  
+  <link href="http://tobiasbayer.com/index.xml" rel="alternate" type="application/rss+xml" title="Tobias Bayer" />
+  <link href="http://tobiasbayer.com/index.xml" rel="feed" type="application/rss+xml" title="Tobias Bayer" />
+
+  
+  <script type="text/javascript">var switchTo5x=true;</script>
+  <script type="text/javascript" src="https://ws.sharethis.com/button/buttons.js"></script>
+  <script type="text/javascript">stLight.options({publisher: "2b9fffc6-b3fe-4988-a0ef-4f9dcce98eaa", doNotHash: true, doNotCopy: true, hashAddressBar: false});</script>
+
+  <script src="https://yandex.st/highlightjs/8.0/highlight.min.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+</head>
+
+
+
+<body>
+<div class="container">
+
+  
+  <header role="banner">
+    <div class="row gutters">
+      <div id="site-title" class="col span_6">
+        <h1><a href="http://tobiasbayer.com/">Tobias Bayer</a></h1>
+        <h2>I put the FTW in software</h2>
+      </div>
+      <div id="social" class="col span_6">
+        <ul>
+	  <li><a href="http://tobiasbayer.com/about">About</a></li>
+          
+          
+          <li><a href="https://github.com/tobiasbayer" target="_blank">GitHub</a></li>
+          <li><a href="http://tobiasbayer.com/index.xml" type="application/rss+xml" target="_blank">RSS</a></li>
+        </ul>
+      </div>
+    </div>
+  </header>
+
+
+  
+  <main id="single" role="main">
+    <div class="article-header">
+      <h1>Apache CXF UsernameToken authentication with Nonce</h1>
+      <div class="meta">
+        
+          Dec 20, 2010 &nbsp;
+        
+        
+          #<a href="http://tobiasbayer.com/categories/java">java</a>&nbsp;
+        
+          #<a href="http://tobiasbayer.com/categories/webservices">webservices</a>&nbsp;
+        
+      </div>
+    </div>
+    <article>
+      <p><a href="http://www.jroller.com/gmazza/entry/cxf_usernametoken_profile">Glen</a>
+describes how to use the UsernameToken profile with Apache CXF.</p>
+
+<p>I had the additional requirement of putting a message nonce and a &ldquo;created&rdquo;
+timestamp into the SOAP header to prevent message replay attacks.</p>
+
+<p>Adding these two tags and their content requires only one additional line of
+code compared to Glen&rsquo;s example. This is how you do it:</p>
+
+<pre><code>...
+HashMap outProps = new HashMap();
+Client client = org.apache.cxf.frontend.ClientProxy.getClient(portInterface);
+Endpoint cxfEndpoint = client.getEndpoint();
+
+outProps.put(WSHandlerConstants.ACTION, WSHandlerConstants.USERNAME_TOKEN);
+outProps.put(WSHandlerConstants.USER, &quot;Username&quot;);
+outProps.put(WSHandlerConstants.PASSWORD_TYPE, WSConstants.PW_TEXT);
+// Automatically adds a Base64 encoded message nonce and a created timestamp
+outProps.put(WSHandlerConstants.ADD_UT_ELEMENTS, WSConstants.NONCE_LN + &quot; &quot; + WSConstants.CREATED_LN); 
+// You must implement the PasswordCallback class yourself. See Glen's page mentioned above for how 
+outProps.put(WSHandlerConstants.PW_CALLBACK_CLASS, PasswordCallback.class.getName()); to do it
+
+WSS4JOutInterceptor wssOut = new WSS4JOutInterceptor(outProps);
+cxfEndpoint.getOutInterceptors().add(wssOut);
+</code></pre>
+
+<p>And this is what you get:</p>
+
+<pre><code>&lt;soap:Header&gt;
+    &lt;wsse:Security xmlns:wsse=&quot;http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd&quot;
+    soap:mustUnderstand=&quot;1&quot;&gt;
+      &lt;wsse:UsernameToken xmlns:wsse=&quot;http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd&quot;
+      xmlns:wsu=&quot;http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd&quot;
+      wsu:Id=&quot;UsernameToken-1&quot;&gt;
+        &lt;wsse:Username&gt;Username&lt;/wsse:Username&gt;
+        &lt;wsse:Password Type=&quot;http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-username-token-profile-1.0#PasswordText&quot;&gt;
+        myPassword1234&lt;/wsse:Password&gt;
+        &lt;wsse:Nonce EncodingType=&quot;http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-soap-message-security-1.0#Base64Binary&quot;&gt;
+        6hn0vYMlV7OoBy+TjmKMrw==&lt;/wsse:Nonce&gt;
+        &lt;wsu:Created&gt;2010-12-20T11:53:41.790Z&lt;/wsu:Created&gt;
+      &lt;/wsse:UsernameToken&gt;
+    &lt;/wsse:Security&gt;
+  &lt;/soap:Header&gt;
+</code></pre>
+
+      
+      
+      <div id="share-this" class="col span_10">
+        <span class='st_twitter_large' displayText='Tweet'></span>
+        <span class='st_facebook_large' displayText='Facebook'></span>
+        <span class='st_googleplus_large' displayText='Google +'></span>
+        <span class='st_pocket_large' displayText='Pocket'></span>
+        <span class='st_sharethis_large' displayText='ShareThis'></span>
+        <span class='st_email_large' displayText='Email'></span>  
+      </div>
+    </article>
+    
+
+
+<script type="text/javascript">
+     
+    var disqus_shortname = '';
+
+     
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+
+  </main>
+  
+
+  
+  <footer role="contentinfo">
+    <div style="text-align:center;">
+      
+      
+    </div>
+  </footer>
+
+
+</div>
+
+<script src="http://tobiasbayer.com/js/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+
+
+</body>
+</html>
+

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Architecture on Tobias Bayer</title>
+    <link>http://tobiasbayer.com/categories/architecture/</link>
+    <description>Recent content in Architecture on Tobias Bayer</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Wed, 18 Apr 2012 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://tobiasbayer.com/categories/architecture/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Suggested Reading</title>
+      <link>http://tobiasbayer.com/post/2012-04-18-suggested-reading/</link>
+      <pubDate>Wed, 18 Apr 2012 00:00:00 +0000</pubDate>
+      
+      <guid>http://tobiasbayer.com/post/2012-04-18-suggested-reading/</guid>
+      <description>&lt;p&gt;&lt;a href=&#34;http://omgbloglol.com/post/15190003367/bad-or-my-unfortunately-unfavorable-review-of-bob&#34;&gt;Bad (or, my unfortunately unfavorable review of Bob Martin’s Ruby Midwest keynote)&lt;/a&gt;&lt;br /&gt;
+Critical thoughts on an Uncle Bob speech&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://www.exampler.com/blog/2012/02/12/if-i-were-an-architect&#34;&gt;If I were an Architect&lt;/a&gt;
+Thoughts on agile architecture&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://37signals.com/svn/posts/3124-give-it-five-minutes&#34;&gt;Give it five minutes&lt;/a&gt;
+Don&amp;rsquo;t be a hothead&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

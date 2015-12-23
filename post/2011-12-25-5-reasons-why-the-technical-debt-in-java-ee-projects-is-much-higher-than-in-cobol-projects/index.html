@@ -1,0 +1,177 @@
+
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+
+  
+  <meta charset="UTF-8">
+  <title>
+    5 Reasons why the technical debt in Java EE projects is much higher than in COBOL projects | Tobias Bayer
+  </title>
+
+
+  
+  <meta name="viewport" content="width=device-width,user-scalable=no,maximum-scale=1,initial-scale=1">
+
+  
+  <link rel="canonical" href="http://tobiasbayer.com/post/2011-12-25-5-reasons-why-the-technical-debt-in-java-ee-projects-is-much-higher-than-in-cobol-projects/"/>
+
+  
+  <link rel="stylesheet" href="http://tobiasbayer.com/css/sanitize.css">
+  <link rel="stylesheet" href="http://tobiasbayer.com/css/responsive.css">
+  <link rel="stylesheet" href="http://tobiasbayer.com/css/theme.css">
+  <link rel="stylesheet" href="http://tobiasbayer.com/css/custom.css">
+  <link rel="stylesheet" href="https://yandex.st/highlightjs/8.0/styles/default.min.css">
+  
+  
+  <link href="http://tobiasbayer.com/index.xml" rel="alternate" type="application/rss+xml" title="Tobias Bayer" />
+  <link href="http://tobiasbayer.com/index.xml" rel="feed" type="application/rss+xml" title="Tobias Bayer" />
+
+  
+  <script type="text/javascript">var switchTo5x=true;</script>
+  <script type="text/javascript" src="https://ws.sharethis.com/button/buttons.js"></script>
+  <script type="text/javascript">stLight.options({publisher: "2b9fffc6-b3fe-4988-a0ef-4f9dcce98eaa", doNotHash: true, doNotCopy: true, hashAddressBar: false});</script>
+
+  <script src="https://yandex.st/highlightjs/8.0/highlight.min.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+</head>
+
+
+
+<body>
+<div class="container">
+
+  
+  <header role="banner">
+    <div class="row gutters">
+      <div id="site-title" class="col span_6">
+        <h1><a href="http://tobiasbayer.com/">Tobias Bayer</a></h1>
+        <h2>I put the FTW in software</h2>
+      </div>
+      <div id="social" class="col span_6">
+        <ul>
+	  <li><a href="http://tobiasbayer.com/about">About</a></li>
+          
+          
+          <li><a href="https://github.com/tobiasbayer" target="_blank">GitHub</a></li>
+          <li><a href="http://tobiasbayer.com/index.xml" type="application/rss+xml" target="_blank">RSS</a></li>
+        </ul>
+      </div>
+    </div>
+  </header>
+
+
+  
+  <main id="single" role="main">
+    <div class="article-header">
+      <h1>5 Reasons why the technical debt in Java EE projects is much higher than in COBOL projects</h1>
+      <div class="meta">
+        
+          Dec 25, 2011 &nbsp;
+        
+        
+          #<a href="http://tobiasbayer.com/categories/java">java</a>&nbsp;
+        
+          #<a href="http://tobiasbayer.com/categories/java-ee">java ee</a>&nbsp;
+        
+          #<a href="http://tobiasbayer.com/categories/cobol">cobol</a>&nbsp;
+        
+          #<a href="http://tobiasbayer.com/categories/opinion">opinion</a>&nbsp;
+        
+      </div>
+    </div>
+    <article>
+      
+
+<p>According to the recent <a href="http://www.castsoftware.com/resources/resource/whitepapers/cast-report-on-application-software-health">CRASH Report (<sup>2011</sup>&frasl;<sub>12</sub>) (CAST Report on Application Software Health)</a>, the technical debt in Java EE projects is much higher than in COBOL projects.</p>
+
+<p>The core thesis of this report is: The worse the code quality of a software project, the higher the maintenance costs (which is no new insight anyway).</p>
+
+<p>So the question is: Why is code quality in Java EE projects worse than in COBOL projects?</p>
+
+<p>Here are five reasons why this might be the case in my opinion:</p>
+
+<ol>
+<li>J2EE vs. Java EE <sup>5</sup>&frasl;<sub>6</sub>
+&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&ndash;
+The report does not tell how many of the Java projects considered were actually J2EE (&lt; 1.5) and how many were Java EE (&gt;= 1.5) projects. J2EE can be considered a flawed standard in many cases.</li>
+</ol>
+
+<p>The main concern is the incredibly high invasiveness of the technical framework code. In J2EE you cannot achieve separation of technical and functional code without a huge amount of layering and pattern application. This leads to polluted and hard to maintain code all the way.</p>
+
+<p>In Java EE <sup>5</sup>&frasl;<sub>6</sub> <a href="http://www.oracle.com/technetwork/issue-archive/2011/11-jan/o11java-195110.html">things got much better</a>.</p>
+
+<p>Depending on the ratio of J2EE to Java EE projects considered in the report, the view on Java based applications may be biased towards the worse standard at present time.</p>
+
+<ol>
+<li><h2 id="technology-and-framework-diversity:c655ccedcb24e7918c55996cd19f8a43">Technology and Framework Diversity</h2>
+
+<p>The huge amount of possibly applicable technologies and frameworks in all of the layers of a typical Java project raises complexity when different products are used without proper evaluation (and even if proper evaluation has been done).
+In COBOL there is e.g. no such thing as the web layer (as in the Java EE sense) with all its additional complexity.</p></li>
+
+<li><h2 id="new-and-immature-frameworks:c655ccedcb24e7918c55996cd19f8a43">New and Immature Frameworks</h2>
+
+<p>Because of missing experience with new frameworks or the usage of half baked frameworks developers tend to implement their own solutions that break the intentions of the framework and open side channels. Architecture incompatible code structures are the result.</p></li>
+
+<li><h2 id="developer-experience-and-quality:c655ccedcb24e7918c55996cd19f8a43">Developer Experience and Quality</h2>
+
+<p>There are many bad Java developers compared to the COBOL world. The average COBOL developer is much older and much more experienced in software engineering than the average Java developer. Computer science graduates with only basic Java knowledge are way too often put on a project without proper guidance by a senior developer just to get the thing done quick and dirty.</p></li>
+
+<li><h2 id="maintenance-vs-new-projects:c655ccedcb24e7918c55996cd19f8a43">Maintenance vs. New Projects</h2>
+
+<p>The number of new green field projects done in COBOL is vanishingly low. The majority of COBOL projects is maintenance stuff in long grown and mature applications. Over the years many chances have been taken to fix bugs and refactor code. So the main factors for technical debt have been ironed out long before the authors of the CRASH report took a look at these projects.</p></li>
+</ol>
+
+<h2 id="conclusion:c655ccedcb24e7918c55996cd19f8a43">Conclusion</h2>
+
+<p>While the basic notion of higher technical debt in Java projects compared to COBOL may be certainly true at the time the snapshot was taken for some good reasons, I doubt the reliability of an almighty automatic code analysis tool which is able to produce such testimonies about overall quality of projects with very different technical and organizational backgrounds.</p>
+
+      
+      
+      <div id="share-this" class="col span_10">
+        <span class='st_twitter_large' displayText='Tweet'></span>
+        <span class='st_facebook_large' displayText='Facebook'></span>
+        <span class='st_googleplus_large' displayText='Google +'></span>
+        <span class='st_pocket_large' displayText='Pocket'></span>
+        <span class='st_sharethis_large' displayText='ShareThis'></span>
+        <span class='st_email_large' displayText='Email'></span>  
+      </div>
+    </article>
+    
+
+
+<script type="text/javascript">
+     
+    var disqus_shortname = '';
+
+     
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+
+  </main>
+  
+
+  
+  <footer role="contentinfo">
+    <div style="text-align:center;">
+      
+      
+    </div>
+  </footer>
+
+
+</div>
+
+<script src="http://tobiasbayer.com/js/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+
+
+</body>
+</html>
+

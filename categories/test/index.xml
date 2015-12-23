@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Test on Tobias Bayer</title>
+    <link>http://tobiasbayer.com/categories/test/</link>
+    <description>Recent content in Test on Tobias Bayer</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Thu, 08 Dec 2011 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://tobiasbayer.com/categories/test/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Mocking JavaMail</title>
+      <link>http://tobiasbayer.com/post/2011-12-08-mocking-javamail/</link>
+      <pubDate>Thu, 08 Dec 2011 00:00:00 +0000</pubDate>
+      
+      <guid>http://tobiasbayer.com/post/2011-12-08-mocking-javamail/</guid>
+      <description>&lt;p&gt;I had to test the mail sending capabilities of my code without having a mail server at hand.
+I came across &lt;a href=&#34;http://java.net/projects/mock-javamail&#34;&gt;Mock-JavaMail&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;It mocks the whole &lt;a href=&#34;http://www.oracle.com/technetwork/java/javamail/index.html&#34;&gt;JavaMail API&lt;/a&gt; so that all mail messages are not
+sent to a SMTP server but to in-memory mailboxes.&lt;/p&gt;
+
+&lt;p&gt;To include it in your tests, you just have to add this dependency in your &lt;code&gt;pom.xml&lt;/code&gt; if you are using &lt;a href=&#34;http://maven.apache.org&#34;&gt;Maven&lt;/a&gt;:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;lt;dependency&amp;gt;
+	&amp;lt;groupId&amp;gt;org.jvnet.mock-javamail&amp;lt;/groupId&amp;gt;
+	&amp;lt;artifactId&amp;gt;mock-javamail&amp;lt;/artifactId&amp;gt;
+	&amp;lt;version&amp;gt;1.9&amp;lt;/version&amp;gt;
+	&amp;lt;scope&amp;gt;test&amp;lt;/scope&amp;gt;
+&amp;lt;/dependency&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;(Make sure to add the &lt;em&gt;test&lt;/em&gt; scope or otherwise your production configuration will not send real emails.)&lt;/p&gt;
+
+&lt;p&gt;After sending mail from your application code in your test cases, you can easily access the
+mailboxes and check the messages and their content like this:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;List&amp;lt;Message&amp;gt; inbox = org.jvnet.mock_javamail.Mailbox.get(&amp;quot;tobias@codebrickie.com&amp;quot;);
+
+assertFalse(inbox.isEmpty());
+
+Message message = inbox.get(0);
+assertEquals(&amp;quot;Expected Subject&amp;quot;, message.getSubject());
+...
+&lt;/code&gt;&lt;/pre&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

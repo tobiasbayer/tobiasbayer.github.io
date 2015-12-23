@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Modeling on Tobias Bayer</title>
+    <link>http://tobiasbayer.com/categories/modeling/</link>
+    <description>Recent content in Modeling on Tobias Bayer</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Fri, 23 Jul 2010 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://tobiasbayer.com/categories/modeling/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Eclipse Modeling Framework Reader with metamodels</title>
+      <link>http://tobiasbayer.com/post/eclipse-modeling-framework-reader-with-metamodels/</link>
+      <pubDate>Fri, 23 Jul 2010 00:00:00 +0000</pubDate>
+      
+      <guid>http://tobiasbayer.com/post/eclipse-modeling-framework-reader-with-metamodels/</guid>
+      <description>&lt;p&gt;Working with the &lt;a href=&#34;http://www.eclipse.org/modeling/emf/&#34;&gt;Eclipse Modeling Framework&lt;/a&gt; can save you a lot of
+time when generating code out of your UML models.&lt;/p&gt;
+
+&lt;p&gt;If you have defined a metamodel on top of an UML model that you are trying to read with MWE
+using &lt;code&gt;org.eclipse.emf.mwe.utils.Reader&lt;/code&gt; you may experience the problem
+that classes with types from your metamodel are not correctly resolved
+within your XPAND templates. According to &lt;a href=&#34;https://bugs.eclipse.org/bugs/show_bug.cgi?id=284464&#34;&gt;this bug report&lt;/a&gt; it is not
+clear if the bug has been really fixed in the newest version of EMF.&lt;/p&gt;
+
+&lt;p&gt;As long as a fix is unavailable, you can use the (deprecated)
+&lt;code&gt;org.eclipse.xtend.typesystem.emf.XmiReader&lt;/code&gt; instead. That works
+perfectly fine for me.&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Duplicate stereotypes in Sparx Enterprise Architect</title>
+      <link>http://tobiasbayer.com/post/duplicate-stereotypes-in-sparx-enterprise-architect/</link>
+      <pubDate>Sun, 18 Jul 2010 00:00:00 +0000</pubDate>
+      
+      <guid>http://tobiasbayer.com/post/duplicate-stereotypes-in-sparx-enterprise-architect/</guid>
+      <description>&lt;p&gt;&lt;a href=&#34;http://www.sparxsystems.com.au/products/index.html&#34;&gt;Sparx Enterprise Architect&lt;/a&gt; can
+import UML profiles where you can define your own stereotypes on top of
+UML.&lt;/p&gt;
+
+&lt;p&gt;However, if you define a stereotype with the same name (case
+insensitively), EA will not be able to determine the correct stereotype
+as there is no way of selecting the desired profile.&lt;/p&gt;
+
+&lt;p&gt;If you export your
+model to XMI, the stereotype of your UML classes will be set randomly
+from the profiles that contain a stereotype with that name.&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

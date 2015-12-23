@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Reading on Tobias Bayer</title>
+    <link>http://tobiasbayer.com/categories/reading/</link>
+    <description>Recent content in Reading on Tobias Bayer</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Wed, 18 Apr 2012 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://tobiasbayer.com/categories/reading/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Suggested Reading</title>
+      <link>http://tobiasbayer.com/post/2012-04-18-suggested-reading/</link>
+      <pubDate>Wed, 18 Apr 2012 00:00:00 +0000</pubDate>
+      
+      <guid>http://tobiasbayer.com/post/2012-04-18-suggested-reading/</guid>
+      <description>&lt;p&gt;&lt;a href=&#34;http://omgbloglol.com/post/15190003367/bad-or-my-unfortunately-unfavorable-review-of-bob&#34;&gt;Bad (or, my unfortunately unfavorable review of Bob Martin’s Ruby Midwest keynote)&lt;/a&gt;&lt;br /&gt;
+Critical thoughts on an Uncle Bob speech&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://www.exampler.com/blog/2012/02/12/if-i-were-an-architect&#34;&gt;If I were an Architect&lt;/a&gt;
+Thoughts on agile architecture&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://37signals.com/svn/posts/3124-give-it-five-minutes&#34;&gt;Give it five minutes&lt;/a&gt;
+Don&amp;rsquo;t be a hothead&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Suggested Reading</title>
+      <link>http://tobiasbayer.com/post/2012-01-28-suggested-reading/</link>
+      <pubDate>Sat, 28 Jan 2012 00:00:00 +0000</pubDate>
+      
+      <guid>http://tobiasbayer.com/post/2012-01-28-suggested-reading/</guid>
+      <description>&lt;p&gt;&lt;a href=&#34;http://rdegges.com/on-programming-deadlines&#34;&gt;On Programming Deadlines&lt;/a&gt;&lt;br /&gt;
+Guidelines for coping with deadlines&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://mikebernat.com/blog/Egoless_Programming_-_Developing_Without_the_Attitude&#34;&gt;Egoless Programming - Developing Without the
+Attitude&lt;/a&gt;&lt;br /&gt;
+A little older article for those of us with a magnificent ego.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://www.smashingmagazine.com/2011/09/28/youre-pricing-it-wrong-software-pricing-demystified/&#34;&gt;You&amp;rsquo;re Pricing It Wrong: Software Pricing
+Demystified&lt;/a&gt;&lt;br /&gt;
+Basic economics for developers.&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Suggested Reading</title>
+      <link>http://tobiasbayer.com/post/2011-12-05-suggested-reading/</link>
+      <pubDate>Mon, 05 Dec 2011 00:00:00 +0000</pubDate>
+      
+      <guid>http://tobiasbayer.com/post/2011-12-05-suggested-reading/</guid>
+      <description>&lt;p&gt;I&amp;rsquo;m going to post some links to interesting articles here every now and then.
+Here&amp;rsquo;s the first bunch:&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://lizkeogh.com/2011/11/20/scrum-and-kanban-both-the-same-only-different/&#34;&gt;Scrum and Kanban: both the same, only different&lt;/a&gt;&lt;br /&gt;
+A nice comparison between Scrum and Kanban.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://sealedabstract.com/rants/why-software-projects-are-terrible-and-how-not-to-fix-them/&#34;&gt;Why Software Projects are Terrible and How Not To Fix Them&lt;/a&gt;&lt;br /&gt;
+Best practices alone cannot make a difference.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://iphonedevelopertips.com/objective-c/introduction-to-blocks-in-objective-c-part-1.html&#34;&gt;Introduction to Blocks in Objective-C&lt;/a&gt;&lt;br /&gt;
+A really comprehensive explanation of blocks in Objective-C.&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

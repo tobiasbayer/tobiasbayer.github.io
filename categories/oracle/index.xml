@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Oracle on Tobias Bayer</title>
+    <link>http://tobiasbayer.com/categories/oracle/</link>
+    <description>Recent content in Oracle on Tobias Bayer</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Fri, 13 Jan 2012 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://tobiasbayer.com/categories/oracle/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Oracle SQL Loader Whitespaces</title>
+      <link>http://tobiasbayer.com/post/2012-01-13-oracle-sql-loader-whitespaces/</link>
+      <pubDate>Fri, 13 Jan 2012 00:00:00 +0000</pubDate>
+      
+      <guid>http://tobiasbayer.com/post/2012-01-13-oracle-sql-loader-whitespaces/</guid>
+      <description>&lt;p&gt;I&amp;rsquo;ve recently used Oracle&amp;rsquo;s &lt;a href=&#34;http://www.oracleutilities.com/OSUtil/sqlldr.html&#34;&gt;SQL Loader&lt;/a&gt; with a control file like this:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;OPTIONS (BINDSIZE=10000000, READSIZE=10000000, SKIP=1, ROWS=1000, PARALLEL=TRUE )
+LOAD DATA
+INFILE &#39;TEMP_DELETE.CSV&#39; &amp;quot;STR &#39;\N&#39;&amp;quot;
+APPEND
+INTO TABLE TEMP_DELETE
+FIELDS TERMINATED BY &#39;;&#39;
+OPTIONALLY ENCLOSED BY &#39;&amp;quot;&#39; AND &#39;&amp;quot;&#39;
+TRAILING NULLCOLS
+          ( CREATION_DATE DATE &amp;quot;dd.mm.yyyy&amp;quot;,
+            NAME CHAR(4000),
+            SERIAL_NUMBER CHAR(4000)
+          )
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;SQL Loader gave me the error message &lt;em&gt;ORA-01722: invalid number&lt;/em&gt;.&lt;/p&gt;
+
+&lt;p&gt;The definition of the &lt;code&gt;TEMP_DELETE&lt;/code&gt; table is&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;CREATE TABLE TEMP_DELETE (
+     CREATION_DATE DATE,
+     NAME VARCHAR2(255),
+     SERIAL_NUMBER NUMBER(38,0)
+);
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;And the input file looks like&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;CREATION_DATE;NAME;SERIAL_NUMBER
+03.04.2011;&amp;quot;Name 1&amp;quot;;87364
+04.04.2011;&amp;quot;Name 2&amp;quot;;65765
+05.04.2011;&amp;quot;Name 3&amp;quot;;23497
+06.04.2011;&amp;quot;Name 4&amp;quot;;43657
+...
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Although the files look perfectly fine, I finally figured out the problem.
+SQL Loader tries to interpret the line breaks in the input file along with the preceding number, i.e. &lt;em&gt;87364&lt;/em&gt; becomes &lt;em&gt;87364\n&lt;/em&gt; which
+obviously isn&amp;rsquo;t a valid number.&lt;/p&gt;
+
+&lt;p&gt;To fix this, I modified the control file and added &lt;code&gt;TERMINATED BY WHITESPACE&lt;/code&gt; after the last column definition.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;OPTIONS (BINDSIZE=10000000, READSIZE=10000000, SKIP=1, ROWS=1000, PARALLEL=TRUE )
+LOAD DATA
+INFILE &#39;TEMP_DELETE.CSV&#39; &amp;quot;STR &#39;\N&#39;&amp;quot;
+APPEND
+INTO TABLE TEMP_DELETE
+FIELDS TERMINATED BY &#39;;&#39;
+OPTIONALLY ENCLOSED BY &#39;&amp;quot;&#39; AND &#39;&amp;quot;&#39;
+TRAILING NULLCOLS
+          ( CREATION_DATE DATE &amp;quot;dd.mm.yyyy&amp;quot;,
+            NAME CHAR(4000),
+            SERIAL_NUMBER CHAR(4000) TERMINATED BY WHITESPACE
+          )
+&lt;/code&gt;&lt;/pre&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Oracle View Predicate Pushing and Analytic Functions</title>
+      <link>http://tobiasbayer.com/post/2011-11-21-oracle-view-predicatepushing-and-analytic-functions/</link>
+      <pubDate>Mon, 21 Nov 2011 00:00:00 +0000</pubDate>
+      
+      <guid>http://tobiasbayer.com/post/2011-11-21-oracle-view-predicatepushing-and-analytic-functions/</guid>
+      <description>&lt;p&gt;With &lt;a href=&#34;http://download.oracle.com/docs/cd/B10501_01/server.920/a96533/optimops.htm#47932&#34;&gt;predicate pushing&lt;/a&gt; the Oracle optimizer ensures that predicates are evaluated as soon as possible when one or more views are stacked upon each other. This often leads to far better performance compared to evaluating the predicates only after querying the view.&lt;/p&gt;
+
+&lt;p&gt;There&amp;rsquo;s one gotcha when using &lt;a href=&#34;http://docs.oracle.com/cd/B19306_01/server.102/b14223/analysis.htm&#34;&gt;Oracle Analytic Functions&lt;/a&gt; and expecting the optimizer to push predicates down the views: It only works when all the predicates that should be pushed down are included in the &lt;code&gt;PARTITION BY&lt;/code&gt; clause of the analytic function.&lt;/p&gt;
+
+&lt;p&gt;Consider the following example:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;CREATE OR REPLACE VIEW TOP_VIEW
+AS
+SELECT
+V.*,
+MAX(V.SOME_COL) OVER (PARTITION BY COL0) AS MAXIMUM
+FROM BOTTOM_VIEW V;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Depending on the complexity of &lt;code&gt;BOTTOM_VIEW&lt;/code&gt;, the following &lt;code&gt;SELECT&lt;/code&gt; could lead to dramatic performance issues because the predicates will not be pushed down the view.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;SELECT 
+T.*
+FROM TOPVIEW T
+WHERE T.COL1 = 1
+AND T.COL2 = 2
+AND T.COL3 = &#39;FOOBAR&#39;;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;The reason for not pushing the predicates is that they are not included in the partition of the analytic function (&lt;code&gt;MAX(V.SOME_COL) OVER (PARTITION BY COL0) AS MAXIMUM&lt;/code&gt;).&lt;/p&gt;
+
+&lt;p&gt;There are cases where including your predicates in the partition of the analytic function won&amp;rsquo;t change the functional output of the query.&lt;/p&gt;
+
+&lt;p&gt;So whenever functionally possible, you should define the view like this:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;CREATE OR REPLACE VIEW TOP_VIEW
+AS
+SELECT
+V.*,
+MAX(V.SOME_COL) OVER (PARTITION BY COL0, COL1, COL2, COL3) AS MAXIMUM
+FROM BOTTOM_VIEW V;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;This ensures that all three predicates get pushed into the view which leads to far better performance in most cases.&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

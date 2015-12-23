@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Economics on Tobias Bayer</title>
+    <link>http://tobiasbayer.com/categories/economics/</link>
+    <description>Recent content in Economics on Tobias Bayer</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sat, 28 Jan 2012 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://tobiasbayer.com/categories/economics/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Suggested Reading</title>
+      <link>http://tobiasbayer.com/post/2012-01-28-suggested-reading/</link>
+      <pubDate>Sat, 28 Jan 2012 00:00:00 +0000</pubDate>
+      
+      <guid>http://tobiasbayer.com/post/2012-01-28-suggested-reading/</guid>
+      <description>&lt;p&gt;&lt;a href=&#34;http://rdegges.com/on-programming-deadlines&#34;&gt;On Programming Deadlines&lt;/a&gt;&lt;br /&gt;
+Guidelines for coping with deadlines&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://mikebernat.com/blog/Egoless_Programming_-_Developing_Without_the_Attitude&#34;&gt;Egoless Programming - Developing Without the
+Attitude&lt;/a&gt;&lt;br /&gt;
+A little older article for those of us with a magnificent ego.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://www.smashingmagazine.com/2011/09/28/youre-pricing-it-wrong-software-pricing-demystified/&#34;&gt;You&amp;rsquo;re Pricing It Wrong: Software Pricing
+Demystified&lt;/a&gt;&lt;br /&gt;
+Basic economics for developers.&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

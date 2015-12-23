@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Cache on Tobias Bayer</title>
+    <link>http://tobiasbayer.com/categories/cache/</link>
+    <description>Recent content in Cache on Tobias Bayer</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Wed, 12 Nov 2014 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://tobiasbayer.com/categories/cache/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Using Clojure&#39;s core.cache</title>
+      <link>http://tobiasbayer.com/post/2014-11-12-using-clojures-core-dot-cache/</link>
+      <pubDate>Wed, 12 Nov 2014 00:00:00 +0000</pubDate>
+      
+      <guid>http://tobiasbayer.com/post/2014-11-12-using-clojures-core-dot-cache/</guid>
+      <description>&lt;p&gt;&lt;a href=&#34;https://github.com/clojure/core.cache&#34;&gt;core.cache&lt;/a&gt; is a great Clojure library for caching
+arbitrary values in your application. Unfortunately, its examples
+have a minor dissent that can make it hard for a first time user to interact with it.&lt;/p&gt;
+
+&lt;!-- more --&gt;
+
+&lt;p&gt;The usage examples tell you to do this:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;(def C (cache/fifo-cache-factory {:a 1, :b 2}))
+
+(if (cache/has? C :c)
+  (cache/hit C :c)
+  (cache/miss C :c 42))
+  
+; =&amp;gt; {:a 1, :b 2, :c 42}    
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;The naive first time user (that I was) could now assume that there&amp;rsquo;s some magic going
+on behind the doors which does some state manipulation and another call to &lt;code&gt;(cache/has? C :c)&lt;/code&gt;
+should return &lt;code&gt;true&lt;/code&gt;.
+But as you guessed it: No magic to see here.&lt;/p&gt;
+
+&lt;p&gt;The point is, that &lt;code&gt;cache/miss&lt;/code&gt; and &lt;code&gt;cache/hit&lt;/code&gt; return a &lt;strong&gt;new&lt;/strong&gt; cache instance with the new
+value associated. You&amp;rsquo;ll have to do the state manipulation yourself (e.g. by using an atom):&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;(def C (atom (cache/fifo-cache-factory {:a 1, :b 2})))
+
+(if (cache/has? @C :c)
+  (swap! C #(cache/hit % :c))
+  (swap! C #(cache/miss % :c 42)))
+
+; =&amp;gt; {:a 1, :b 2, :c 42}
+
+(cache/has? @C :c)
+
+; =&amp;gt; true
+&lt;/code&gt;&lt;/pre&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

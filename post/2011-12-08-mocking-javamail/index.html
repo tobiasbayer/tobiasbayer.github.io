@@ -1,0 +1,160 @@
+
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+
+  
+  <meta charset="UTF-8">
+  <title>
+    Mocking JavaMail | Tobias Bayer
+  </title>
+
+
+  
+  <meta name="viewport" content="width=device-width,user-scalable=no,maximum-scale=1,initial-scale=1">
+
+  
+  <link rel="canonical" href="http://tobiasbayer.com/post/2011-12-08-mocking-javamail/"/>
+
+  
+  <link rel="stylesheet" href="http://tobiasbayer.com/css/sanitize.css">
+  <link rel="stylesheet" href="http://tobiasbayer.com/css/responsive.css">
+  <link rel="stylesheet" href="http://tobiasbayer.com/css/theme.css">
+  <link rel="stylesheet" href="http://tobiasbayer.com/css/custom.css">
+  <link rel="stylesheet" href="https://yandex.st/highlightjs/8.0/styles/default.min.css">
+  
+  
+  <link href="http://tobiasbayer.com/index.xml" rel="alternate" type="application/rss+xml" title="Tobias Bayer" />
+  <link href="http://tobiasbayer.com/index.xml" rel="feed" type="application/rss+xml" title="Tobias Bayer" />
+
+  
+  <script type="text/javascript">var switchTo5x=true;</script>
+  <script type="text/javascript" src="https://ws.sharethis.com/button/buttons.js"></script>
+  <script type="text/javascript">stLight.options({publisher: "2b9fffc6-b3fe-4988-a0ef-4f9dcce98eaa", doNotHash: true, doNotCopy: true, hashAddressBar: false});</script>
+
+  <script src="https://yandex.st/highlightjs/8.0/highlight.min.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+</head>
+
+
+
+<body>
+<div class="container">
+
+  
+  <header role="banner">
+    <div class="row gutters">
+      <div id="site-title" class="col span_6">
+        <h1><a href="http://tobiasbayer.com/">Tobias Bayer</a></h1>
+        <h2>I put the FTW in software</h2>
+      </div>
+      <div id="social" class="col span_6">
+        <ul>
+	  <li><a href="http://tobiasbayer.com/about">About</a></li>
+          
+          
+          <li><a href="https://github.com/tobiasbayer" target="_blank">GitHub</a></li>
+          <li><a href="http://tobiasbayer.com/index.xml" type="application/rss+xml" target="_blank">RSS</a></li>
+        </ul>
+      </div>
+    </div>
+  </header>
+
+
+  
+  <main id="single" role="main">
+    <div class="article-header">
+      <h1>Mocking JavaMail</h1>
+      <div class="meta">
+        
+          Dec 8, 2011 &nbsp;
+        
+        
+          #<a href="http://tobiasbayer.com/categories/java">java</a>&nbsp;
+        
+          #<a href="http://tobiasbayer.com/categories/mail">mail</a>&nbsp;
+        
+          #<a href="http://tobiasbayer.com/categories/test">test</a>&nbsp;
+        
+      </div>
+    </div>
+    <article>
+      <p>I had to test the mail sending capabilities of my code without having a mail server at hand.
+I came across <a href="http://java.net/projects/mock-javamail">Mock-JavaMail</a>.</p>
+
+<p>It mocks the whole <a href="http://www.oracle.com/technetwork/java/javamail/index.html">JavaMail API</a> so that all mail messages are not
+sent to a SMTP server but to in-memory mailboxes.</p>
+
+<p>To include it in your tests, you just have to add this dependency in your <code>pom.xml</code> if you are using <a href="http://maven.apache.org">Maven</a>:</p>
+
+<pre><code>&lt;dependency&gt;
+	&lt;groupId&gt;org.jvnet.mock-javamail&lt;/groupId&gt;
+	&lt;artifactId&gt;mock-javamail&lt;/artifactId&gt;
+	&lt;version&gt;1.9&lt;/version&gt;
+	&lt;scope&gt;test&lt;/scope&gt;
+&lt;/dependency&gt;
+</code></pre>
+
+<p>(Make sure to add the <em>test</em> scope or otherwise your production configuration will not send real emails.)</p>
+
+<p>After sending mail from your application code in your test cases, you can easily access the
+mailboxes and check the messages and their content like this:</p>
+
+<pre><code>List&lt;Message&gt; inbox = org.jvnet.mock_javamail.Mailbox.get(&quot;tobias@codebrickie.com&quot;);
+
+assertFalse(inbox.isEmpty());
+
+Message message = inbox.get(0);
+assertEquals(&quot;Expected Subject&quot;, message.getSubject());
+...
+</code></pre>
+
+      
+      
+      <div id="share-this" class="col span_10">
+        <span class='st_twitter_large' displayText='Tweet'></span>
+        <span class='st_facebook_large' displayText='Facebook'></span>
+        <span class='st_googleplus_large' displayText='Google +'></span>
+        <span class='st_pocket_large' displayText='Pocket'></span>
+        <span class='st_sharethis_large' displayText='ShareThis'></span>
+        <span class='st_email_large' displayText='Email'></span>  
+      </div>
+    </article>
+    
+
+
+<script type="text/javascript">
+     
+    var disqus_shortname = '';
+
+     
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+
+  </main>
+  
+
+  
+  <footer role="contentinfo">
+    <div style="text-align:center;">
+      
+      
+    </div>
+  </footer>
+
+
+</div>
+
+<script src="http://tobiasbayer.com/js/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+
+
+</body>
+</html>
+

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Reporting on Tobias Bayer</title>
+    <link>http://tobiasbayer.com/categories/reporting/</link>
+    <description>Recent content in Reporting on Tobias Bayer</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Tue, 29 Nov 2011 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://tobiasbayer.com/categories/reporting/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Display Actuate User in BIRT Report</title>
+      <link>http://tobiasbayer.com/post/2011-11-29-display-actuate-user-in-birt-report/</link>
+      <pubDate>Tue, 29 Nov 2011 00:00:00 +0000</pubDate>
+      
+      <guid>http://tobiasbayer.com/post/2011-11-29-display-actuate-user-in-birt-report/</guid>
+      <description>&lt;p&gt;I am obliged to create some quite sophisticated reports with &lt;a href=&#34;http://www.actuate.com/products/eclipse-birt/summary/&#34;&gt;Actuate/BIRT&lt;/a&gt; in my current project.
+Sure thing, it is not my favourite occupation and I like real coding way better.&lt;/p&gt;
+
+&lt;p&gt;Nevertheless, even in the field of report tools there are some findings to make.&lt;/p&gt;
+
+&lt;p&gt;The first one I am posting here is quite simple but I had do some research to find out how to do it. (Unfortunately, BIRT&amp;rsquo;s documentation is far from being perfect.)&lt;/p&gt;
+
+&lt;p&gt;There&amp;rsquo;s the requirement to display the name of the user who is currently logged in on the BIRT iServer in the report.&lt;/p&gt;
+
+&lt;p&gt;You can easily get the username out of the global report context like this:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;reportContext.getAppContext().get(&amp;quot;ServerUserName&amp;quot;)
+&lt;/code&gt;&lt;/pre&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

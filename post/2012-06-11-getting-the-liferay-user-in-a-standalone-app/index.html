@@ -1,0 +1,232 @@
+
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+
+  
+  <meta charset="UTF-8">
+  <title>
+    Getting the Liferay User in a Standalone App | Tobias Bayer
+  </title>
+
+
+  
+  <meta name="viewport" content="width=device-width,user-scalable=no,maximum-scale=1,initial-scale=1">
+
+  
+  <link rel="canonical" href="http://tobiasbayer.com/post/2012-06-11-getting-the-liferay-user-in-a-standalone-app/"/>
+
+  
+  <link rel="stylesheet" href="http://tobiasbayer.com/css/sanitize.css">
+  <link rel="stylesheet" href="http://tobiasbayer.com/css/responsive.css">
+  <link rel="stylesheet" href="http://tobiasbayer.com/css/theme.css">
+  <link rel="stylesheet" href="http://tobiasbayer.com/css/custom.css">
+  <link rel="stylesheet" href="https://yandex.st/highlightjs/8.0/styles/default.min.css">
+  
+  
+  <link href="http://tobiasbayer.com/index.xml" rel="alternate" type="application/rss+xml" title="Tobias Bayer" />
+  <link href="http://tobiasbayer.com/index.xml" rel="feed" type="application/rss+xml" title="Tobias Bayer" />
+
+  
+  <script type="text/javascript">var switchTo5x=true;</script>
+  <script type="text/javascript" src="https://ws.sharethis.com/button/buttons.js"></script>
+  <script type="text/javascript">stLight.options({publisher: "2b9fffc6-b3fe-4988-a0ef-4f9dcce98eaa", doNotHash: true, doNotCopy: true, hashAddressBar: false});</script>
+
+  <script src="https://yandex.st/highlightjs/8.0/highlight.min.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+</head>
+
+
+
+<body>
+<div class="container">
+
+  
+  <header role="banner">
+    <div class="row gutters">
+      <div id="site-title" class="col span_6">
+        <h1><a href="http://tobiasbayer.com/">Tobias Bayer</a></h1>
+        <h2>I put the FTW in software</h2>
+      </div>
+      <div id="social" class="col span_6">
+        <ul>
+	  <li><a href="http://tobiasbayer.com/about">About</a></li>
+          
+          
+          <li><a href="https://github.com/tobiasbayer" target="_blank">GitHub</a></li>
+          <li><a href="http://tobiasbayer.com/index.xml" type="application/rss+xml" target="_blank">RSS</a></li>
+        </ul>
+      </div>
+    </div>
+  </header>
+
+
+  
+  <main id="single" role="main">
+    <div class="article-header">
+      <h1>Getting the Liferay User in a Standalone App</h1>
+      <div class="meta">
+        
+          Jun 11, 2012 &nbsp;
+        
+        
+          #<a href="http://tobiasbayer.com/categories/java">java</a>&nbsp;
+        
+          #<a href="http://tobiasbayer.com/categories/liferay">liferay</a>&nbsp;
+        
+          #<a href="http://tobiasbayer.com/categories/security">security</a>&nbsp;
+        
+      </div>
+    </div>
+    <article>
+      <p>You can deploy a standard webapp in <a href="http://www.liferay.com">Liferay</a> without making it a portlet.</p>
+
+<p>If you do that, it is not so easy to get the currently logged in Liferay user in your standalone webapp.
+There is <a href="https://www.everit.biz/web/guest/everit-blog/-/blogs/getting-current-liferay-user-in-a-standalone-webapp">another article</a> which suggests reconstructing the user with the information the Liferay login cookie provides.
+This solution has one blemish: It does only work when the user checks the &ldquo;Remember me&rdquo; box at the login screen. Otherwise the cookie won&rsquo;t contain the password that is used in this approach for retrieving the user from Liferay.</p>
+
+<p>I changed the solution mentioned above to only use the company key and the user id. This works even if the user did not check the &ldquo;Remember me&rdquo; box at the login screen.
+I made this a servlet filter which can be easily used by registering it in your <code>web.xml</code>.</p>
+
+<p>Here&rsquo;s what I came up with:</p>
+
+<pre><code>package com.codebrickie.filter;
+
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.security.Key;
+
+import javax.servlet.Filter;
+import javax.servlet.FilterChain;
+import javax.servlet.FilterConfig;
+import javax.servlet.ServletException;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+
+import com.liferay.portal.kernel.util.WebKeys;
+import com.liferay.portal.model.Company;
+import com.liferay.portal.model.User;
+import com.liferay.portal.security.auth.PrincipalThreadLocal;
+import com.liferay.portal.security.permission.PermissionChecker;
+import com.liferay.portal.security.permission.PermissionCheckerFactoryUtil;
+import com.liferay.portal.security.permission.PermissionThreadLocal;
+import com.liferay.portal.service.CompanyLocalServiceUtil;
+import com.liferay.portal.service.UserLocalServiceUtil;
+import com.liferay.util.Encryptor;
+
+public class LiferayUserFilter implements Filter {
+
+    @Override
+    public void doFilter(ServletRequest request, ServletResponse response,
+            FilterChain filterChain) throws IOException, ServletException {
+        if (request instanceof HttpServletRequest) {
+            Cookie[] cookies = ((HttpServletRequest) request).getCookies();
+            String userId = null;
+            String companyId = null;
+            if (cookies != null) {
+                for (Cookie c : cookies) {
+                    if (&quot;COMPANY_ID&quot;.equals(c.getName())) {
+                        companyId = c.getValue();
+                    } else if (&quot;ID&quot;.equals(c.getName())) {
+                        userId = hexStringToStringByAscii(c.getValue());
+                    }
+                }
+
+                if (userId != null &amp;&amp; companyId != null) {
+                    try {
+                        Company company = CompanyLocalServiceUtil.getCompany(Long
+                                .parseLong(companyId));
+                        Key key = company.getKeyObj();
+
+                        String userIdPlain = Encryptor.decrypt(key, userId);
+
+                        User liferayUser = UserLocalServiceUtil.getUser(Long.valueOf(userIdPlain));
+                        
+                        // Now you can set the liferayUser into a thread local for later use or 
+                        // something like that.
+
+                    } catch (Exception pException) {
+                        throw new RuntimeException(pException);
+                    }
+                }
+            }
+        }
+        filterChain.doFilter(request, response);
+    }
+
+    private String hexStringToStringByAscii(String hexString) {
+        byte[] bytes = new byte[hexString.length() / 2];
+        for (int i = 0; i &lt; hexString.length() / 2; i++) {
+            String oneHexa = hexString.substring(i * 2, i * 2 + 2);
+            bytes[i] = Byte.parseByte(oneHexa, 16);
+        }
+        try {
+            return new String(bytes, &quot;ASCII&quot;);
+        } catch (UnsupportedEncodingException e) {
+            throw new RuntimeException(e);
+        }
+    }
+    
+    @Override
+    public void destroy() {
+        
+    }
+    
+    @Override
+    public void init(FilterConfig pArg0) throws ServletException {
+        
+    }
+}
+</code></pre>
+
+      
+      
+      <div id="share-this" class="col span_10">
+        <span class='st_twitter_large' displayText='Tweet'></span>
+        <span class='st_facebook_large' displayText='Facebook'></span>
+        <span class='st_googleplus_large' displayText='Google +'></span>
+        <span class='st_pocket_large' displayText='Pocket'></span>
+        <span class='st_sharethis_large' displayText='ShareThis'></span>
+        <span class='st_email_large' displayText='Email'></span>  
+      </div>
+    </article>
+    
+
+
+<script type="text/javascript">
+     
+    var disqus_shortname = '';
+
+     
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+
+  </main>
+  
+
+  
+  <footer role="contentinfo">
+    <div style="text-align:center;">
+      
+      
+    </div>
+  </footer>
+
+
+</div>
+
+<script src="http://tobiasbayer.com/js/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+
+
+</body>
+</html>
+

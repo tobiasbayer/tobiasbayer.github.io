@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Os X on Tobias Bayer</title>
+    <link>http://tobiasbayer.com/categories/os-x/</link>
+    <description>Recent content in Os X on Tobias Bayer</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Tue, 16 Oct 2012 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://tobiasbayer.com/categories/os-x/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Switching Between Dock and Status Bar Mode in Cocoa</title>
+      <link>http://tobiasbayer.com/post/2012-10-16-switching-between-dock-and-status-bar-mode-in-cocoa/</link>
+      <pubDate>Tue, 16 Oct 2012 00:00:00 +0000</pubDate>
+      
+      <guid>http://tobiasbayer.com/post/2012-10-16-switching-between-dock-and-status-bar-mode-in-cocoa/</guid>
+      <description>&lt;p&gt;In this blog post I&amp;rsquo;ll show you how to make a Cocoa app that can switch between dock icon and statusbar icon mode.&lt;/p&gt;
+
+&lt;p&gt;For the basics on how to create a statusbar app see &lt;a href=&#34;http://cocoatutorial.grapewave.com/2010/01/creating-a-status-bar-application&#34;&gt;Cocoa Tips and Tricks&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;I&amp;rsquo;ve tried several approaches to this topic but any other than the one I describe here had minor to major glitches such as not activating windows correctly when in statusbar mode for example.&lt;/p&gt;
+
+&lt;p&gt;In order to work fine, your application has to be a statusbar app by default.
+You achieve this by adding the key &lt;code&gt;LSUIElement&lt;/code&gt; with a value of &lt;code&gt;YES&lt;/code&gt; to your &lt;code&gt;&amp;lt;Application&amp;gt;-Info.plist&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;Now, when your application launches, check whether you want to display the statusbar icon or the dock icon. I do this based on the user&amp;rsquo;s preference in this example.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;- (void)applicationDidFinishLaunching:(NSNotification *)notification {
+	if(![[NSUserDefaults standardUserDefaults] boolForKey:@&amp;quot;showDockIcon&amp;quot;]) {
+		// Create a status item and display it in the statusbar
+		self.statusItem = [[NSStatusBar systemStatusBar] statusItemWithLength:NSVariableStatusItemLength];
+		[self.statusItem setMenu:self.statusBarMenu];
+		[self.statusItem setHighlightMode:YES];
+		[self.statusItem setImage:[NSImage imageNamed:@&amp;quot;barimage&amp;quot;]];
+		[self.statusItem setAlternateImage:[NSImage imageNamed:@&amp;quot;barimage-highlighted&amp;quot;]];
+	} else {
+		// Bring the dock icon to the front (initially hidden with LSUIElement = YES in &amp;lt;Application&amp;gt;-Info.plist)
+		ProcessSerialNumber psn = { 0, kCurrentProcess };
+		TransformProcessType(&amp;amp;psn, kProcessTransformToForegroundApplication);
+	}
+}
+&lt;/code&gt;&lt;/pre&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

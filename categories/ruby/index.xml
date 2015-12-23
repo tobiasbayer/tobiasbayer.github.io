@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Ruby on Tobias Bayer</title>
+    <link>http://tobiasbayer.com/categories/ruby/</link>
+    <description>Recent content in Ruby on Tobias Bayer</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Wed, 18 Apr 2012 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://tobiasbayer.com/categories/ruby/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Suggested Reading</title>
+      <link>http://tobiasbayer.com/post/2012-04-18-suggested-reading/</link>
+      <pubDate>Wed, 18 Apr 2012 00:00:00 +0000</pubDate>
+      
+      <guid>http://tobiasbayer.com/post/2012-04-18-suggested-reading/</guid>
+      <description>&lt;p&gt;&lt;a href=&#34;http://omgbloglol.com/post/15190003367/bad-or-my-unfortunately-unfavorable-review-of-bob&#34;&gt;Bad (or, my unfortunately unfavorable review of Bob Martin’s Ruby Midwest keynote)&lt;/a&gt;&lt;br /&gt;
+Critical thoughts on an Uncle Bob speech&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://www.exampler.com/blog/2012/02/12/if-i-were-an-architect&#34;&gt;If I were an Architect&lt;/a&gt;
+Thoughts on agile architecture&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://37signals.com/svn/posts/3124-give-it-five-minutes&#34;&gt;Give it five minutes&lt;/a&gt;
+Don&amp;rsquo;t be a hothead&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Using CoverMe with Jenkins</title>
+      <link>http://tobiasbayer.com/post/2012-03-06-using-coverme-with-jenkins/</link>
+      <pubDate>Tue, 06 Mar 2012 00:00:00 +0000</pubDate>
+      
+      <guid>http://tobiasbayer.com/post/2012-03-06-using-coverme-with-jenkins/</guid>
+      <description>&lt;p&gt;&lt;a href=&#34;https://github.com/markbates/cover_me&#34;&gt;CoverMe&lt;/a&gt; is a code coverage tool for Ruby 1.9.&lt;/p&gt;
+
+&lt;p&gt;Using &lt;a href=&#34;http://jenkins-ci.org/&#34;&gt;Jenkins&lt;/a&gt; for CI, you can display the coverage results in your project overview even though Jenkins does not support the original output format of CoverMe.&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Download and install the Emma plugin via the Plugins page of your Jenkins installation.&lt;/li&gt;
+&lt;li&gt;Install CoverMe for your Rails project as described on the project page on &lt;a href=&#34;https://github.com/markbates/cover_me&#34;&gt;GitHub&lt;/a&gt;.&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;Edit &lt;code&gt;lib/tasks/cover_me.rake&lt;/code&gt; and make the &lt;code&gt;:report&lt;/code&gt; task look like this:
+{% codeblock lang:ruby%}
+task :report do
+require &amp;lsquo;cover_me&amp;rsquo;
+CoverMe.config.formatter = CoverMe::EmmaFormatter
+CoverMe.config.at_exit = Proc.new {}
+CoverMe.complete!
+end
+```&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;Configure your build job in Jenkins to publish the Emma coverage results from &lt;code&gt;coverage/coverage.xml&lt;/code&gt;.&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

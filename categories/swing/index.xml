@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Swing on Tobias Bayer</title>
+    <link>http://tobiasbayer.com/categories/swing/</link>
+    <description>Recent content in Swing on Tobias Bayer</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Mon, 11 Apr 2011 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://tobiasbayer.com/categories/swing/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Desktop.open() and java.io.IOException</title>
+      <link>http://tobiasbayer.com/post/desktop-open-and-java-io-ioexception/</link>
+      <pubDate>Mon, 11 Apr 2011 00:00:00 +0000</pubDate>
+      
+      <guid>http://tobiasbayer.com/post/desktop-open-and-java-io-ioexception/</guid>
+      <description>&lt;p&gt;Trying to open a file with &lt;code&gt;java.awt.Desktop.open()&lt;/code&gt; sometimes results
+in a &lt;code&gt;java.io.IOException&lt;/code&gt; with the error message:
+&lt;code&gt;Parameter is incorrect&lt;/code&gt;. This is a &lt;a href=&#34;http://bugs.sun.com/view_bug.do?bug_id=6764271&#34;&gt;Java
+Bug&lt;/a&gt;. As a workaround
+you can call&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;Runtime.getRuntime().exec(&amp;quot;rundll32 SHELL32.DLL,ShellExec_RunDLL &amp;quot; + file);
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;instead on Windows systems.&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

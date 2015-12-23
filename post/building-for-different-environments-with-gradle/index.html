@@ -1,0 +1,187 @@
+
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+
+  
+  <meta charset="UTF-8">
+  <title>
+    Building for different environments with Gradle | Tobias Bayer
+  </title>
+
+
+  
+  <meta name="viewport" content="width=device-width,user-scalable=no,maximum-scale=1,initial-scale=1">
+
+  
+  <link rel="canonical" href="http://tobiasbayer.com/post/building-for-different-environments-with-gradle/"/>
+
+  
+  <link rel="stylesheet" href="http://tobiasbayer.com/css/sanitize.css">
+  <link rel="stylesheet" href="http://tobiasbayer.com/css/responsive.css">
+  <link rel="stylesheet" href="http://tobiasbayer.com/css/theme.css">
+  <link rel="stylesheet" href="http://tobiasbayer.com/css/custom.css">
+  <link rel="stylesheet" href="https://yandex.st/highlightjs/8.0/styles/default.min.css">
+  
+  
+  <link href="http://tobiasbayer.com/index.xml" rel="alternate" type="application/rss+xml" title="Tobias Bayer" />
+  <link href="http://tobiasbayer.com/index.xml" rel="feed" type="application/rss+xml" title="Tobias Bayer" />
+
+  
+  <script type="text/javascript">var switchTo5x=true;</script>
+  <script type="text/javascript" src="https://ws.sharethis.com/button/buttons.js"></script>
+  <script type="text/javascript">stLight.options({publisher: "2b9fffc6-b3fe-4988-a0ef-4f9dcce98eaa", doNotHash: true, doNotCopy: true, hashAddressBar: false});</script>
+
+  <script src="https://yandex.st/highlightjs/8.0/highlight.min.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+</head>
+
+
+
+<body>
+<div class="container">
+
+  
+  <header role="banner">
+    <div class="row gutters">
+      <div id="site-title" class="col span_6">
+        <h1><a href="http://tobiasbayer.com/">Tobias Bayer</a></h1>
+        <h2>I put the FTW in software</h2>
+      </div>
+      <div id="social" class="col span_6">
+        <ul>
+	  <li><a href="http://tobiasbayer.com/about">About</a></li>
+          
+          
+          <li><a href="https://github.com/tobiasbayer" target="_blank">GitHub</a></li>
+          <li><a href="http://tobiasbayer.com/index.xml" type="application/rss+xml" target="_blank">RSS</a></li>
+        </ul>
+      </div>
+    </div>
+  </header>
+
+
+  
+  <main id="single" role="main">
+    <div class="article-header">
+      <h1>Building for different environments with Gradle</h1>
+      <div class="meta">
+        
+          Apr 16, 2011 &nbsp;
+        
+        
+          #<a href="http://tobiasbayer.com/categories/build">build</a>&nbsp;
+        
+          #<a href="http://tobiasbayer.com/categories/gradle">gradle</a>&nbsp;
+        
+      </div>
+    </div>
+    <article>
+      <p><a href="http://gradle.org">Gradle</a> is a promising build tool. It offers ease of
+use as well as great flexibility when designing your build process. Here
+is how I use Gradle to configure my build artifact for different
+environments such as &ldquo;development&rdquo; and &ldquo;production&rdquo;.</p>
+
+<ul>
+<li><p>Create a directory for every environment you want to build for in
+<code>src/main/environment</code> e.g. <code>src/main/environment/dev</code> and
+<code>src/main/environment/prod</code>.</p></li>
+
+<li><p>Put all of your environment dependent config files (<code>jdbc.properties</code>, <code>context.xml</code> etc.) there instead of
+<code>src/main/resources</code>.</p></li>
+
+<li><p>Create a file <code>tasks.gradle</code> next to <code>build.gradle</code> with the following content:</p>
+
+<pre><code>task copyConfiguration &lt;&lt; {
+    println &quot;Target environment: $environment&quot;
+
+
+    copy {
+        from &quot;src/main/environment/$environment&quot;
+        into &quot;src/main/resources&quot;
+        include &quot;**/*&quot;
+    }
+}
+</code></pre></li>
+
+<li><p>Add these lines at the beginning of <code>build.gradle</code>:</p>
+
+<pre><code>loadConfiguration()
+
+
+def loadConfiguration() {
+    def environment = hasProperty('env') ? env : 'dev'
+    setProperty 'environment', environment
+}
+</code></pre></li>
+</ul>
+
+<p>This will set the environment to <code>dev</code> if you run your build without an
+environment parameter. You can pass in an environment with the <code>-P</code>
+parameter like <code>gradle -Penv=prod build</code>.</p>
+
+<ul>
+<li>Include the task file
+created before in your <code>build.gradle</code> and define a dependency that makes
+sure the environment configuration files are copied to
+<code>src/main/resources</code> before building:</li>
+</ul>
+
+<pre><code>apply from: 'tasks.gradle'
+
+processResources.dependsOn copyConfiguration
+</code></pre>
+
+<p>That&rsquo;s it. You can now configure your build every time you execute it by
+passing in the environment name as a project property
+(<code>gradle -Penv=prod build</code>).</p>
+
+      
+      
+      <div id="share-this" class="col span_10">
+        <span class='st_twitter_large' displayText='Tweet'></span>
+        <span class='st_facebook_large' displayText='Facebook'></span>
+        <span class='st_googleplus_large' displayText='Google +'></span>
+        <span class='st_pocket_large' displayText='Pocket'></span>
+        <span class='st_sharethis_large' displayText='ShareThis'></span>
+        <span class='st_email_large' displayText='Email'></span>  
+      </div>
+    </article>
+    
+
+
+<script type="text/javascript">
+     
+    var disqus_shortname = '';
+
+     
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+
+  </main>
+  
+
+  
+  <footer role="contentinfo">
+    <div style="text-align:center;">
+      
+      
+    </div>
+  </footer>
+
+
+</div>
+
+<script src="http://tobiasbayer.com/js/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+
+
+</body>
+</html>
+

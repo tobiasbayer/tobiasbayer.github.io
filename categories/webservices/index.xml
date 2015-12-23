@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Webservices on Tobias Bayer</title>
+    <link>http://tobiasbayer.com/categories/webservices/</link>
+    <description>Recent content in Webservices on Tobias Bayer</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Mon, 20 Dec 2010 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://tobiasbayer.com/categories/webservices/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Apache CXF UsernameToken authentication with Nonce</title>
+      <link>http://tobiasbayer.com/post/apache-cxf-usernametoken-authentication-with-nonce/</link>
+      <pubDate>Mon, 20 Dec 2010 00:00:00 +0000</pubDate>
+      
+      <guid>http://tobiasbayer.com/post/apache-cxf-usernametoken-authentication-with-nonce/</guid>
+      <description>&lt;p&gt;&lt;a href=&#34;http://www.jroller.com/gmazza/entry/cxf_usernametoken_profile&#34;&gt;Glen&lt;/a&gt;
+describes how to use the UsernameToken profile with Apache CXF.&lt;/p&gt;
+
+&lt;p&gt;I had the additional requirement of putting a message nonce and a &amp;ldquo;created&amp;rdquo;
+timestamp into the SOAP header to prevent message replay attacks.&lt;/p&gt;
+
+&lt;p&gt;Adding these two tags and their content requires only one additional line of
+code compared to Glen&amp;rsquo;s example. This is how you do it:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;...
+HashMap outProps = new HashMap();
+Client client = org.apache.cxf.frontend.ClientProxy.getClient(portInterface);
+Endpoint cxfEndpoint = client.getEndpoint();
+
+outProps.put(WSHandlerConstants.ACTION, WSHandlerConstants.USERNAME_TOKEN);
+outProps.put(WSHandlerConstants.USER, &amp;quot;Username&amp;quot;);
+outProps.put(WSHandlerConstants.PASSWORD_TYPE, WSConstants.PW_TEXT);
+// Automatically adds a Base64 encoded message nonce and a created timestamp
+outProps.put(WSHandlerConstants.ADD_UT_ELEMENTS, WSConstants.NONCE_LN + &amp;quot; &amp;quot; + WSConstants.CREATED_LN); 
+// You must implement the PasswordCallback class yourself. See Glen&#39;s page mentioned above for how 
+outProps.put(WSHandlerConstants.PW_CALLBACK_CLASS, PasswordCallback.class.getName()); to do it
+
+WSS4JOutInterceptor wssOut = new WSS4JOutInterceptor(outProps);
+cxfEndpoint.getOutInterceptors().add(wssOut);
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;And this is what you get:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;lt;soap:Header&amp;gt;
+    &amp;lt;wsse:Security xmlns:wsse=&amp;quot;http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd&amp;quot;
+    soap:mustUnderstand=&amp;quot;1&amp;quot;&amp;gt;
+      &amp;lt;wsse:UsernameToken xmlns:wsse=&amp;quot;http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd&amp;quot;
+      xmlns:wsu=&amp;quot;http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd&amp;quot;
+      wsu:Id=&amp;quot;UsernameToken-1&amp;quot;&amp;gt;
+        &amp;lt;wsse:Username&amp;gt;Username&amp;lt;/wsse:Username&amp;gt;
+        &amp;lt;wsse:Password Type=&amp;quot;http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-username-token-profile-1.0#PasswordText&amp;quot;&amp;gt;
+        myPassword1234&amp;lt;/wsse:Password&amp;gt;
+        &amp;lt;wsse:Nonce EncodingType=&amp;quot;http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-soap-message-security-1.0#Base64Binary&amp;quot;&amp;gt;
+        6hn0vYMlV7OoBy+TjmKMrw==&amp;lt;/wsse:Nonce&amp;gt;
+        &amp;lt;wsu:Created&amp;gt;2010-12-20T11:53:41.790Z&amp;lt;/wsu:Created&amp;gt;
+      &amp;lt;/wsse:UsernameToken&amp;gt;
+    &amp;lt;/wsse:Security&amp;gt;
+  &amp;lt;/soap:Header&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

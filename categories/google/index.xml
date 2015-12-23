@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Google on Tobias Bayer</title>
+    <link>http://tobiasbayer.com/categories/google/</link>
+    <description>Recent content in Google on Tobias Bayer</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Thu, 24 Jun 2010 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://tobiasbayer.com/categories/google/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Google App Engine and the 30 second timeout</title>
+      <link>http://tobiasbayer.com/post/google-app-engine-and-the-30-second-timeout/</link>
+      <pubDate>Thu, 24 Jun 2010 00:00:00 +0000</pubDate>
+      
+      <guid>http://tobiasbayer.com/post/google-app-engine-and-the-30-second-timeout/</guid>
+      <description>&lt;p&gt;&lt;a href=&#34;http://code.google.com/appengine/&#34;&gt;Google App Engine&lt;/a&gt; is a Java (and
+Python) hosting service. You are provided with a servlet container to
+host your web application and several other features.&lt;/p&gt;
+
+&lt;p&gt;You can execute
+scheduled jobs by invoking an URL of your web application periodically
+via cron jobs.&lt;/p&gt;
+
+&lt;p&gt;However, there is a 30 second hard timeout for every
+request the container serves. Any request that takes more than 30
+seconds to serve will experience a
+&lt;code&gt;com.google.apphosting.api.DeadlineExceededException&lt;/code&gt;. This limitation
+applies to cron started requests as well.&lt;/p&gt;
+
+&lt;p&gt;So if you thought about doing
+long running batch jobs by invoking a private URL of your web
+application via cron you will fail. Even worse, Google App Engine does
+not allow you to spawn a new thread in your Java application. So there
+is basically no option for doing long running batch operations.&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

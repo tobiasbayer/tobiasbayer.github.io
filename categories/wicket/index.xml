@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Wicket on Tobias Bayer</title>
+    <link>http://tobiasbayer.com/categories/wicket/</link>
+    <description>Recent content in Wicket on Tobias Bayer</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sat, 30 Apr 2011 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://tobiasbayer.com/categories/wicket/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Gradle and Wicket</title>
+      <link>http://tobiasbayer.com/post/gradle-and-wicket/</link>
+      <pubDate>Sat, 30 Apr 2011 00:00:00 +0000</pubDate>
+      
+      <guid>http://tobiasbayer.com/post/gradle-and-wicket/</guid>
+      <description>&lt;p&gt;To make sure &lt;a href=&#34;http://www.gradle.org&#34;&gt;Gradle&lt;/a&gt; packs your &lt;code&gt;*.html&lt;/code&gt; files
+into your WAR file when developing a &lt;a href=&#34;http://wicket.apache.org&#34;&gt;Wicket&lt;/a&gt;
+application, include your Java directory as a resource directory in your
+&lt;code&gt;build.gradle&lt;/code&gt;:&lt;/p&gt;
+
+&lt;p&gt;{% codeblock lang:java%}
+sourceSets {
+    main {
+        java {
+            srcDir &amp;lsquo;src/main/java&amp;rsquo;
+        }
+        resources {
+            srcDir &amp;lsquo;src/main/resources&amp;rsquo;
+            srcDir &amp;lsquo;src/main/java&amp;rsquo;
+        }
+    }
+}
+```&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

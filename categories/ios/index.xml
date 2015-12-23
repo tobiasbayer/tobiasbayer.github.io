@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Ios on Tobias Bayer</title>
+    <link>http://tobiasbayer.com/categories/ios/</link>
+    <description>Recent content in Ios on Tobias Bayer</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Fri, 04 Nov 2011 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://tobiasbayer.com/categories/ios/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Using objects as keys for NSMutableDictionary</title>
+      <link>http://tobiasbayer.com/post/2011-11-04-using-objects-as-keys-for-nsmutabledictionary/</link>
+      <pubDate>Fri, 04 Nov 2011 00:00:00 +0000</pubDate>
+      
+      <guid>http://tobiasbayer.com/post/2011-11-04-using-objects-as-keys-for-nsmutabledictionary/</guid>
+      <description>&lt;p&gt;When adding an object as a key to a &lt;code&gt;NSMutableDictionary&lt;/code&gt; with &lt;code&gt;setObject:forKey:&lt;/code&gt;, the dictionary copies the key object by sending a &lt;code&gt;copyWithZone:&lt;/code&gt; message to it.&lt;/p&gt;
+
+&lt;p&gt;So your key objects must respond to this selector. This protects the dictionary from key changes that take place outside the dictionary.&lt;/p&gt;
+
+&lt;p&gt;In many cases you will want to retrieve the values of the dictionary by passing your key object reference to &lt;code&gt;objectForKey:&lt;/code&gt;. So copying the key when adding it to the dictionary is not a good idea.&lt;/p&gt;
+
+&lt;p&gt;If your key objects are immutable, it is perfectly safe to have the following implementation for &lt;code&gt;copyWithZone:&lt;/code&gt;:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;- (id)copyWithZone:(NSZone*)zone {
+    return self;
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;This ensures that the object itself instead of a copy is used as a key in the dictionary.&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Searching NSArrays with NSPredicate</title>
+      <link>http://tobiasbayer.com/post/searching-nsarrays-with-nspredicate/</link>
+      <pubDate>Fri, 19 Nov 2010 00:00:00 +0000</pubDate>
+      
+      <guid>http://tobiasbayer.com/post/searching-nsarrays-with-nspredicate/</guid>
+      <description>&lt;p&gt;If you have used &lt;a href=&#34;http://developer.apple.com/library/ios/#referencelibrary/GettingStarted/GettingStartedWithCoreData/&#34;&gt;Core Data&lt;/a&gt;
+before, you most likely know
+&lt;a href=&#34;http://developer.apple.com/library/mac/#documentation/cocoa/Reference/Foundation/Classes/NSPredicate_Class/Reference/NSPredicate.html&#34;&gt;NSPredicate&lt;/a&gt;
+for querying data. But you probably have not been aware that you can use
+NSPredicate for searching in a NSArray containing
+&lt;a href=&#34;http://developer.apple.com/library/mac/#documentation/Cocoa/Conceptual/KeyValueCoding/Concepts/BasicPrinciples.html&#34;&gt;KVC&lt;/a&gt;
+compliant objects:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;// Elements in the input array must be KVC-compliant for &amp;quot;name&amp;quot;
+- (NSArray *)searchArray:(NSArray *)inputArray forObjectsWithName:(NSString *)name {
+  NSPredicate *predicate = [NSPredicate predicateWithFormat:@&amp;quot;name == %@&amp;quot;, name];
+  return [inputArray filteredArrayUsingPredicate:predicate];
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;You can use all &lt;a href=&#34;http://developer.apple.com/library/mac/#documentation/cocoa/Conceptual/Predicates/Articles/pSyntax.html#//apple_ref/doc/uid/TP40001795-CJBDBHCB&#34;&gt;sorts of operators&lt;/a&gt;
+that are supported by NSPredicate, like &lt;code&gt;BEGINSWITH&lt;/code&gt; or &lt;code&gt;CONTAINS&lt;/code&gt;.&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Dynamic height UITableViewCell and overlapping content</title>
+      <link>http://tobiasbayer.com/post/dynamic-height-uitableviewcell-and-overlapping-content/</link>
+      <pubDate>Fri, 30 Jul 2010 00:00:00 +0000</pubDate>
+      
+      <guid>http://tobiasbayer.com/post/dynamic-height-uitableviewcell-and-overlapping-content/</guid>
+      <description>&lt;p&gt;If you want a &lt;code&gt;UITableView&lt;/code&gt; that has different cell sizes depending on
+whether the cell is selected or not, you might use something like this
+in your &lt;code&gt;UITableViewDelegate&lt;/code&gt;:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    CGFloat height = 40;    
+    if(indexPath.row == selectedRow) { //selectedRow is set in - (void)tableView:(UITableView *)aTableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+        height += 100;
+    }
+    return height;
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;If you are using custom cells with content larger than the height of an
+unselected row, the cell content may overlap with other cells. To
+prevent this, just set &lt;code&gt;cell.clipsToBounds = YES&lt;/code&gt;.&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

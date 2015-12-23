@@ -1,0 +1,787 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Tobias Bayer</title>
+    <link>http://tobiasbayer.com/</link>
+    <description>Recent content on Tobias Bayer</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Tue, 22 Dec 2015 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://tobiasbayer.com/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Clojure Intro Talk</title>
+      <link>http://tobiasbayer.com/post/clojure-intro-talk/</link>
+      <pubDate>Tue, 22 Dec 2015 00:00:00 +0000</pubDate>
+      
+      <guid>http://tobiasbayer.com/post/clojure-intro-talk/</guid>
+      <description>&lt;p&gt;Here&amp;rsquo;s a (german) video of the Clojure intro talk I recently gave at the &lt;a href=&#34;http://www.meetup.com/de/inovex-karlsruhe/events/226101150/&#34;&gt;inovex meetup&lt;/a&gt;.&lt;/p&gt;
+
+&lt;iframe width=&#34;640&#34; height=&#34;480&#34; src=&#34;http://www.youtube.com/embed/cm0PqT53azk?autoplay=0&#34;&gt;&lt;/iframe&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Pattern Matching with Pact</title>
+      <link>http://tobiasbayer.com/post/2015-03-25-pattern-matching-with-pact/</link>
+      <pubDate>Wed, 25 Mar 2015 00:00:00 +0000</pubDate>
+      
+      <guid>http://tobiasbayer.com/post/2015-03-25-pattern-matching-with-pact/</guid>
+      <description>&lt;p&gt;It seems the internet is missing an example of how to match the JSON body against a regex when testing your microservices with &lt;a href=&#34;https://github.com/DiUS/pact-jvm&#34;&gt;Pact-JVM&lt;/a&gt;. So I made one myself.&lt;/p&gt;
+
+&lt;!-- more --&gt;
+
+&lt;p&gt;Our consumer contract expects the provider to return three fields in the response body: &lt;code&gt;id&lt;/code&gt;, &lt;code&gt;description&lt;/code&gt; and &lt;code&gt;random&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;While &lt;code&gt;id&lt;/code&gt; and &lt;code&gt;description&lt;/code&gt; can be specified exactly by the consumer, the &lt;code&gt;random&lt;/code&gt;-field cannot. We just know the provider will return a random 6-digit number as a string. So we create a regular expression for that inside a &lt;code&gt;PactDslJsonBody&lt;/code&gt;.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;@Override
+protected PactFragment createFragment(final ConsumerPactBuilder.PactDslWithProvider builder) {
+    Map&amp;lt;String, String&amp;gt; headers = new HashMap&amp;lt;&amp;gt;();
+    headers.put(&amp;quot;Content-Type&amp;quot;, &amp;quot;application/json;charset=UTF-8&amp;quot;);
+
+    DslPart body = 
+            new PactDslJsonBody()
+                .numberValue(&amp;quot;id&amp;quot;, 1)
+                .stringValue(&amp;quot;description&amp;quot;, &amp;quot;This is the description for product 1&amp;quot;)
+                .stringMatcher(&amp;quot;random&amp;quot;, &amp;quot;[0-9]{6}&amp;quot;);
+
+    return builder
+            .uponReceiving(&amp;quot;a request for product details&amp;quot;)
+            .path(&amp;quot;/productdetails/1&amp;quot;)
+            .method(&amp;quot;GET&amp;quot;)
+            .willRespondWith()
+            .headers(headers)
+            .status(200)
+            .body(body)
+            .toFragment();
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;When the consumer test is run, this Pactfile is created:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;{
+  &amp;quot;provider&amp;quot; : {
+    &amp;quot;name&amp;quot; : &amp;quot;Product_Details_Service&amp;quot;
+  },
+  &amp;quot;consumer&amp;quot; : {
+    &amp;quot;name&amp;quot; : &amp;quot;Product_Service&amp;quot;
+  },
+  &amp;quot;interactions&amp;quot; : [ {
+    &amp;quot;description&amp;quot; : &amp;quot;a request for product details&amp;quot;,
+    &amp;quot;request&amp;quot; : {
+      &amp;quot;method&amp;quot; : &amp;quot;GET&amp;quot;,
+      &amp;quot;path&amp;quot; : &amp;quot;/productdetails/1&amp;quot;
+    },
+    &amp;quot;response&amp;quot; : {
+      &amp;quot;status&amp;quot; : 200,
+      &amp;quot;headers&amp;quot; : {
+        &amp;quot;Content-Type&amp;quot; : &amp;quot;application/json;charset=UTF-8&amp;quot;
+      },
+      &amp;quot;body&amp;quot; : {
+        &amp;quot;id&amp;quot; : 1,
+        &amp;quot;description&amp;quot; : &amp;quot;This is the description for product 1&amp;quot;,
+        &amp;quot;random&amp;quot; : &amp;quot;413558&amp;quot;
+      },
+      &amp;quot;responseMatchingRules&amp;quot; : {
+        &amp;quot;$.body.random&amp;quot; : {
+          &amp;quot;regex&amp;quot; : &amp;quot;[0-9]{6}&amp;quot;
+        }
+      }
+    }
+  } ],
+  &amp;quot;metadata&amp;quot; : {
+    &amp;quot;pact-specification&amp;quot; : {
+      &amp;quot;version&amp;quot; : &amp;quot;2.0.0&amp;quot;
+    },
+    &amp;quot;pact-jvm&amp;quot; : {
+      &amp;quot;version&amp;quot; : &amp;quot;2.1.7&amp;quot;
+    }
+  }
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Note that Pact magically replaced the regex with a matching string inside the &lt;code&gt;body&lt;/code&gt; definition. This makes sure the provider-stub returns something useful for the consumer when the consumer tests are run. But when the pact is verified against the provider, Pact will use the regular expression inside &lt;code&gt;responseMatchingRules&lt;/code&gt; instead of just matching against the final string for each field in &lt;code&gt;body&lt;/code&gt; that has a corresponding regex.&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Using Clojure&#39;s core.cache</title>
+      <link>http://tobiasbayer.com/post/2014-11-12-using-clojures-core-dot-cache/</link>
+      <pubDate>Wed, 12 Nov 2014 00:00:00 +0000</pubDate>
+      
+      <guid>http://tobiasbayer.com/post/2014-11-12-using-clojures-core-dot-cache/</guid>
+      <description>&lt;p&gt;&lt;a href=&#34;https://github.com/clojure/core.cache&#34;&gt;core.cache&lt;/a&gt; is a great Clojure library for caching
+arbitrary values in your application. Unfortunately, its examples
+have a minor dissent that can make it hard for a first time user to interact with it.&lt;/p&gt;
+
+&lt;!-- more --&gt;
+
+&lt;p&gt;The usage examples tell you to do this:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;(def C (cache/fifo-cache-factory {:a 1, :b 2}))
+
+(if (cache/has? C :c)
+  (cache/hit C :c)
+  (cache/miss C :c 42))
+  
+; =&amp;gt; {:a 1, :b 2, :c 42}    
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;The naive first time user (that I was) could now assume that there&amp;rsquo;s some magic going
+on behind the doors which does some state manipulation and another call to &lt;code&gt;(cache/has? C :c)&lt;/code&gt;
+should return &lt;code&gt;true&lt;/code&gt;.
+But as you guessed it: No magic to see here.&lt;/p&gt;
+
+&lt;p&gt;The point is, that &lt;code&gt;cache/miss&lt;/code&gt; and &lt;code&gt;cache/hit&lt;/code&gt; return a &lt;strong&gt;new&lt;/strong&gt; cache instance with the new
+value associated. You&amp;rsquo;ll have to do the state manipulation yourself (e.g. by using an atom):&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;(def C (atom (cache/fifo-cache-factory {:a 1, :b 2})))
+
+(if (cache/has? @C :c)
+  (swap! C #(cache/hit % :c))
+  (swap! C #(cache/miss % :c 42)))
+
+; =&amp;gt; {:a 1, :b 2, :c 42}
+
+(cache/has? @C :c)
+
+; =&amp;gt; true
+&lt;/code&gt;&lt;/pre&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Sneaking Custom CSS into a GXT Grid</title>
+      <link>http://tobiasbayer.com/post/2014-07-03-sneaking-custom-css-into-a-gxt-grid/</link>
+      <pubDate>Thu, 03 Jul 2014 00:00:00 +0000</pubDate>
+      
+      <guid>http://tobiasbayer.com/post/2014-07-03-sneaking-custom-css-into-a-gxt-grid/</guid>
+      <description>&lt;p&gt;Every time I try to add some custom CSS to a Sencha GXT 3 &lt;code&gt;Grid&lt;/code&gt; I have to look up the details again
+because of the relatively large amount of unintuitive code that is necessary for that simple task.&lt;/p&gt;
+
+&lt;p&gt;So I decided to write a short wrap-up of the process as a reference.&lt;/p&gt;
+
+&lt;p&gt;First create a file in the client classpath with your custom CSS in it.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;
+.cellDisabled {
+  background-color: #EEEEEE !important;
+  color: #000000;
+}
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Next, create a custom &lt;code&gt;MyGridAppearance&lt;/code&gt; that extends the &lt;code&gt;GridAppearance&lt;/code&gt; your application
+is using (e.g. &lt;code&gt;GrayGridAppearance&lt;/code&gt;).&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;
+public class MyGridAppearance extends GrayGridAppearance {
+
+}
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;In this &lt;code&gt;Appearance&lt;/code&gt; include an interface that extends the style of the component you want
+to add your custom style to. The interface must include a method named after your custom
+CSS style.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;
+public class MyGridAppearance extends GrayGridAppearance {
+
+    public interface MyGridStyle extends GrayGridStyle {
+        String cellDisabled();
+    }
+}
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Now include another interface that pulls your CSS file into the bundle. It must have a
+&lt;code&gt;@Source&lt;/code&gt; annotation with all the CSS files along the inheritance path and your custom CSS
+file as well.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;
+public class MyGridAppearance extends GrayGridAppearance {
+
+    public interface MyGridStyle extends GrayGridStyle {
+        String cellDisabled();
+    }
+
+    public interface MyGridResources extends GrayGridResources, ClientBundle {
+
+        @Override
+        @Source({ &amp;quot;com/sencha/gxt/theme/base/client/grid/Grid.css&amp;quot;,
+                &amp;quot;com/sencha/gxt/theme/gray/client/grid/GrayGrid.css&amp;quot;,
+                &amp;quot;com/codebrickie/sample/client/css/MyGrid.css&amp;quot; })
+        MyGridStyle css();
+    }
+}
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;The last step for the &lt;code&gt;Appearance&lt;/code&gt; is to implement two constructors.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;
+public class MyGridAppearance extends GrayGridAppearance {
+
+    public interface MyGridStyle extends GrayGridStyle {
+        String cellDisabled();
+    }
+
+    public interface MyGridResources extends GrayGridResources, ClientBundle {
+
+        @Override
+        @Source({ &amp;quot;com/sencha/gxt/theme/base/client/grid/Grid.css&amp;quot;,
+                &amp;quot;com/sencha/gxt/theme/gray/client/grid/GrayGrid.css&amp;quot;,
+                &amp;quot;com/codebrickie/sample/client/css/MyGrid.css&amp;quot; })
+        MyGridStyle css();
+    }
+    
+    public MyGridAppearance() {
+        this(GWT.&amp;lt;MyGridResources&amp;gt; create(MyGridResources.class));
+    }
+
+    public MyGridAppearance(final MyGridResources resources) {
+        super(resources);
+    }
+}
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Now that the &lt;code&gt;Appearance&lt;/code&gt; is finished, you have to set it to your grid upon creation.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;//...
+
+grid = new Grid&amp;lt;MyModel&amp;gt;(store, columnModel, new GridView&amp;lt;MyModel&amp;gt;(
+                new MyGridAppearance()));
+//...
+}
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Afterwards you can use your custom style e.g. in &lt;code&gt;getColStyle()&lt;/code&gt;.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;//...
+
+GridViewConfig&amp;lt;MyModel&amp;gt; viewConfig = new GridViewConfig&amp;lt;MyModel&amp;gt;() {
+
+	final MyGridStyle styles = (MyGridStyle) ((MyGridAppearance) grid
+		.getView().getAppearance())
+		.styles();
+
+	@Override
+	public String getColStyle(final MyModel model,
+			final ValueProvider&amp;lt;? super MyModel, ?&amp;gt; valueProvider, final int rowIndex,
+			final int colIndex) {
+		String style = null;
+
+		if (!model.isEnabled()) {
+			style = styles.cellDisabled();
+		}
+
+		return style;
+	}
+
+	@Override
+	public String getRowStyle(final MyModel model, final int rowIndex) {
+		return null;
+	}
+};
+        
+//...
+&lt;/code&gt;&lt;/pre&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Adding Ticket Numbers To Git Commit Messages</title>
+      <link>http://tobiasbayer.com/post/2014-01-29-adding-ticket-numbers-to-git-commit-messages/</link>
+      <pubDate>Tue, 28 Jan 2014 00:00:00 +0000</pubDate>
+      
+      <guid>http://tobiasbayer.com/post/2014-01-29-adding-ticket-numbers-to-git-commit-messages/</guid>
+      <description>&lt;p&gt;We are using &lt;a href=&#34;http://www.redmine.org/&#34;&gt;Redmine&lt;/a&gt; for tracking our programming tasks in my
+current project.
+Like most other ticketing systems, it has the ability to link commits in your source code
+repositories to a ticket when the commit message refers the ticket number.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;Changes foo to bar because of baz.
+
+refs #1234
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;I became tired of adding the ticket number manually to each commit message.
+Fortunately, git can add the number by itself with the help of a little hook and a naming
+convention for your feature branches.&lt;/p&gt;
+
+&lt;p&gt;Your feature branch name should include the ticket number like so:
+&lt;code&gt;ticket-1234-awesome-feature&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;Now create the file &lt;code&gt;.git/hooks/commit-msg&lt;/code&gt; in your local repository with the following
+content:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;#!/bin/sh
+
+ticket=$(git symbolic-ref HEAD | awk -F- &#39;/ticket-/ {print $2}&#39;)
+if [ -n &amp;quot;$ticket&amp;quot; ]; then
+	echo &amp;quot;\nrefs #$ticket&amp;quot; &amp;gt;&amp;gt; $1
+fi
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;This extracts the ticket number from the branch name.
+The ticket number is then appended to your commit message on each commit when git executes
+the hook.&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Using Vaadin 7 with Clojure</title>
+      <link>http://tobiasbayer.com/post/2013-02-12-using-vaadin-7-with-clojure/</link>
+      <pubDate>Tue, 12 Feb 2013 00:00:00 +0000</pubDate>
+      
+      <guid>http://tobiasbayer.com/post/2013-02-12-using-vaadin-7-with-clojure/</guid>
+      <description>&lt;p&gt;There are some good examples on how to compose a web application with Clojure and Vaadin &amp;lt; 7.
+However, the web application bootstrapping process has changed for Vaadin 7.
+In this post I will show you how to create a Clojure/Vaadin 7 web application.&lt;/p&gt;
+
+&lt;p&gt;First we need a &lt;code&gt;web.xml&lt;/code&gt; file in &lt;code&gt;src/main/webapp/WEB-INF&lt;/code&gt; that defines the Vaadin servlet and parametrizes
+it with our main UI class.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;lt;?xml version=&amp;quot;1.0&amp;quot; encoding=&amp;quot;UTF-8&amp;quot;?&amp;gt;
+&amp;lt;web-app xmlns=&amp;quot;http://java.sun.com/xml/ns/javaee&amp;quot;
+	xmlns:xsi=&amp;quot;http://www.w3.org/2001/XMLSchema-instance&amp;quot;
+	xsi:schemaLocation=&amp;quot;http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd&amp;quot;
+	version=&amp;quot;2.5&amp;quot;&amp;gt;
+    &amp;lt;display-name&amp;gt;Clojure Vaadin 7 Application&amp;lt;/display-name&amp;gt;
+    &amp;lt;context-param&amp;gt;
+        &amp;lt;description&amp;gt;Vaadin production mode&amp;lt;/description&amp;gt;
+        &amp;lt;param-name&amp;gt;productionMode&amp;lt;/param-name&amp;gt;
+        &amp;lt;param-value&amp;gt;false&amp;lt;/param-value&amp;gt;
+    &amp;lt;/context-param&amp;gt;
+    &amp;lt;servlet&amp;gt;
+        &amp;lt;servlet-name&amp;gt;Clojure Vaadin 7 Application&amp;lt;/servlet-name&amp;gt;
+        &amp;lt;servlet-class&amp;gt;com.vaadin.server.VaadinServlet&amp;lt;/servlet-class&amp;gt;
+        &amp;lt;init-param&amp;gt;
+            &amp;lt;description&amp;gt;Vaadin UI&amp;lt;/description&amp;gt;
+            &amp;lt;param-name&amp;gt;UI&amp;lt;/param-name&amp;gt;
+            &amp;lt;param-value&amp;gt;cljvaadin7.MyApplicationUI&amp;lt;/param-value&amp;gt;
+        &amp;lt;/init-param&amp;gt;
+    &amp;lt;/servlet&amp;gt;
+    &amp;lt;servlet-mapping&amp;gt;
+        &amp;lt;servlet-name&amp;gt;Clojure Vaadin 7 Application&amp;lt;/servlet-name&amp;gt;
+        &amp;lt;url-pattern&amp;gt;/*&amp;lt;/url-pattern&amp;gt;
+    &amp;lt;/servlet-mapping&amp;gt;
+&amp;lt;/web-app&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;As there is no such thing as a class in Clojure, we will use its Java interoperability to create
+a Java class that serves as our Vaadin UI main class.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;(ns cljvaadin7.MyApplicationUI
+  (import [com.vaadin.ui VerticalLayout Label Button Button$ClickListener Notification])
+  (:gen-class
+    :extends com.vaadin.ui.UI))
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;code&gt;:gen-class&lt;/code&gt; will make the namespace available as a Java class.&lt;/p&gt;
+
+&lt;p&gt;We override the init method of &lt;code&gt;com.vaadin.ui.UI&lt;/code&gt;.
+This is the entry point for our web application. &lt;code&gt;init&lt;/code&gt; in &lt;code&gt;com.vaadin.ui.UI&lt;/code&gt;
+has only one argument (&lt;code&gt;request&lt;/code&gt;). However, our Clojure &lt;code&gt;-init&lt;/code&gt; function has two arguments.
+The reason is that the function will receive &amp;ldquo;&lt;code&gt;this&lt;/code&gt;&amp;rdquo; as the first argument.
+Now we can build our UI.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;(defn- create-button
+  [caption action]
+  (doto (Button. caption) (add-action action)))
+
+(defn- create-main-layout
+  []
+  (doto (VerticalLayout.)
+	        (.addComponent (Label. &amp;quot;Hello Clojure-Vaadin 7!&amp;quot;))
+	        (.addComponent (create-button &amp;quot;Push me!&amp;quot; show-click-message))))
+
+(defn -init
+  [main-ui request]
+  (doto main-ui (.setContent (create-main-layout))))
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;In Java, button actions are triggered by registering a click handler for the button. We have to do this in
+Clojure as well but we will hide the actual &lt;code&gt;ClickListener&lt;/code&gt; and use a more functional approach.
+We create a new function &lt;code&gt;add-action&lt;/code&gt; that expects a button and an action as arguments. &lt;code&gt;action&lt;/code&gt; can be any Clojure function
+we want to be executed when the button is clicked.
+The helper function &lt;code&gt;create-button-click-listener&lt;/code&gt; wraps a Vaadin &lt;code&gt;ClickListener&lt;/code&gt; around the &lt;code&gt;action&lt;/code&gt; function.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;(defn- show-click-message
+  []
+  (Notification/show &amp;quot;Button clicked&amp;quot;))
+
+(defn- create-button-click-listener 
+  [action]
+  (reify Button$ClickListener 
+            (buttonClick 
+              [_ evt]
+              (action))))
+
+(defn- add-action
+  [button action]
+  (.addListener button (create-button-click-listener action)))
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;The project file for building with Leiningen (and packaging with Maven) looks like this:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;(defproject cljvaadin7 &amp;quot;0.1.0-SNAPSHOT&amp;quot;
+  :description &amp;quot;Demonstrates how to integrate Clojure and Vaadin 7&amp;quot;
+  :url &amp;quot;https://github.com/codebrickie/cljvaadin7&amp;quot;
+  :license {:name &amp;quot;Eclipse Public License&amp;quot;
+            :url &amp;quot;http://www.eclipse.org/legal/epl-v10.html&amp;quot;}
+  :dependencies [[org.clojure/clojure &amp;quot;1.4.0&amp;quot;]
+                 [com.vaadin/vaadin-server &amp;quot;7.0.0&amp;quot;]
+                 [com.vaadin/vaadin-client-compiled &amp;quot;7.0.0&amp;quot;]
+                 [com.vaadin/vaadin-themes &amp;quot;7.0.0&amp;quot;]
+                 [javax.servlet/servlet-api &amp;quot;2.5&amp;quot;]]
+  :aot [cljvaadin7.MyApplicationUI])
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;You can find the complete project on &lt;a href=&#34;https://github.com/codebrickie/cljvaadin7&#34;&gt;GitHub&lt;/a&gt;.&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Integrating Vaadin 7 and Spring</title>
+      <link>http://tobiasbayer.com/post/2012-11-11-integrating-vaadin-7-and-spring/</link>
+      <pubDate>Sun, 11 Nov 2012 00:00:00 +0000</pubDate>
+      
+      <guid>http://tobiasbayer.com/post/2012-11-11-integrating-vaadin-7-and-spring/</guid>
+      <description>&lt;p&gt;I am currently building an administration interface for &lt;a href=&#34;http://tweetsqueue.com&#34;&gt;TweetsQueue&lt;/a&gt; with Vaadin 7.
+Fortunately Spring integration for Vaadin 7 is available as a &lt;a href=&#34;http://vaadin.com/directory#addon/springvaadinintegration&#34;&gt;Vaadin add-on&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;Only two simple steps are necessary to get full autowiring support for your Vaadin classes.&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Add the Spring integration as a dependency. Here&amp;rsquo;s the relevant excerpt of my &lt;code&gt;build.gradle&lt;/code&gt;:&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;pre&gt;&lt;code&gt;...
+repositories {
+	mavenRepo url: &#39;http://repo1.maven.org/maven2/&#39;, artifactUrls: [&#39;http://maven.springframework.org/milestone&#39;, &#39;http://maven.vaadin.com/vaadin-addons&#39;]
+}
+
+
+dependencies {
+	...
+	
+	runtime &#39;ru.xpoft.vaadin:spring-vaadin-integration:1.6.2&#39;
+	
+	...
+}
+...
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Define the Spring integration servlet and your main UI bean in your &lt;code&gt;web.xml&lt;/code&gt;:&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;lt;?xml version=&amp;quot;1.0&amp;quot; encoding=&amp;quot;UTF-8&amp;quot;?&amp;gt;
+&amp;lt;web-app id=&amp;quot;WebApp_ID&amp;quot; version=&amp;quot;2.4&amp;quot;
+	xmlns=&amp;quot;http://java.sun.com/xml/ns/j2ee&amp;quot; xmlns:xsi=&amp;quot;http://www.w3.org/2001/XMLSchema-instance&amp;quot;
+	xsi:schemaLocation=&amp;quot;http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd&amp;quot;&amp;gt;
+	&amp;lt;context-param&amp;gt;
+		&amp;lt;param-name&amp;gt;contextConfigLocation&amp;lt;/param-name&amp;gt;
+		&amp;lt;param-value&amp;gt;classpath*:applicationContext*.xml&amp;lt;/param-value&amp;gt;
+	&amp;lt;/context-param&amp;gt;
+
+	&amp;lt;listener&amp;gt;
+		&amp;lt;listener-class&amp;gt;org.springframework.web.context.ContextLoaderListener&amp;lt;/listener-class&amp;gt;
+	&amp;lt;/listener&amp;gt;
+	
+	&amp;lt;servlet&amp;gt;
+        &amp;lt;servlet-name&amp;gt;VaadinServlet&amp;lt;/servlet-name&amp;gt;
+        &amp;lt;servlet-class&amp;gt;ru.xpoft.vaadin.SpringVaadinServlet&amp;lt;/servlet-class&amp;gt;
+        &amp;lt;init-param&amp;gt;
+            &amp;lt;param-name&amp;gt;beanName&amp;lt;/param-name&amp;gt;
+            &amp;lt;!-- 
+            	This is the name of your main Vaadin UI class.
+            	You should declare it as a prototype-scoped component (e.g. @Component @Scope(&amp;quot;protoype&amp;quot;)).
+            --&amp;gt;
+            &amp;lt;param-value&amp;gt;mainUI&amp;lt;/param-value&amp;gt; 
+        &amp;lt;/init-param&amp;gt;
+    &amp;lt;/servlet&amp;gt;
+
+    &amp;lt;servlet-mapping&amp;gt;
+        &amp;lt;servlet-name&amp;gt;VaadinServlet&amp;lt;/servlet-name&amp;gt;
+        &amp;lt;url-pattern&amp;gt;/*&amp;lt;/url-pattern&amp;gt;
+    &amp;lt;/servlet-mapping&amp;gt;
+&amp;lt;/web-app&amp;gt;    
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;You can now autowire your views (declared as Spring beans) into your main ui class and display them as needed.&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Switching Between Dock and Status Bar Mode in Cocoa</title>
+      <link>http://tobiasbayer.com/post/2012-10-16-switching-between-dock-and-status-bar-mode-in-cocoa/</link>
+      <pubDate>Tue, 16 Oct 2012 00:00:00 +0000</pubDate>
+      
+      <guid>http://tobiasbayer.com/post/2012-10-16-switching-between-dock-and-status-bar-mode-in-cocoa/</guid>
+      <description>&lt;p&gt;In this blog post I&amp;rsquo;ll show you how to make a Cocoa app that can switch between dock icon and statusbar icon mode.&lt;/p&gt;
+
+&lt;p&gt;For the basics on how to create a statusbar app see &lt;a href=&#34;http://cocoatutorial.grapewave.com/2010/01/creating-a-status-bar-application&#34;&gt;Cocoa Tips and Tricks&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;I&amp;rsquo;ve tried several approaches to this topic but any other than the one I describe here had minor to major glitches such as not activating windows correctly when in statusbar mode for example.&lt;/p&gt;
+
+&lt;p&gt;In order to work fine, your application has to be a statusbar app by default.
+You achieve this by adding the key &lt;code&gt;LSUIElement&lt;/code&gt; with a value of &lt;code&gt;YES&lt;/code&gt; to your &lt;code&gt;&amp;lt;Application&amp;gt;-Info.plist&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;Now, when your application launches, check whether you want to display the statusbar icon or the dock icon. I do this based on the user&amp;rsquo;s preference in this example.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;- (void)applicationDidFinishLaunching:(NSNotification *)notification {
+	if(![[NSUserDefaults standardUserDefaults] boolForKey:@&amp;quot;showDockIcon&amp;quot;]) {
+		// Create a status item and display it in the statusbar
+		self.statusItem = [[NSStatusBar systemStatusBar] statusItemWithLength:NSVariableStatusItemLength];
+		[self.statusItem setMenu:self.statusBarMenu];
+		[self.statusItem setHighlightMode:YES];
+		[self.statusItem setImage:[NSImage imageNamed:@&amp;quot;barimage&amp;quot;]];
+		[self.statusItem setAlternateImage:[NSImage imageNamed:@&amp;quot;barimage-highlighted&amp;quot;]];
+	} else {
+		// Bring the dock icon to the front (initially hidden with LSUIElement = YES in &amp;lt;Application&amp;gt;-Info.plist)
+		ProcessSerialNumber psn = { 0, kCurrentProcess };
+		TransformProcessType(&amp;amp;psn, kProcessTransformToForegroundApplication);
+	}
+}
+&lt;/code&gt;&lt;/pre&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>ASIHTTPRequest and ARC</title>
+      <link>http://tobiasbayer.com/post/2012-10-09-asihttprequest-and-arc/</link>
+      <pubDate>Tue, 09 Oct 2012 00:00:00 +0000</pubDate>
+      
+      <guid>http://tobiasbayer.com/post/2012-10-09-asihttprequest-and-arc/</guid>
+      <description>&lt;p&gt;I wanted to use &lt;a href=&#34;https://github.com/pokeb/asi-http-request&#34;&gt;ASIHTTPRequest&lt;/a&gt; in one of my OS X projects.
+My project is ARC enabled. ASIHTTPRequest does not support ARC.
+One solution would be to add all the &lt;code&gt;.h&lt;/code&gt; and &lt;code&gt;.m&lt;/code&gt; files from ASIHTTPRequest to your project and
+set the &lt;code&gt;-fno-objc-arc flag&lt;/code&gt; for each &lt;code&gt;.m&lt;/code&gt; file.&lt;/p&gt;
+
+&lt;p&gt;I created a static library for ASIHTTPRequest and only added the &lt;code&gt;.h&lt;/code&gt; files to my project instead.
+Then I also added the static library and made sure Xcode links against it in the linking
+phase of the build.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://codebrickie.com/files/libASIMacLibrary.a&#34;&gt;Here&lt;/a&gt; is the static library for you to use in your own projects.&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Git Commit Snapshots</title>
+      <link>http://tobiasbayer.com/post/2012-06-27-git-commit-snapshots/</link>
+      <pubDate>Wed, 27 Jun 2012 00:00:00 +0000</pubDate>
+      
+      <guid>http://tobiasbayer.com/post/2012-06-27-git-commit-snapshots/</guid>
+      <description>&lt;p&gt;I tried &lt;a href=&#34;http://coderwall.com/p/xlatfq&#34;&gt;this&lt;/a&gt; today and came up with this:&lt;/p&gt;
+
+&lt;p&gt;{% youtube dPxGm7L94Q4 %}&lt;/p&gt;
+
+&lt;p&gt;25 commits to the repository in total.&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Getting the Liferay User in a Standalone App</title>
+      <link>http://tobiasbayer.com/post/2012-06-11-getting-the-liferay-user-in-a-standalone-app/</link>
+      <pubDate>Mon, 11 Jun 2012 00:00:00 +0000</pubDate>
+      
+      <guid>http://tobiasbayer.com/post/2012-06-11-getting-the-liferay-user-in-a-standalone-app/</guid>
+      <description>&lt;p&gt;You can deploy a standard webapp in &lt;a href=&#34;http://www.liferay.com&#34;&gt;Liferay&lt;/a&gt; without making it a portlet.&lt;/p&gt;
+
+&lt;p&gt;If you do that, it is not so easy to get the currently logged in Liferay user in your standalone webapp.
+There is &lt;a href=&#34;https://www.everit.biz/web/guest/everit-blog/-/blogs/getting-current-liferay-user-in-a-standalone-webapp&#34;&gt;another article&lt;/a&gt; which suggests reconstructing the user with the information the Liferay login cookie provides.
+This solution has one blemish: It does only work when the user checks the &amp;ldquo;Remember me&amp;rdquo; box at the login screen. Otherwise the cookie won&amp;rsquo;t contain the password that is used in this approach for retrieving the user from Liferay.&lt;/p&gt;
+
+&lt;p&gt;I changed the solution mentioned above to only use the company key and the user id. This works even if the user did not check the &amp;ldquo;Remember me&amp;rdquo; box at the login screen.
+I made this a servlet filter which can be easily used by registering it in your &lt;code&gt;web.xml&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;Here&amp;rsquo;s what I came up with:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;package com.codebrickie.filter;
+
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.security.Key;
+
+import javax.servlet.Filter;
+import javax.servlet.FilterChain;
+import javax.servlet.FilterConfig;
+import javax.servlet.ServletException;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+
+import com.liferay.portal.kernel.util.WebKeys;
+import com.liferay.portal.model.Company;
+import com.liferay.portal.model.User;
+import com.liferay.portal.security.auth.PrincipalThreadLocal;
+import com.liferay.portal.security.permission.PermissionChecker;
+import com.liferay.portal.security.permission.PermissionCheckerFactoryUtil;
+import com.liferay.portal.security.permission.PermissionThreadLocal;
+import com.liferay.portal.service.CompanyLocalServiceUtil;
+import com.liferay.portal.service.UserLocalServiceUtil;
+import com.liferay.util.Encryptor;
+
+public class LiferayUserFilter implements Filter {
+
+    @Override
+    public void doFilter(ServletRequest request, ServletResponse response,
+            FilterChain filterChain) throws IOException, ServletException {
+        if (request instanceof HttpServletRequest) {
+            Cookie[] cookies = ((HttpServletRequest) request).getCookies();
+            String userId = null;
+            String companyId = null;
+            if (cookies != null) {
+                for (Cookie c : cookies) {
+                    if (&amp;quot;COMPANY_ID&amp;quot;.equals(c.getName())) {
+                        companyId = c.getValue();
+                    } else if (&amp;quot;ID&amp;quot;.equals(c.getName())) {
+                        userId = hexStringToStringByAscii(c.getValue());
+                    }
+                }
+
+                if (userId != null &amp;amp;&amp;amp; companyId != null) {
+                    try {
+                        Company company = CompanyLocalServiceUtil.getCompany(Long
+                                .parseLong(companyId));
+                        Key key = company.getKeyObj();
+
+                        String userIdPlain = Encryptor.decrypt(key, userId);
+
+                        User liferayUser = UserLocalServiceUtil.getUser(Long.valueOf(userIdPlain));
+                        
+                        // Now you can set the liferayUser into a thread local for later use or 
+                        // something like that.
+
+                    } catch (Exception pException) {
+                        throw new RuntimeException(pException);
+                    }
+                }
+            }
+        }
+        filterChain.doFilter(request, response);
+    }
+
+    private String hexStringToStringByAscii(String hexString) {
+        byte[] bytes = new byte[hexString.length() / 2];
+        for (int i = 0; i &amp;lt; hexString.length() / 2; i++) {
+            String oneHexa = hexString.substring(i * 2, i * 2 + 2);
+            bytes[i] = Byte.parseByte(oneHexa, 16);
+        }
+        try {
+            return new String(bytes, &amp;quot;ASCII&amp;quot;);
+        } catch (UnsupportedEncodingException e) {
+            throw new RuntimeException(e);
+        }
+    }
+    
+    @Override
+    public void destroy() {
+        
+    }
+    
+    @Override
+    public void init(FilterConfig pArg0) throws ServletException {
+        
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Suggested Reading</title>
+      <link>http://tobiasbayer.com/post/2012-04-18-suggested-reading/</link>
+      <pubDate>Wed, 18 Apr 2012 00:00:00 +0000</pubDate>
+      
+      <guid>http://tobiasbayer.com/post/2012-04-18-suggested-reading/</guid>
+      <description>&lt;p&gt;&lt;a href=&#34;http://omgbloglol.com/post/15190003367/bad-or-my-unfortunately-unfavorable-review-of-bob&#34;&gt;Bad (or, my unfortunately unfavorable review of Bob Martin’s Ruby Midwest keynote)&lt;/a&gt;&lt;br /&gt;
+Critical thoughts on an Uncle Bob speech&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://www.exampler.com/blog/2012/02/12/if-i-were-an-architect&#34;&gt;If I were an Architect&lt;/a&gt;
+Thoughts on agile architecture&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://37signals.com/svn/posts/3124-give-it-five-minutes&#34;&gt;Give it five minutes&lt;/a&gt;
+Don&amp;rsquo;t be a hothead&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Ext GWT 3 ComboBox not firing ValueChangeEvent</title>
+      <link>http://tobiasbayer.com/post/2012-03-17-ext-gwt-3-combobox-not-firing-valuechangeevent/</link>
+      <pubDate>Sat, 17 Mar 2012 00:00:00 +0000</pubDate>
+      
+      <guid>http://tobiasbayer.com/post/2012-03-17-ext-gwt-3-combobox-not-firing-valuechangeevent/</guid>
+      <description>&lt;p&gt;In the current beta version of &lt;a href=&#34;http://www.sencha.com/forum/showthread.php?184557-Ext-GWT-3.0-Beta-4-Now-Available&#34;&gt;Ext GWT 3 (beta4)&lt;/a&gt;, a &lt;code&gt;ComboBox&lt;/code&gt; does not fire a &lt;code&gt;ValueChangeEvent&lt;/code&gt; immediately after a value is selected. The event is only fired when the &lt;code&gt;ComboBox&lt;/code&gt; loses its focus or the return key is pressed inside the &lt;code&gt;ComboBox&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;To fire the &lt;code&gt;ValueChangeEvent&lt;/code&gt; immediately upon selection, you can add a &lt;code&gt;CollapseHandler&lt;/code&gt; as a workaround:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;
+combobox.addCollapseHandler(new CollapseHandler() {
+	@Override
+	public void onCollapse(CollapseEvent event) {
+		combobox.setValue(combobox.getCurrentValue(), true);
+	}
+});
+
+&lt;/code&gt;&lt;/pre&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Using CoverMe with Jenkins</title>
+      <link>http://tobiasbayer.com/post/2012-03-06-using-coverme-with-jenkins/</link>
+      <pubDate>Tue, 06 Mar 2012 00:00:00 +0000</pubDate>
+      
+      <guid>http://tobiasbayer.com/post/2012-03-06-using-coverme-with-jenkins/</guid>
+      <description>&lt;p&gt;&lt;a href=&#34;https://github.com/markbates/cover_me&#34;&gt;CoverMe&lt;/a&gt; is a code coverage tool for Ruby 1.9.&lt;/p&gt;
+
+&lt;p&gt;Using &lt;a href=&#34;http://jenkins-ci.org/&#34;&gt;Jenkins&lt;/a&gt; for CI, you can display the coverage results in your project overview even though Jenkins does not support the original output format of CoverMe.&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Download and install the Emma plugin via the Plugins page of your Jenkins installation.&lt;/li&gt;
+&lt;li&gt;Install CoverMe for your Rails project as described on the project page on &lt;a href=&#34;https://github.com/markbates/cover_me&#34;&gt;GitHub&lt;/a&gt;.&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;Edit &lt;code&gt;lib/tasks/cover_me.rake&lt;/code&gt; and make the &lt;code&gt;:report&lt;/code&gt; task look like this:
+{% codeblock lang:ruby%}
+task :report do
+require &amp;lsquo;cover_me&amp;rsquo;
+CoverMe.config.formatter = CoverMe::EmmaFormatter
+CoverMe.config.at_exit = Proc.new {}
+CoverMe.complete!
+end
+```&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;Configure your build job in Jenkins to publish the Emma coverage results from &lt;code&gt;coverage/coverage.xml&lt;/code&gt;.&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Suggested Reading</title>
+      <link>http://tobiasbayer.com/post/2012-01-28-suggested-reading/</link>
+      <pubDate>Sat, 28 Jan 2012 00:00:00 +0000</pubDate>
+      
+      <guid>http://tobiasbayer.com/post/2012-01-28-suggested-reading/</guid>
+      <description>&lt;p&gt;&lt;a href=&#34;http://rdegges.com/on-programming-deadlines&#34;&gt;On Programming Deadlines&lt;/a&gt;&lt;br /&gt;
+Guidelines for coping with deadlines&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://mikebernat.com/blog/Egoless_Programming_-_Developing_Without_the_Attitude&#34;&gt;Egoless Programming - Developing Without the
+Attitude&lt;/a&gt;&lt;br /&gt;
+A little older article for those of us with a magnificent ego.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://www.smashingmagazine.com/2011/09/28/youre-pricing-it-wrong-software-pricing-demystified/&#34;&gt;You&amp;rsquo;re Pricing It Wrong: Software Pricing
+Demystified&lt;/a&gt;&lt;br /&gt;
+Basic economics for developers.&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

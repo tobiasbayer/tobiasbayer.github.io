@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Spring on Tobias Bayer</title>
+    <link>http://tobiasbayer.com/categories/spring/</link>
+    <description>Recent content in Spring on Tobias Bayer</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sun, 11 Nov 2012 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://tobiasbayer.com/categories/spring/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Integrating Vaadin 7 and Spring</title>
+      <link>http://tobiasbayer.com/post/2012-11-11-integrating-vaadin-7-and-spring/</link>
+      <pubDate>Sun, 11 Nov 2012 00:00:00 +0000</pubDate>
+      
+      <guid>http://tobiasbayer.com/post/2012-11-11-integrating-vaadin-7-and-spring/</guid>
+      <description>&lt;p&gt;I am currently building an administration interface for &lt;a href=&#34;http://tweetsqueue.com&#34;&gt;TweetsQueue&lt;/a&gt; with Vaadin 7.
+Fortunately Spring integration for Vaadin 7 is available as a &lt;a href=&#34;http://vaadin.com/directory#addon/springvaadinintegration&#34;&gt;Vaadin add-on&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;Only two simple steps are necessary to get full autowiring support for your Vaadin classes.&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Add the Spring integration as a dependency. Here&amp;rsquo;s the relevant excerpt of my &lt;code&gt;build.gradle&lt;/code&gt;:&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;pre&gt;&lt;code&gt;...
+repositories {
+	mavenRepo url: &#39;http://repo1.maven.org/maven2/&#39;, artifactUrls: [&#39;http://maven.springframework.org/milestone&#39;, &#39;http://maven.vaadin.com/vaadin-addons&#39;]
+}
+
+
+dependencies {
+	...
+	
+	runtime &#39;ru.xpoft.vaadin:spring-vaadin-integration:1.6.2&#39;
+	
+	...
+}
+...
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Define the Spring integration servlet and your main UI bean in your &lt;code&gt;web.xml&lt;/code&gt;:&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;lt;?xml version=&amp;quot;1.0&amp;quot; encoding=&amp;quot;UTF-8&amp;quot;?&amp;gt;
+&amp;lt;web-app id=&amp;quot;WebApp_ID&amp;quot; version=&amp;quot;2.4&amp;quot;
+	xmlns=&amp;quot;http://java.sun.com/xml/ns/j2ee&amp;quot; xmlns:xsi=&amp;quot;http://www.w3.org/2001/XMLSchema-instance&amp;quot;
+	xsi:schemaLocation=&amp;quot;http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd&amp;quot;&amp;gt;
+	&amp;lt;context-param&amp;gt;
+		&amp;lt;param-name&amp;gt;contextConfigLocation&amp;lt;/param-name&amp;gt;
+		&amp;lt;param-value&amp;gt;classpath*:applicationContext*.xml&amp;lt;/param-value&amp;gt;
+	&amp;lt;/context-param&amp;gt;
+
+	&amp;lt;listener&amp;gt;
+		&amp;lt;listener-class&amp;gt;org.springframework.web.context.ContextLoaderListener&amp;lt;/listener-class&amp;gt;
+	&amp;lt;/listener&amp;gt;
+	
+	&amp;lt;servlet&amp;gt;
+        &amp;lt;servlet-name&amp;gt;VaadinServlet&amp;lt;/servlet-name&amp;gt;
+        &amp;lt;servlet-class&amp;gt;ru.xpoft.vaadin.SpringVaadinServlet&amp;lt;/servlet-class&amp;gt;
+        &amp;lt;init-param&amp;gt;
+            &amp;lt;param-name&amp;gt;beanName&amp;lt;/param-name&amp;gt;
+            &amp;lt;!-- 
+            	This is the name of your main Vaadin UI class.
+            	You should declare it as a prototype-scoped component (e.g. @Component @Scope(&amp;quot;protoype&amp;quot;)).
+            --&amp;gt;
+            &amp;lt;param-value&amp;gt;mainUI&amp;lt;/param-value&amp;gt; 
+        &amp;lt;/init-param&amp;gt;
+    &amp;lt;/servlet&amp;gt;
+
+    &amp;lt;servlet-mapping&amp;gt;
+        &amp;lt;servlet-name&amp;gt;VaadinServlet&amp;lt;/servlet-name&amp;gt;
+        &amp;lt;url-pattern&amp;gt;/*&amp;lt;/url-pattern&amp;gt;
+    &amp;lt;/servlet-mapping&amp;gt;
+&amp;lt;/web-app&amp;gt;    
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;You can now autowire your views (declared as Spring beans) into your main ui class and display them as needed.&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>OpenEntityManagerInViewFilter</title>
+      <link>http://tobiasbayer.com/post/openentitymanagerinviewfilter/</link>
+      <pubDate>Mon, 16 Aug 2010 00:00:00 +0000</pubDate>
+      
+      <guid>http://tobiasbayer.com/post/openentitymanagerinviewfilter/</guid>
+      <description>&lt;p&gt;When using Spring and Hibernate you may be facing
+&lt;code&gt;org.hibernate.LazyInitializationException&lt;/code&gt;s because your view has no
+open database session. You may often see the recommendation to use an
+&lt;code&gt;OpenSessionInViewFilter&lt;/code&gt; to cope with this problem. But what if you are
+using an &lt;code&gt;EntityManager&lt;/code&gt; rather than a session? Just use the
+&lt;code&gt;OpenEntityManagerInViewFilter&lt;/code&gt; instead!&lt;/p&gt;
+
+&lt;p&gt;Here is how to do it:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;     &amp;lt;filter&amp;gt;
+         &amp;lt;filter-name&amp;gt;openEntityManagerFilter&amp;lt;/filter-name&amp;gt;
+          &amp;lt;filter-class&amp;gt;
+              org.springframework.orm.jpa.support.OpenEntityManagerInViewFilter
+          &amp;lt;/filter-class&amp;gt;
+          &amp;lt;init-param&amp;gt;
+              &amp;lt;param-name&amp;gt;entityManagerFactoryBeanName&amp;lt;/param-name&amp;gt;
+              &amp;lt;param-value&amp;gt;entityManagerFactory&amp;lt;/param-value&amp;gt;
+          &amp;lt;/init-param&amp;gt;
+      &amp;lt;/filter&amp;gt;
+ 
+      &amp;lt;filter-mapping&amp;gt;
+          &amp;lt;filter-name&amp;gt;openEntityManagerFilter&amp;lt;/filter-name&amp;gt;
+          &amp;lt;url-pattern&amp;gt;/requestPathToApplyFilterTo/*&amp;lt;/url-pattern&amp;gt;
+      &amp;lt;/filter-mapping&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;DISCLAIMER: While being an easy way to avoid
+&lt;code&gt;org.hibernate.LazyInitializationException&lt;/code&gt;s, using an open database
+connection in view pattern is not always a good solution when it comes
+to &lt;a href=&#34;http://heapdump.wordpress.com/2010/04/04/should-i-use-open-session-in-view/&#34;&gt;performance and memory efficency&lt;/a&gt;.
+Use with care!&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>PropertyPlaceholderConfigurer only works with ApplicationContext</title>
+      <link>http://tobiasbayer.com/post/propertyplaceholderconfigurer-only-works-with-applicationcontext/</link>
+      <pubDate>Sun, 04 Jul 2010 00:00:00 +0000</pubDate>
+      
+      <guid>http://tobiasbayer.com/post/propertyplaceholderconfigurer-only-works-with-applicationcontext/</guid>
+      <description>&lt;p&gt;In a Spring application, you can use the &lt;code&gt;PropertyPlaceholderConfigurer&lt;/code&gt;
+to use properties in your Spring configuration.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;lt;bean class=&amp;quot;org.springframework.beans.factory.config.PropertyPlaceholderConfigurer&amp;quot;&amp;gt;
+    &amp;lt;property name=&amp;quot;location&amp;quot;&amp;gt;
+        &amp;lt;value&amp;gt;common.properties&amp;lt;/value&amp;gt;
+    &amp;lt;/property&amp;gt;
+&amp;lt;/bean&amp;gt;
+      
+&amp;lt;bean id=&amp;quot;clientProxyFactory&amp;quot; class=&amp;quot;org.apache.cxf.jaxws.JaxWsProxyFactoryBean&amp;quot;&amp;gt;
+    &amp;lt;property name=&amp;quot;serviceClass&amp;quot; value=&amp;quot;com.sample.Service&amp;quot;/&amp;gt;
+    &amp;lt;property name=&amp;quot;address&amp;quot; value=&amp;quot;${address}&amp;quot;/&amp;gt;
+&amp;lt;/bean&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;But beware: Replacing the properties with the values from the property
+file only works if you use an &lt;code&gt;ApplicationContext&lt;/code&gt; for retrieving your
+beans. It will not work when using a &lt;code&gt;BeanFactory&lt;/code&gt;.&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Spring configuration wildcards oddity</title>
+      <link>http://tobiasbayer.com/post/spring-configuration-wildcards-oddity/</link>
+      <pubDate>Sat, 12 Jun 2010 00:00:00 +0000</pubDate>
+      
+      <guid>http://tobiasbayer.com/post/spring-configuration-wildcards-oddity/</guid>
+      <description>&lt;p&gt;When configuring Spring with wildcards by using
+&lt;code&gt;@ContextConfiguration(locations ={&amp;quot;classpath:**/HelloWorld.xml&amp;quot;})&lt;/code&gt; it
+may happen that the Spring container throws an exception like this even
+if the content of your configuration file is correct:&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;Exception: Error creating bean with name &#39;com.sample.SampleBean&#39;:  Injection of autowired dependencies failed; nested exception is org.springframework.beans.factory.BeanCreationException: Could not autowire field: private com.sample.OtherBean com.sample.SampleBean.otherBean;  nested exception is org.springframework.beans.factory.NoSuchBeanDefinitionException:  No matching bean of type [com.sample.OtherBean] found for dependency: expected at least 1 bean which qualifies as autowire candidate for this dependency.&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;In my case, the problem was that I misspelled the name of the Spring
+configuration file as &lt;code&gt;HeloWorld.xml&lt;/code&gt; If I had not used any wildcards in
+the configuration annotation, Spring would have thrown a more explicit
+exception that would have told me that the configuration file could not
+be found.&lt;/p&gt;
+
+&lt;p&gt;But as soon as you use wildcards, Spring does not complain
+about a missing configuration file but simply does not know the beans
+defined in the file.&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

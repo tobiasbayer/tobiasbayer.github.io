@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Objective C on Tobias Bayer</title>
+    <link>http://tobiasbayer.com/categories/objective-c/</link>
+    <description>Recent content in Objective C on Tobias Bayer</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Tue, 16 Oct 2012 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://tobiasbayer.com/categories/objective-c/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Switching Between Dock and Status Bar Mode in Cocoa</title>
+      <link>http://tobiasbayer.com/post/2012-10-16-switching-between-dock-and-status-bar-mode-in-cocoa/</link>
+      <pubDate>Tue, 16 Oct 2012 00:00:00 +0000</pubDate>
+      
+      <guid>http://tobiasbayer.com/post/2012-10-16-switching-between-dock-and-status-bar-mode-in-cocoa/</guid>
+      <description>&lt;p&gt;In this blog post I&amp;rsquo;ll show you how to make a Cocoa app that can switch between dock icon and statusbar icon mode.&lt;/p&gt;
+
+&lt;p&gt;For the basics on how to create a statusbar app see &lt;a href=&#34;http://cocoatutorial.grapewave.com/2010/01/creating-a-status-bar-application&#34;&gt;Cocoa Tips and Tricks&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;I&amp;rsquo;ve tried several approaches to this topic but any other than the one I describe here had minor to major glitches such as not activating windows correctly when in statusbar mode for example.&lt;/p&gt;
+
+&lt;p&gt;In order to work fine, your application has to be a statusbar app by default.
+You achieve this by adding the key &lt;code&gt;LSUIElement&lt;/code&gt; with a value of &lt;code&gt;YES&lt;/code&gt; to your &lt;code&gt;&amp;lt;Application&amp;gt;-Info.plist&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;Now, when your application launches, check whether you want to display the statusbar icon or the dock icon. I do this based on the user&amp;rsquo;s preference in this example.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;- (void)applicationDidFinishLaunching:(NSNotification *)notification {
+	if(![[NSUserDefaults standardUserDefaults] boolForKey:@&amp;quot;showDockIcon&amp;quot;]) {
+		// Create a status item and display it in the statusbar
+		self.statusItem = [[NSStatusBar systemStatusBar] statusItemWithLength:NSVariableStatusItemLength];
+		[self.statusItem setMenu:self.statusBarMenu];
+		[self.statusItem setHighlightMode:YES];
+		[self.statusItem setImage:[NSImage imageNamed:@&amp;quot;barimage&amp;quot;]];
+		[self.statusItem setAlternateImage:[NSImage imageNamed:@&amp;quot;barimage-highlighted&amp;quot;]];
+	} else {
+		// Bring the dock icon to the front (initially hidden with LSUIElement = YES in &amp;lt;Application&amp;gt;-Info.plist)
+		ProcessSerialNumber psn = { 0, kCurrentProcess };
+		TransformProcessType(&amp;amp;psn, kProcessTransformToForegroundApplication);
+	}
+}
+&lt;/code&gt;&lt;/pre&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>ASIHTTPRequest and ARC</title>
+      <link>http://tobiasbayer.com/post/2012-10-09-asihttprequest-and-arc/</link>
+      <pubDate>Tue, 09 Oct 2012 00:00:00 +0000</pubDate>
+      
+      <guid>http://tobiasbayer.com/post/2012-10-09-asihttprequest-and-arc/</guid>
+      <description>&lt;p&gt;I wanted to use &lt;a href=&#34;https://github.com/pokeb/asi-http-request&#34;&gt;ASIHTTPRequest&lt;/a&gt; in one of my OS X projects.
+My project is ARC enabled. ASIHTTPRequest does not support ARC.
+One solution would be to add all the &lt;code&gt;.h&lt;/code&gt; and &lt;code&gt;.m&lt;/code&gt; files from ASIHTTPRequest to your project and
+set the &lt;code&gt;-fno-objc-arc flag&lt;/code&gt; for each &lt;code&gt;.m&lt;/code&gt; file.&lt;/p&gt;
+
+&lt;p&gt;I created a static library for ASIHTTPRequest and only added the &lt;code&gt;.h&lt;/code&gt; files to my project instead.
+Then I also added the static library and made sure Xcode links against it in the linking
+phase of the build.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://codebrickie.com/files/libASIMacLibrary.a&#34;&gt;Here&lt;/a&gt; is the static library for you to use in your own projects.&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Suggested Reading</title>
+      <link>http://tobiasbayer.com/post/2011-12-05-suggested-reading/</link>
+      <pubDate>Mon, 05 Dec 2011 00:00:00 +0000</pubDate>
+      
+      <guid>http://tobiasbayer.com/post/2011-12-05-suggested-reading/</guid>
+      <description>&lt;p&gt;I&amp;rsquo;m going to post some links to interesting articles here every now and then.
+Here&amp;rsquo;s the first bunch:&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://lizkeogh.com/2011/11/20/scrum-and-kanban-both-the-same-only-different/&#34;&gt;Scrum and Kanban: both the same, only different&lt;/a&gt;&lt;br /&gt;
+A nice comparison between Scrum and Kanban.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://sealedabstract.com/rants/why-software-projects-are-terrible-and-how-not-to-fix-them/&#34;&gt;Why Software Projects are Terrible and How Not To Fix Them&lt;/a&gt;&lt;br /&gt;
+Best practices alone cannot make a difference.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://iphonedevelopertips.com/objective-c/introduction-to-blocks-in-objective-c-part-1.html&#34;&gt;Introduction to Blocks in Objective-C&lt;/a&gt;&lt;br /&gt;
+A really comprehensive explanation of blocks in Objective-C.&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Ui on Tobias Bayer</title>
+    <link>http://tobiasbayer.com/categories/ui/</link>
+    <description>Recent content in Ui on Tobias Bayer</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Thu, 03 Jul 2014 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://tobiasbayer.com/categories/ui/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Sneaking Custom CSS into a GXT Grid</title>
+      <link>http://tobiasbayer.com/post/2014-07-03-sneaking-custom-css-into-a-gxt-grid/</link>
+      <pubDate>Thu, 03 Jul 2014 00:00:00 +0000</pubDate>
+      
+      <guid>http://tobiasbayer.com/post/2014-07-03-sneaking-custom-css-into-a-gxt-grid/</guid>
+      <description>&lt;p&gt;Every time I try to add some custom CSS to a Sencha GXT 3 &lt;code&gt;Grid&lt;/code&gt; I have to look up the details again
+because of the relatively large amount of unintuitive code that is necessary for that simple task.&lt;/p&gt;
+
+&lt;p&gt;So I decided to write a short wrap-up of the process as a reference.&lt;/p&gt;
+
+&lt;p&gt;First create a file in the client classpath with your custom CSS in it.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;
+.cellDisabled {
+  background-color: #EEEEEE !important;
+  color: #000000;
+}
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Next, create a custom &lt;code&gt;MyGridAppearance&lt;/code&gt; that extends the &lt;code&gt;GridAppearance&lt;/code&gt; your application
+is using (e.g. &lt;code&gt;GrayGridAppearance&lt;/code&gt;).&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;
+public class MyGridAppearance extends GrayGridAppearance {
+
+}
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;In this &lt;code&gt;Appearance&lt;/code&gt; include an interface that extends the style of the component you want
+to add your custom style to. The interface must include a method named after your custom
+CSS style.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;
+public class MyGridAppearance extends GrayGridAppearance {
+
+    public interface MyGridStyle extends GrayGridStyle {
+        String cellDisabled();
+    }
+}
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Now include another interface that pulls your CSS file into the bundle. It must have a
+&lt;code&gt;@Source&lt;/code&gt; annotation with all the CSS files along the inheritance path and your custom CSS
+file as well.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;
+public class MyGridAppearance extends GrayGridAppearance {
+
+    public interface MyGridStyle extends GrayGridStyle {
+        String cellDisabled();
+    }
+
+    public interface MyGridResources extends GrayGridResources, ClientBundle {
+
+        @Override
+        @Source({ &amp;quot;com/sencha/gxt/theme/base/client/grid/Grid.css&amp;quot;,
+                &amp;quot;com/sencha/gxt/theme/gray/client/grid/GrayGrid.css&amp;quot;,
+                &amp;quot;com/codebrickie/sample/client/css/MyGrid.css&amp;quot; })
+        MyGridStyle css();
+    }
+}
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;The last step for the &lt;code&gt;Appearance&lt;/code&gt; is to implement two constructors.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;
+public class MyGridAppearance extends GrayGridAppearance {
+
+    public interface MyGridStyle extends GrayGridStyle {
+        String cellDisabled();
+    }
+
+    public interface MyGridResources extends GrayGridResources, ClientBundle {
+
+        @Override
+        @Source({ &amp;quot;com/sencha/gxt/theme/base/client/grid/Grid.css&amp;quot;,
+                &amp;quot;com/sencha/gxt/theme/gray/client/grid/GrayGrid.css&amp;quot;,
+                &amp;quot;com/codebrickie/sample/client/css/MyGrid.css&amp;quot; })
+        MyGridStyle css();
+    }
+    
+    public MyGridAppearance() {
+        this(GWT.&amp;lt;MyGridResources&amp;gt; create(MyGridResources.class));
+    }
+
+    public MyGridAppearance(final MyGridResources resources) {
+        super(resources);
+    }
+}
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Now that the &lt;code&gt;Appearance&lt;/code&gt; is finished, you have to set it to your grid upon creation.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;//...
+
+grid = new Grid&amp;lt;MyModel&amp;gt;(store, columnModel, new GridView&amp;lt;MyModel&amp;gt;(
+                new MyGridAppearance()));
+//...
+}
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Afterwards you can use your custom style e.g. in &lt;code&gt;getColStyle()&lt;/code&gt;.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;//...
+
+GridViewConfig&amp;lt;MyModel&amp;gt; viewConfig = new GridViewConfig&amp;lt;MyModel&amp;gt;() {
+
+	final MyGridStyle styles = (MyGridStyle) ((MyGridAppearance) grid
+		.getView().getAppearance())
+		.styles();
+
+	@Override
+	public String getColStyle(final MyModel model,
+			final ValueProvider&amp;lt;? super MyModel, ?&amp;gt; valueProvider, final int rowIndex,
+			final int colIndex) {
+		String style = null;
+
+		if (!model.isEnabled()) {
+			style = styles.cellDisabled();
+		}
+
+		return style;
+	}
+
+	@Override
+	public String getRowStyle(final MyModel model, final int rowIndex) {
+		return null;
+	}
+};
+        
+//...
+&lt;/code&gt;&lt;/pre&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Ext GWT 3 ComboBox not firing ValueChangeEvent</title>
+      <link>http://tobiasbayer.com/post/2012-03-17-ext-gwt-3-combobox-not-firing-valuechangeevent/</link>
+      <pubDate>Sat, 17 Mar 2012 00:00:00 +0000</pubDate>
+      
+      <guid>http://tobiasbayer.com/post/2012-03-17-ext-gwt-3-combobox-not-firing-valuechangeevent/</guid>
+      <description>&lt;p&gt;In the current beta version of &lt;a href=&#34;http://www.sencha.com/forum/showthread.php?184557-Ext-GWT-3.0-Beta-4-Now-Available&#34;&gt;Ext GWT 3 (beta4)&lt;/a&gt;, a &lt;code&gt;ComboBox&lt;/code&gt; does not fire a &lt;code&gt;ValueChangeEvent&lt;/code&gt; immediately after a value is selected. The event is only fired when the &lt;code&gt;ComboBox&lt;/code&gt; loses its focus or the return key is pressed inside the &lt;code&gt;ComboBox&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;To fire the &lt;code&gt;ValueChangeEvent&lt;/code&gt; immediately upon selection, you can add a &lt;code&gt;CollapseHandler&lt;/code&gt; as a workaround:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;
+combobox.addCollapseHandler(new CollapseHandler() {
+	@Override
+	public void onCollapse(CollapseEvent event) {
+		combobox.setValue(combobox.getCurrentValue(), true);
+	}
+});
+
+&lt;/code&gt;&lt;/pre&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

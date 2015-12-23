@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Arc on Tobias Bayer</title>
+    <link>http://tobiasbayer.com/categories/arc/</link>
+    <description>Recent content in Arc on Tobias Bayer</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Tue, 09 Oct 2012 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://tobiasbayer.com/categories/arc/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>ASIHTTPRequest and ARC</title>
+      <link>http://tobiasbayer.com/post/2012-10-09-asihttprequest-and-arc/</link>
+      <pubDate>Tue, 09 Oct 2012 00:00:00 +0000</pubDate>
+      
+      <guid>http://tobiasbayer.com/post/2012-10-09-asihttprequest-and-arc/</guid>
+      <description>&lt;p&gt;I wanted to use &lt;a href=&#34;https://github.com/pokeb/asi-http-request&#34;&gt;ASIHTTPRequest&lt;/a&gt; in one of my OS X projects.
+My project is ARC enabled. ASIHTTPRequest does not support ARC.
+One solution would be to add all the &lt;code&gt;.h&lt;/code&gt; and &lt;code&gt;.m&lt;/code&gt; files from ASIHTTPRequest to your project and
+set the &lt;code&gt;-fno-objc-arc flag&lt;/code&gt; for each &lt;code&gt;.m&lt;/code&gt; file.&lt;/p&gt;
+
+&lt;p&gt;I created a static library for ASIHTTPRequest and only added the &lt;code&gt;.h&lt;/code&gt; files to my project instead.
+Then I also added the static library and made sure Xcode links against it in the linking
+phase of the build.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://codebrickie.com/files/libASIMacLibrary.a&#34;&gt;Here&lt;/a&gt; is the static library for you to use in your own projects.&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

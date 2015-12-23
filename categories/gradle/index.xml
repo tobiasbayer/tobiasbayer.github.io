@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Gradle on Tobias Bayer</title>
+    <link>http://tobiasbayer.com/categories/gradle/</link>
+    <description>Recent content in Gradle on Tobias Bayer</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Tue, 17 May 2011 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://tobiasbayer.com/categories/gradle/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Starting Jetty in debug mode with Gradle</title>
+      <link>http://tobiasbayer.com/post/start-jetty-in-debug-mode-with-gradle/</link>
+      <pubDate>Tue, 17 May 2011 00:00:00 +0000</pubDate>
+      
+      <guid>http://tobiasbayer.com/post/start-jetty-in-debug-mode-with-gradle/</guid>
+      <description>&lt;p&gt;You can add the &lt;a href=&#34;http://www.gradle.org/jetty_plugin.html&#34;&gt;Jetty plugin&lt;/a&gt;
+to your gradle build file. Then you are able to start Jetty with your
+application by running &lt;code&gt;gradle jettyRun&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;If you want to be able to
+debug your application remotely, just set your &lt;code&gt;GRADLE_OPTS&lt;/code&gt; to
+&lt;code&gt;GRADLE_OPTS=&amp;quot;-Xdebug -Xrunjdwp:transport=dt_socket,address=9999,server=y,suspend=n&amp;quot;&lt;/code&gt;
+before starting Jetty. Jetty will then listen on the specified port for
+incoming remote debugging connections.&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Gradle and Wicket</title>
+      <link>http://tobiasbayer.com/post/gradle-and-wicket/</link>
+      <pubDate>Sat, 30 Apr 2011 00:00:00 +0000</pubDate>
+      
+      <guid>http://tobiasbayer.com/post/gradle-and-wicket/</guid>
+      <description>&lt;p&gt;To make sure &lt;a href=&#34;http://www.gradle.org&#34;&gt;Gradle&lt;/a&gt; packs your &lt;code&gt;*.html&lt;/code&gt; files
+into your WAR file when developing a &lt;a href=&#34;http://wicket.apache.org&#34;&gt;Wicket&lt;/a&gt;
+application, include your Java directory as a resource directory in your
+&lt;code&gt;build.gradle&lt;/code&gt;:&lt;/p&gt;
+
+&lt;p&gt;{% codeblock lang:java%}
+sourceSets {
+    main {
+        java {
+            srcDir &amp;lsquo;src/main/java&amp;rsquo;
+        }
+        resources {
+            srcDir &amp;lsquo;src/main/resources&amp;rsquo;
+            srcDir &amp;lsquo;src/main/java&amp;rsquo;
+        }
+    }
+}
+```&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Building for different environments with Gradle</title>
+      <link>http://tobiasbayer.com/post/building-for-different-environments-with-gradle/</link>
+      <pubDate>Sat, 16 Apr 2011 00:00:00 +0000</pubDate>
+      
+      <guid>http://tobiasbayer.com/post/building-for-different-environments-with-gradle/</guid>
+      <description>&lt;p&gt;&lt;a href=&#34;http://gradle.org&#34;&gt;Gradle&lt;/a&gt; is a promising build tool. It offers ease of
+use as well as great flexibility when designing your build process. Here
+is how I use Gradle to configure my build artifact for different
+environments such as &amp;ldquo;development&amp;rdquo; and &amp;ldquo;production&amp;rdquo;.&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;Create a directory for every environment you want to build for in
+&lt;code&gt;src/main/environment&lt;/code&gt; e.g. &lt;code&gt;src/main/environment/dev&lt;/code&gt; and
+&lt;code&gt;src/main/environment/prod&lt;/code&gt;.&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;Put all of your environment dependent config files (&lt;code&gt;jdbc.properties&lt;/code&gt;, &lt;code&gt;context.xml&lt;/code&gt; etc.) there instead of
+&lt;code&gt;src/main/resources&lt;/code&gt;.&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;Create a file &lt;code&gt;tasks.gradle&lt;/code&gt; next to &lt;code&gt;build.gradle&lt;/code&gt; with the following content:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;task copyConfiguration &amp;lt;&amp;lt; {
+    println &amp;quot;Target environment: $environment&amp;quot;
+
+
+    copy {
+        from &amp;quot;src/main/environment/$environment&amp;quot;
+        into &amp;quot;src/main/resources&amp;quot;
+        include &amp;quot;**/*&amp;quot;
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;Add these lines at the beginning of &lt;code&gt;build.gradle&lt;/code&gt;:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;loadConfiguration()
+
+
+def loadConfiguration() {
+    def environment = hasProperty(&#39;env&#39;) ? env : &#39;dev&#39;
+    setProperty &#39;environment&#39;, environment
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;This will set the environment to &lt;code&gt;dev&lt;/code&gt; if you run your build without an
+environment parameter. You can pass in an environment with the &lt;code&gt;-P&lt;/code&gt;
+parameter like &lt;code&gt;gradle -Penv=prod build&lt;/code&gt;.&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Include the task file
+created before in your &lt;code&gt;build.gradle&lt;/code&gt; and define a dependency that makes
+sure the environment configuration files are copied to
+&lt;code&gt;src/main/resources&lt;/code&gt; before building:&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;pre&gt;&lt;code&gt;apply from: &#39;tasks.gradle&#39;
+
+processResources.dependsOn copyConfiguration
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;That&amp;rsquo;s it. You can now configure your build every time you execute it by
+passing in the environment name as a project property
+(&lt;code&gt;gradle -Penv=prod build&lt;/code&gt;).&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

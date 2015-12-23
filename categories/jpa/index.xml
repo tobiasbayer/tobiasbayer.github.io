@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Jpa on Tobias Bayer</title>
+    <link>http://tobiasbayer.com/categories/jpa/</link>
+    <description>Recent content in Jpa on Tobias Bayer</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Mon, 13 Dec 2010 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://tobiasbayer.com/categories/jpa/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>NOT EXISTS subquery with JPA 2.0 CriteriaBuilder</title>
+      <link>http://tobiasbayer.com/post/not-exists-subquery-with-jpa-2-0-criteriabuilder/</link>
+      <pubDate>Mon, 13 Dec 2010 00:00:00 +0000</pubDate>
+      
+      <guid>http://tobiasbayer.com/post/not-exists-subquery-with-jpa-2-0-criteriabuilder/</guid>
+      <description>&lt;p&gt;Assume you have a data model where you have a n:1 relationship from
+addresses to persons. The relationship is only navigable from addresses
+to persons (just as an example, please don&amp;rsquo;t think twice if this is good
+data modelling here).&lt;/p&gt;
+
+&lt;p&gt;Now you want to find all persons that do not have
+any addresses. In SQL, you would use a RIGHT JOIN in this case.&lt;/p&gt;
+
+&lt;p&gt;In JPA
+2.0 the implementation of RIGHT JOINS is optional for the persistence
+provider. The very popular ORM &lt;a href=&#34;http://www.hibernate.org&#34;&gt;Hibernate&lt;/a&gt;
+does not support RIGHT JOIN operations. In order to complete the task
+described above, you have to use a subquery. Here&amp;rsquo;s how to do it:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;CriteriaBuilder criteriaBuilder = mEntityManager.getCriteriaBuilder();
+
+CriteriaQuery query = criteriaBuilder.createQuery(Person.class);
+Root person = query.from(Person.class);
+query.select(person);
+
+Subquery subquery = query.subquery(Address.class);
+Root subRootEntity = subquery.from(Address.class);
+subquery.select(subRootEntity);
+
+Predicate correlatePredicate = criteriaBuilder.equal(subRootEntity.get(&amp;quot;Person&amp;quot;), person);
+subquery.where(correlatePredicate);
+query.where(criteriaBuilder.not(criteriaBuilder.exists(subquery)));
+
+TypedQuery typedQuery = mEntityManager.createQuery(query);
+List unreferencedPersons = typedQuery.getResultList();
+&lt;/code&gt;&lt;/pre&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

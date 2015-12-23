@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Git on Tobias Bayer</title>
+    <link>http://tobiasbayer.com/categories/git/</link>
+    <description>Recent content in Git on Tobias Bayer</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Tue, 28 Jan 2014 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://tobiasbayer.com/categories/git/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Adding Ticket Numbers To Git Commit Messages</title>
+      <link>http://tobiasbayer.com/post/2014-01-29-adding-ticket-numbers-to-git-commit-messages/</link>
+      <pubDate>Tue, 28 Jan 2014 00:00:00 +0000</pubDate>
+      
+      <guid>http://tobiasbayer.com/post/2014-01-29-adding-ticket-numbers-to-git-commit-messages/</guid>
+      <description>&lt;p&gt;We are using &lt;a href=&#34;http://www.redmine.org/&#34;&gt;Redmine&lt;/a&gt; for tracking our programming tasks in my
+current project.
+Like most other ticketing systems, it has the ability to link commits in your source code
+repositories to a ticket when the commit message refers the ticket number.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;Changes foo to bar because of baz.
+
+refs #1234
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;I became tired of adding the ticket number manually to each commit message.
+Fortunately, git can add the number by itself with the help of a little hook and a naming
+convention for your feature branches.&lt;/p&gt;
+
+&lt;p&gt;Your feature branch name should include the ticket number like so:
+&lt;code&gt;ticket-1234-awesome-feature&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;Now create the file &lt;code&gt;.git/hooks/commit-msg&lt;/code&gt; in your local repository with the following
+content:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;#!/bin/sh
+
+ticket=$(git symbolic-ref HEAD | awk -F- &#39;/ticket-/ {print $2}&#39;)
+if [ -n &amp;quot;$ticket&amp;quot; ]; then
+	echo &amp;quot;\nrefs #$ticket&amp;quot; &amp;gt;&amp;gt; $1
+fi
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;This extracts the ticket number from the branch name.
+The ticket number is then appended to your commit message on each commit when git executes
+the hook.&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Git Commit Snapshots</title>
+      <link>http://tobiasbayer.com/post/2012-06-27-git-commit-snapshots/</link>
+      <pubDate>Wed, 27 Jun 2012 00:00:00 +0000</pubDate>
+      
+      <guid>http://tobiasbayer.com/post/2012-06-27-git-commit-snapshots/</guid>
+      <description>&lt;p&gt;I tried &lt;a href=&#34;http://coderwall.com/p/xlatfq&#34;&gt;this&lt;/a&gt; today and came up with this:&lt;/p&gt;
+
+&lt;p&gt;{% youtube dPxGm7L94Q4 %}&lt;/p&gt;
+
+&lt;p&gt;25 commits to the repository in total.&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

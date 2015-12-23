@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Rails on Tobias Bayer</title>
+    <link>http://tobiasbayer.com/categories/rails/</link>
+    <description>Recent content in Rails on Tobias Bayer</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Tue, 06 Mar 2012 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://tobiasbayer.com/categories/rails/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Using CoverMe with Jenkins</title>
+      <link>http://tobiasbayer.com/post/2012-03-06-using-coverme-with-jenkins/</link>
+      <pubDate>Tue, 06 Mar 2012 00:00:00 +0000</pubDate>
+      
+      <guid>http://tobiasbayer.com/post/2012-03-06-using-coverme-with-jenkins/</guid>
+      <description>&lt;p&gt;&lt;a href=&#34;https://github.com/markbates/cover_me&#34;&gt;CoverMe&lt;/a&gt; is a code coverage tool for Ruby 1.9.&lt;/p&gt;
+
+&lt;p&gt;Using &lt;a href=&#34;http://jenkins-ci.org/&#34;&gt;Jenkins&lt;/a&gt; for CI, you can display the coverage results in your project overview even though Jenkins does not support the original output format of CoverMe.&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Download and install the Emma plugin via the Plugins page of your Jenkins installation.&lt;/li&gt;
+&lt;li&gt;Install CoverMe for your Rails project as described on the project page on &lt;a href=&#34;https://github.com/markbates/cover_me&#34;&gt;GitHub&lt;/a&gt;.&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;Edit &lt;code&gt;lib/tasks/cover_me.rake&lt;/code&gt; and make the &lt;code&gt;:report&lt;/code&gt; task look like this:
+{% codeblock lang:ruby%}
+task :report do
+require &amp;lsquo;cover_me&amp;rsquo;
+CoverMe.config.formatter = CoverMe::EmmaFormatter
+CoverMe.config.at_exit = Proc.new {}
+CoverMe.complete!
+end
+```&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;Configure your build job in Jenkins to publish the Emma coverage results from &lt;code&gt;coverage/coverage.xml&lt;/code&gt;.&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>
