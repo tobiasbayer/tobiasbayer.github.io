@@ -17,7 +17,7 @@
       <guid>http://tobiasbayer.com/post/2012-06-27-git-commit-snapshots/</guid>
       <description>&lt;p&gt;I tried &lt;a href=&#34;http://coderwall.com/p/xlatfq&#34;&gt;this&lt;/a&gt; today and came up with this:&lt;/p&gt;
 
-&lt;p&gt;{% youtube dPxGm7L94Q4 %}&lt;/p&gt;
+&lt;iframe width=&#34;640&#34; height=&#34;480&#34; src=&#34;http://www.youtube.com/embed/dPxGm7L94Q4?autoplay=0&#34;&gt;&lt;/iframe&gt;
 
 &lt;p&gt;25 commits to the repository in total.&lt;/p&gt;
 </description>

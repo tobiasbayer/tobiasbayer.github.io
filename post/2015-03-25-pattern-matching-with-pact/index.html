@@ -21,7 +21,6 @@
   <link rel="stylesheet" href="http://tobiasbayer.com/css/responsive.css">
   <link rel="stylesheet" href="http://tobiasbayer.com/css/theme.css">
   <link rel="stylesheet" href="http://tobiasbayer.com/css/custom.css">
-  <link rel="stylesheet" href="https://yandex.st/highlightjs/8.0/styles/default.min.css">
   
   
   <link href="http://tobiasbayer.com/index.xml" rel="alternate" type="application/rss+xml" title="Tobias Bayer" />
@@ -31,9 +30,6 @@
   <script type="text/javascript">var switchTo5x=true;</script>
   <script type="text/javascript" src="https://ws.sharethis.com/button/buttons.js"></script>
   <script type="text/javascript">stLight.options({publisher: "2b9fffc6-b3fe-4988-a0ef-4f9dcce98eaa", doNotHash: true, doNotCopy: true, hashAddressBar: false});</script>
-
-  <script src="https://yandex.st/highlightjs/8.0/highlight.min.js"></script>
-  <script>hljs.initHighlightingOnLoad();</script>
 
   <link rel="shortcut icon" type="image/x-icon" href="http://tobiasbayer.com/favicon.ico">
 </head>
@@ -52,7 +48,7 @@
       </div>
       <div id="social" class="col span_6">
         <ul>
-	  <li><a href="http://tobiasbayer.com/about">About</a></li>
+	  <li><a href="tyleabout">About</a></li>
           
           
           <li><a href="https://github.com/tobiasbayer" target="_blank">GitHub</a></li>
@@ -91,71 +87,73 @@
 
 <p>While <code>id</code> and <code>description</code> can be specified exactly by the consumer, the <code>random</code>-field cannot. We just know the provider will return a random 6-digit number as a string. So we create a regular expression for that inside a <code>PactDslJsonBody</code>.</p>
 
-<pre><code>@Override
-protected PactFragment createFragment(final ConsumerPactBuilder.PactDslWithProvider builder) {
-    Map&lt;String, String&gt; headers = new HashMap&lt;&gt;();
-    headers.put(&quot;Content-Type&quot;, &quot;application/json;charset=UTF-8&quot;);
+<p><div class="highlight" style="background: #f0f0f0"><pre style="line-height: 125%"><span style="color: #555555; font-weight: bold">@Override</span>
+<span style="color: #007020; font-weight: bold">protected</span> PactFragment <span style="color: #06287e">createFragment</span><span style="color: #666666">(</span><span style="color: #007020; font-weight: bold">final</span> ConsumerPactBuilder<span style="color: #666666">.</span><span style="color: #4070a0">PactDslWithProvider</span> builder<span style="color: #666666">)</span> <span style="color: #666666">{</span>
+    Map<span style="color: #666666">&lt;</span>String<span style="color: #666666">,</span> String<span style="color: #666666">&gt;</span> headers <span style="color: #666666">=</span> <span style="color: #007020; font-weight: bold">new</span> HashMap<span style="color: #666666">&lt;&gt;();</span>
+    headers<span style="color: #666666">.</span><span style="color: #4070a0">put</span><span style="color: #666666">(</span><span style="color: #4070a0">&quot;Content-Type&quot;</span><span style="color: #666666">,</span> <span style="color: #4070a0">&quot;application/json;charset=UTF-8&quot;</span><span style="color: #666666">);</span>
 
-    DslPart body = 
-            new PactDslJsonBody()
-                .numberValue(&quot;id&quot;, 1)
-                .stringValue(&quot;description&quot;, &quot;This is the description for product 1&quot;)
-                .stringMatcher(&quot;random&quot;, &quot;[0-9]{6}&quot;);
+    DslPart body <span style="color: #666666">=</span> 
+            <span style="color: #007020; font-weight: bold">new</span> PactDslJsonBody<span style="color: #666666">()</span>
+                <span style="color: #666666">.</span><span style="color: #4070a0">numberValue</span><span style="color: #666666">(</span><span style="color: #4070a0">&quot;id&quot;</span><span style="color: #666666">,</span> <span style="color: #40a070">1</span><span style="color: #666666">)</span>
+                <span style="color: #666666">.</span><span style="color: #4070a0">stringValue</span><span style="color: #666666">(</span><span style="color: #4070a0">&quot;description&quot;</span><span style="color: #666666">,</span> <span style="color: #4070a0">&quot;This is the description for product 1&quot;</span><span style="color: #666666">)</span>
+                <span style="color: #666666">.</span><span style="color: #4070a0">stringMatcher</span><span style="color: #666666">(</span><span style="color: #4070a0">&quot;random&quot;</span><span style="color: #666666">,</span> <span style="color: #4070a0">&quot;[0-9]{6}&quot;</span><span style="color: #666666">);</span>
 
-    return builder
-            .uponReceiving(&quot;a request for product details&quot;)
-            .path(&quot;/productdetails/1&quot;)
-            .method(&quot;GET&quot;)
-            .willRespondWith()
-            .headers(headers)
-            .status(200)
-            .body(body)
-            .toFragment();
-}
-</code></pre>
+    <span style="color: #007020; font-weight: bold">return</span> builder
+            <span style="color: #666666">.</span><span style="color: #4070a0">uponReceiving</span><span style="color: #666666">(</span><span style="color: #4070a0">&quot;a request for product details&quot;</span><span style="color: #666666">)</span>
+            <span style="color: #666666">.</span><span style="color: #4070a0">path</span><span style="color: #666666">(</span><span style="color: #4070a0">&quot;/productdetails/1&quot;</span><span style="color: #666666">)</span>
+            <span style="color: #666666">.</span><span style="color: #4070a0">method</span><span style="color: #666666">(</span><span style="color: #4070a0">&quot;GET&quot;</span><span style="color: #666666">)</span>
+            <span style="color: #666666">.</span><span style="color: #4070a0">willRespondWith</span><span style="color: #666666">()</span>
+            <span style="color: #666666">.</span><span style="color: #4070a0">headers</span><span style="color: #666666">(</span>headers<span style="color: #666666">)</span>
+            <span style="color: #666666">.</span><span style="color: #4070a0">status</span><span style="color: #666666">(</span><span style="color: #40a070">200</span><span style="color: #666666">)</span>
+            <span style="color: #666666">.</span><span style="color: #4070a0">body</span><span style="color: #666666">(</span>body<span style="color: #666666">)</span>
+            <span style="color: #666666">.</span><span style="color: #4070a0">toFragment</span><span style="color: #666666">();</span>
+<span style="color: #666666">}</span>
+</pre></div>
+</p>
 
 <p>When the consumer test is run, this Pactfile is created:</p>
 
-<pre><code>{
-  &quot;provider&quot; : {
-    &quot;name&quot; : &quot;Product_Details_Service&quot;
+<p><div class="highlight" style="background: #f0f0f0"><pre style="line-height: 125%">{
+  <span style="color: #062873; font-weight: bold">&quot;provider&quot;</span> : {
+    <span style="color: #062873; font-weight: bold">&quot;name&quot;</span> : <span style="color: #4070a0">&quot;Product_Details_Service&quot;</span>
   },
-  &quot;consumer&quot; : {
-    &quot;name&quot; : &quot;Product_Service&quot;
+  <span style="color: #062873; font-weight: bold">&quot;consumer&quot;</span> : {
+    <span style="color: #062873; font-weight: bold">&quot;name&quot;</span> : <span style="color: #4070a0">&quot;Product_Service&quot;</span>
   },
-  &quot;interactions&quot; : [ {
-    &quot;description&quot; : &quot;a request for product details&quot;,
-    &quot;request&quot; : {
-      &quot;method&quot; : &quot;GET&quot;,
-      &quot;path&quot; : &quot;/productdetails/1&quot;
+  <span style="color: #062873; font-weight: bold">&quot;interactions&quot;</span> : [ {
+    <span style="color: #062873; font-weight: bold">&quot;description&quot;</span> : <span style="color: #4070a0">&quot;a request for product details&quot;</span>,
+    <span style="color: #062873; font-weight: bold">&quot;request&quot;</span> : {
+      <span style="color: #062873; font-weight: bold">&quot;method&quot;</span> : <span style="color: #4070a0">&quot;GET&quot;</span>,
+      <span style="color: #062873; font-weight: bold">&quot;path&quot;</span> : <span style="color: #4070a0">&quot;/productdetails/1&quot;</span>
     },
-    &quot;response&quot; : {
-      &quot;status&quot; : 200,
-      &quot;headers&quot; : {
-        &quot;Content-Type&quot; : &quot;application/json;charset=UTF-8&quot;
+    <span style="color: #062873; font-weight: bold">&quot;response&quot;</span> : {
+      <span style="color: #062873; font-weight: bold">&quot;status&quot;</span> : <span style="color: #40a070">200</span>,
+      <span style="color: #062873; font-weight: bold">&quot;headers&quot;</span> : {
+        <span style="color: #062873; font-weight: bold">&quot;Content-Type&quot;</span> : <span style="color: #4070a0">&quot;application/json;charset=UTF-8&quot;</span>
       },
-      &quot;body&quot; : {
-        &quot;id&quot; : 1,
-        &quot;description&quot; : &quot;This is the description for product 1&quot;,
-        &quot;random&quot; : &quot;413558&quot;
+      <span style="color: #062873; font-weight: bold">&quot;body&quot;</span> : {
+        <span style="color: #062873; font-weight: bold">&quot;id&quot;</span> : <span style="color: #40a070">1</span>,
+        <span style="color: #062873; font-weight: bold">&quot;description&quot;</span> : <span style="color: #4070a0">&quot;This is the description for product 1&quot;</span>,
+        <span style="color: #062873; font-weight: bold">&quot;random&quot;</span> : <span style="color: #4070a0">&quot;413558&quot;</span>
       },
-      &quot;responseMatchingRules&quot; : {
-        &quot;$.body.random&quot; : {
-          &quot;regex&quot; : &quot;[0-9]{6}&quot;
+      <span style="color: #062873; font-weight: bold">&quot;responseMatchingRules&quot;</span> : {
+        <span style="color: #062873; font-weight: bold">&quot;$.body.random&quot;</span> : {
+          <span style="color: #062873; font-weight: bold">&quot;regex&quot;</span> : <span style="color: #4070a0">&quot;[0-9]{6}&quot;</span>
         }
       }
     }
   } ],
-  &quot;metadata&quot; : {
-    &quot;pact-specification&quot; : {
-      &quot;version&quot; : &quot;2.0.0&quot;
+  <span style="color: #062873; font-weight: bold">&quot;metadata&quot;</span> : {
+    <span style="color: #062873; font-weight: bold">&quot;pact-specification&quot;</span> : {
+      <span style="color: #062873; font-weight: bold">&quot;version&quot;</span> : <span style="color: #4070a0">&quot;2.0.0&quot;</span>
     },
-    &quot;pact-jvm&quot; : {
-      &quot;version&quot; : &quot;2.1.7&quot;
+    <span style="color: #062873; font-weight: bold">&quot;pact-jvm&quot;</span> : {
+      <span style="color: #062873; font-weight: bold">&quot;version&quot;</span> : <span style="color: #4070a0">&quot;2.1.7&quot;</span>
     }
   }
 }
-</code></pre>
+</pre></div>
+</p>
 
 <p>Note that Pact magically replaced the regex with a matching string inside the <code>body</code> definition. This makes sure the provider-stub returns something useful for the consumer when the consumer tests are run. But when the pact is verified against the provider, Pact will use the regular expression inside <code>responseMatchingRules</code> instead of just matching against the final string for each field in <code>body</code> that has a corresponding regex.</p>
 
@@ -199,9 +197,6 @@ protected PactFragment createFragment(final ConsumerPactBuilder.PactDslWithProvi
 
 
 </div>
-
-<script src="http://tobiasbayer.com/js/highlight.pack.js"></script>
-<script>hljs.initHighlightingOnLoad();</script>
 
 
 

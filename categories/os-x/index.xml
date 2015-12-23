@@ -26,21 +26,22 @@ You achieve this by adding the key &lt;code&gt;LSUIElement&lt;/code&gt; with a v
 
 &lt;p&gt;Now, when your application launches, check whether you want to display the statusbar icon or the dock icon. I do this based on the user&amp;rsquo;s preference in this example.&lt;/p&gt;
 
-&lt;pre&gt;&lt;code&gt;- (void)applicationDidFinishLaunching:(NSNotification *)notification {
-	if(![[NSUserDefaults standardUserDefaults] boolForKey:@&amp;quot;showDockIcon&amp;quot;]) {
-		// Create a status item and display it in the statusbar
-		self.statusItem = [[NSStatusBar systemStatusBar] statusItemWithLength:NSVariableStatusItemLength];
-		[self.statusItem setMenu:self.statusBarMenu];
-		[self.statusItem setHighlightMode:YES];
-		[self.statusItem setImage:[NSImage imageNamed:@&amp;quot;barimage&amp;quot;]];
-		[self.statusItem setAlternateImage:[NSImage imageNamed:@&amp;quot;barimage-highlighted&amp;quot;]];
-	} else {
-		// Bring the dock icon to the front (initially hidden with LSUIElement = YES in &amp;lt;Application&amp;gt;-Info.plist)
-		ProcessSerialNumber psn = { 0, kCurrentProcess };
-		TransformProcessType(&amp;amp;psn, kProcessTransformToForegroundApplication);
+&lt;p&gt;&lt;div class=&#34;highlight&#34; style=&#34;background: #f0f0f0&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;- (&lt;span style=&#34;color: #902000&#34;&gt;void&lt;/span&gt;)&lt;span style=&#34;color: #06287e&#34;&gt;applicationDidFinishLaunching:&lt;/span&gt;(&lt;span style=&#34;color: #007020&#34;&gt;NSNotification&lt;/span&gt; &lt;span style=&#34;color: #666666&#34;&gt;*&lt;/span&gt;)&lt;span style=&#34;color: #bb60d5&#34;&gt;notification&lt;/span&gt; {
+	&lt;span style=&#34;color: #007020; font-weight: bold&#34;&gt;if&lt;/span&gt;(&lt;span style=&#34;color: #666666&#34;&gt;!&lt;/span&gt;[[&lt;span style=&#34;color: #007020&#34;&gt;NSUserDefaults&lt;/span&gt; standardUserDefaults] &lt;span style=&#34;color: #002070; font-weight: bold&#34;&gt;boolForKey&lt;/span&gt;:&lt;span style=&#34;color: #4070a0&#34;&gt;@&amp;quot;showDockIcon&amp;quot;&lt;/span&gt;]) {
+		&lt;span style=&#34;color: #60a0b0; font-style: italic&#34;&gt;// Create a status item and display it in the statusbar&lt;/span&gt;
+		&lt;span style=&#34;color: #007020&#34;&gt;self&lt;/span&gt;.statusItem &lt;span style=&#34;color: #666666&#34;&gt;=&lt;/span&gt; [[NSStatusBar systemStatusBar] &lt;span style=&#34;color: #002070; font-weight: bold&#34;&gt;statusItemWithLength&lt;/span&gt;:NSVariableStatusItemLength];
+		[&lt;span style=&#34;color: #007020&#34;&gt;self&lt;/span&gt;.statusItem &lt;span style=&#34;color: #002070; font-weight: bold&#34;&gt;setMenu&lt;/span&gt;:&lt;span style=&#34;color: #007020&#34;&gt;self&lt;/span&gt;.statusBarMenu];
+		[&lt;span style=&#34;color: #007020&#34;&gt;self&lt;/span&gt;.statusItem &lt;span style=&#34;color: #002070; font-weight: bold&#34;&gt;setHighlightMode&lt;/span&gt;:&lt;span style=&#34;color: #007020&#34;&gt;YES&lt;/span&gt;];
+		[&lt;span style=&#34;color: #007020&#34;&gt;self&lt;/span&gt;.statusItem &lt;span style=&#34;color: #002070; font-weight: bold&#34;&gt;setImage&lt;/span&gt;:[NSImage &lt;span style=&#34;color: #002070; font-weight: bold&#34;&gt;imageNamed&lt;/span&gt;:&lt;span style=&#34;color: #4070a0&#34;&gt;@&amp;quot;barimage&amp;quot;&lt;/span&gt;]];
+		[&lt;span style=&#34;color: #007020&#34;&gt;self&lt;/span&gt;.statusItem &lt;span style=&#34;color: #002070; font-weight: bold&#34;&gt;setAlternateImage&lt;/span&gt;:[NSImage &lt;span style=&#34;color: #002070; font-weight: bold&#34;&gt;imageNamed&lt;/span&gt;:&lt;span style=&#34;color: #4070a0&#34;&gt;@&amp;quot;barimage-highlighted&amp;quot;&lt;/span&gt;]];
+	} &lt;span style=&#34;color: #007020; font-weight: bold&#34;&gt;else&lt;/span&gt; {
+		&lt;span style=&#34;color: #60a0b0; font-style: italic&#34;&gt;// Bring the dock icon to the front (initially hidden with LSUIElement = YES in &amp;lt;Application&amp;gt;-Info.plist)&lt;/span&gt;
+		ProcessSerialNumber psn &lt;span style=&#34;color: #666666&#34;&gt;=&lt;/span&gt; { &lt;span style=&#34;color: #40a070&#34;&gt;0&lt;/span&gt;, kCurrentProcess };
+		TransformProcessType(&lt;span style=&#34;color: #666666&#34;&gt;&amp;amp;&lt;/span&gt;psn, kProcessTransformToForegroundApplication);
 	}
 }
-&lt;/code&gt;&lt;/pre&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/p&gt;
 </description>
     </item>
     

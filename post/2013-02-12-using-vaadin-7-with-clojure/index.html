@@ -21,7 +21,6 @@
   <link rel="stylesheet" href="http://tobiasbayer.com/css/responsive.css">
   <link rel="stylesheet" href="http://tobiasbayer.com/css/theme.css">
   <link rel="stylesheet" href="http://tobiasbayer.com/css/custom.css">
-  <link rel="stylesheet" href="https://yandex.st/highlightjs/8.0/styles/default.min.css">
   
   
   <link href="http://tobiasbayer.com/index.xml" rel="alternate" type="application/rss+xml" title="Tobias Bayer" />
@@ -31,9 +30,6 @@
   <script type="text/javascript">var switchTo5x=true;</script>
   <script type="text/javascript" src="https://ws.sharethis.com/button/buttons.js"></script>
   <script type="text/javascript">stLight.options({publisher: "2b9fffc6-b3fe-4988-a0ef-4f9dcce98eaa", doNotHash: true, doNotCopy: true, hashAddressBar: false});</script>
-
-  <script src="https://yandex.st/highlightjs/8.0/highlight.min.js"></script>
-  <script>hljs.initHighlightingOnLoad();</script>
 
   <link rel="shortcut icon" type="image/x-icon" href="http://tobiasbayer.com/favicon.ico">
 </head>
@@ -52,7 +48,7 @@
       </div>
       <div id="social" class="col span_6">
         <ul>
-	  <li><a href="http://tobiasbayer.com/about">About</a></li>
+	  <li><a href="tyleabout">About</a></li>
           
           
           <li><a href="https://github.com/tobiasbayer" target="_blank">GitHub</a></li>
@@ -88,41 +84,43 @@ In this post I will show you how to create a Clojure/Vaadin 7 web application.</
 <p>First we need a <code>web.xml</code> file in <code>src/main/webapp/WEB-INF</code> that defines the Vaadin servlet and parametrizes
 it with our main UI class.</p>
 
-<pre><code>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
-&lt;web-app xmlns=&quot;http://java.sun.com/xml/ns/javaee&quot;
-	xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
-	xsi:schemaLocation=&quot;http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd&quot;
-	version=&quot;2.5&quot;&gt;
-    &lt;display-name&gt;Clojure Vaadin 7 Application&lt;/display-name&gt;
-    &lt;context-param&gt;
-        &lt;description&gt;Vaadin production mode&lt;/description&gt;
-        &lt;param-name&gt;productionMode&lt;/param-name&gt;
-        &lt;param-value&gt;false&lt;/param-value&gt;
-    &lt;/context-param&gt;
-    &lt;servlet&gt;
-        &lt;servlet-name&gt;Clojure Vaadin 7 Application&lt;/servlet-name&gt;
-        &lt;servlet-class&gt;com.vaadin.server.VaadinServlet&lt;/servlet-class&gt;
-        &lt;init-param&gt;
-            &lt;description&gt;Vaadin UI&lt;/description&gt;
-            &lt;param-name&gt;UI&lt;/param-name&gt;
-            &lt;param-value&gt;cljvaadin7.MyApplicationUI&lt;/param-value&gt;
-        &lt;/init-param&gt;
-    &lt;/servlet&gt;
-    &lt;servlet-mapping&gt;
-        &lt;servlet-name&gt;Clojure Vaadin 7 Application&lt;/servlet-name&gt;
-        &lt;url-pattern&gt;/*&lt;/url-pattern&gt;
-    &lt;/servlet-mapping&gt;
-&lt;/web-app&gt;
-</code></pre>
+<p><div class="highlight" style="background: #f0f0f0"><pre style="line-height: 125%"><span style="color: #007020">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</span>
+<span style="color: #062873; font-weight: bold">&lt;web-app</span> <span style="color: #4070a0">xmlns=&quot;http://java.sun.com/xml/ns/javaee&quot;</span>
+	<span style="color: #4070a0">xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;</span>
+	<span style="color: #4070a0">xsi:schemaLocation=&quot;http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd&quot;</span>
+	<span style="color: #4070a0">version=&quot;2.5&quot;</span><span style="color: #062873; font-weight: bold">&gt;</span>
+    <span style="color: #062873; font-weight: bold">&lt;display-name&gt;</span>Clojure Vaadin 7 Application<span style="color: #062873; font-weight: bold">&lt;/display-name&gt;</span>
+    <span style="color: #062873; font-weight: bold">&lt;context-param&gt;</span>
+        <span style="color: #062873; font-weight: bold">&lt;description&gt;</span>Vaadin production mode<span style="color: #062873; font-weight: bold">&lt;/description&gt;</span>
+        <span style="color: #062873; font-weight: bold">&lt;param-name&gt;</span>productionMode<span style="color: #062873; font-weight: bold">&lt;/param-name&gt;</span>
+        <span style="color: #062873; font-weight: bold">&lt;param-value&gt;</span>false<span style="color: #062873; font-weight: bold">&lt;/param-value&gt;</span>
+    <span style="color: #062873; font-weight: bold">&lt;/context-param&gt;</span>
+    <span style="color: #062873; font-weight: bold">&lt;servlet&gt;</span>
+        <span style="color: #062873; font-weight: bold">&lt;servlet-name&gt;</span>Clojure Vaadin 7 Application<span style="color: #062873; font-weight: bold">&lt;/servlet-name&gt;</span>
+        <span style="color: #062873; font-weight: bold">&lt;servlet-class&gt;</span>com.vaadin.server.VaadinServlet<span style="color: #062873; font-weight: bold">&lt;/servlet-class&gt;</span>
+        <span style="color: #062873; font-weight: bold">&lt;init-param&gt;</span>
+            <span style="color: #062873; font-weight: bold">&lt;description&gt;</span>Vaadin UI<span style="color: #062873; font-weight: bold">&lt;/description&gt;</span>
+            <span style="color: #062873; font-weight: bold">&lt;param-name&gt;</span>UI<span style="color: #062873; font-weight: bold">&lt;/param-name&gt;</span>
+            <span style="color: #062873; font-weight: bold">&lt;param-value&gt;</span>cljvaadin7.MyApplicationUI<span style="color: #062873; font-weight: bold">&lt;/param-value&gt;</span>
+        <span style="color: #062873; font-weight: bold">&lt;/init-param&gt;</span>
+    <span style="color: #062873; font-weight: bold">&lt;/servlet&gt;</span>
+    <span style="color: #062873; font-weight: bold">&lt;servlet-mapping&gt;</span>
+        <span style="color: #062873; font-weight: bold">&lt;servlet-name&gt;</span>Clojure Vaadin 7 Application<span style="color: #062873; font-weight: bold">&lt;/servlet-name&gt;</span>
+        <span style="color: #062873; font-weight: bold">&lt;url-pattern&gt;</span>/*<span style="color: #062873; font-weight: bold">&lt;/url-pattern&gt;</span>
+    <span style="color: #062873; font-weight: bold">&lt;/servlet-mapping&gt;</span>
+<span style="color: #062873; font-weight: bold">&lt;/web-app&gt;</span>
+</pre></div>
+</p>
 
 <p>As there is no such thing as a class in Clojure, we will use its Java interoperability to create
 a Java class that serves as our Vaadin UI main class.</p>
 
-<pre><code>(ns cljvaadin7.MyApplicationUI
-  (import [com.vaadin.ui VerticalLayout Label Button Button$ClickListener Notification])
-  (:gen-class
-    :extends com.vaadin.ui.UI))
-</code></pre>
+<p><div class="highlight" style="background: #f0f0f0"><pre style="line-height: 125%">(<span style="color: #007020; font-weight: bold">ns </span><span style="color: #bb60d5">cljvaadin7.MyApplicationUI</span>
+  (<span style="color: #007020">import </span>[<span style="color: #bb60d5">com.vaadin.ui</span> <span style="color: #bb60d5">VerticalLayout</span> <span style="color: #bb60d5">Label</span> <span style="color: #bb60d5">Button</span> <span style="color: #bb60d5">Button$ClickListener</span> <span style="color: #bb60d5">Notification</span>])
+  (<span style="color: #517918">:gen-class</span>
+    <span style="color: #517918">:extends</span> <span style="color: #bb60d5">com.vaadin.ui.UI</span>))
+</pre></div>
+</p>
 
 <p><code>:gen-class</code> will make the namespace available as a Java class.</p>
 
@@ -132,20 +130,21 @@ has only one argument (<code>request</code>). However, our Clojure <code>-init</
 The reason is that the function will receive &ldquo;<code>this</code>&rdquo; as the first argument.
 Now we can build our UI.</p>
 
-<pre><code>(defn- create-button
-  [caption action]
-  (doto (Button. caption) (add-action action)))
+<p><div class="highlight" style="background: #f0f0f0"><pre style="line-height: 125%">(<span style="color: #007020; font-weight: bold">defn- </span><span style="color: #bb60d5">create-button</span>
+  [<span style="color: #bb60d5">caption</span> <span style="color: #bb60d5">action</span>]
+  (<span style="color: #007020">doto </span>(<span style="color: #06287e">Button.</span> <span style="color: #bb60d5">caption</span>) (<span style="color: #06287e">add-action</span> <span style="color: #bb60d5">action</span>)))
 
-(defn- create-main-layout
+(<span style="color: #007020; font-weight: bold">defn- </span><span style="color: #bb60d5">create-main-layout</span>
   []
-  (doto (VerticalLayout.)
-	        (.addComponent (Label. &quot;Hello Clojure-Vaadin 7!&quot;))
-	        (.addComponent (create-button &quot;Push me!&quot; show-click-message))))
+  (<span style="color: #007020">doto </span>(<span style="color: #06287e">VerticalLayout.</span>)
+	        (<span style="color: #06287e">.addComponent</span> (<span style="color: #06287e">Label.</span> <span style="color: #4070a0">&quot;Hello Clojure-Vaadin 7!&quot;</span>))
+	        (<span style="color: #06287e">.addComponent</span> (<span style="color: #06287e">create-button</span> <span style="color: #4070a0">&quot;Push me!&quot;</span> <span style="color: #bb60d5">show-click-message</span>))))
 
-(defn -init
-  [main-ui request]
-  (doto main-ui (.setContent (create-main-layout))))
-</code></pre>
+(<span style="color: #007020; font-weight: bold">defn </span><span style="color: #bb60d5">-init</span>
+  [<span style="color: #bb60d5">main-ui</span> <span style="color: #bb60d5">request</span>]
+  (<span style="color: #007020">doto </span><span style="color: #bb60d5">main-ui</span> (<span style="color: #06287e">.setContent</span> (<span style="color: #06287e">create-main-layout</span>))))
+</pre></div>
+</p>
 
 <p>In Java, button actions are triggered by registering a click handler for the button. We have to do this in
 Clojure as well but we will hide the actual <code>ClickListener</code> and use a more functional approach.
@@ -153,36 +152,38 @@ We create a new function <code>add-action</code> that expects a button and an ac
 we want to be executed when the button is clicked.
 The helper function <code>create-button-click-listener</code> wraps a Vaadin <code>ClickListener</code> around the <code>action</code> function.</p>
 
-<pre><code>(defn- show-click-message
+<p><div class="highlight" style="background: #f0f0f0"><pre style="line-height: 125%">(<span style="color: #007020; font-weight: bold">defn- </span><span style="color: #bb60d5">show-click-message</span>
   []
-  (Notification/show &quot;Button clicked&quot;))
+  (<span style="color: #06287e">Notification/show</span> <span style="color: #4070a0">&quot;Button clicked&quot;</span>))
 
-(defn- create-button-click-listener 
-  [action]
-  (reify Button$ClickListener 
-            (buttonClick 
-              [_ evt]
-              (action))))
+(<span style="color: #007020; font-weight: bold">defn- </span><span style="color: #bb60d5">create-button-click-listener</span> 
+  [<span style="color: #bb60d5">action</span>]
+  (<span style="color: #06287e">reify</span> <span style="color: #bb60d5">Button$ClickListener</span> 
+            (<span style="color: #06287e">buttonClick</span> 
+              [<span style="color: #bb60d5">_</span> <span style="color: #bb60d5">evt</span>]
+              (<span style="color: #06287e">action</span>))))
 
-(defn- add-action
-  [button action]
-  (.addListener button (create-button-click-listener action)))
-</code></pre>
+(<span style="color: #007020; font-weight: bold">defn- </span><span style="color: #bb60d5">add-action</span>
+  [<span style="color: #bb60d5">button</span> <span style="color: #bb60d5">action</span>]
+  (<span style="color: #06287e">.addListener</span> <span style="color: #bb60d5">button</span> (<span style="color: #06287e">create-button-click-listener</span> <span style="color: #bb60d5">action</span>)))
+</pre></div>
+</p>
 
 <p>The project file for building with Leiningen (and packaging with Maven) looks like this:</p>
 
-<pre><code>(defproject cljvaadin7 &quot;0.1.0-SNAPSHOT&quot;
-  :description &quot;Demonstrates how to integrate Clojure and Vaadin 7&quot;
-  :url &quot;https://github.com/codebrickie/cljvaadin7&quot;
-  :license {:name &quot;Eclipse Public License&quot;
-            :url &quot;http://www.eclipse.org/legal/epl-v10.html&quot;}
-  :dependencies [[org.clojure/clojure &quot;1.4.0&quot;]
-                 [com.vaadin/vaadin-server &quot;7.0.0&quot;]
-                 [com.vaadin/vaadin-client-compiled &quot;7.0.0&quot;]
-                 [com.vaadin/vaadin-themes &quot;7.0.0&quot;]
-                 [javax.servlet/servlet-api &quot;2.5&quot;]]
-  :aot [cljvaadin7.MyApplicationUI])
-</code></pre>
+<p><div class="highlight" style="background: #f0f0f0"><pre style="line-height: 125%">(<span style="color: #007020; font-weight: bold">defproject </span><span style="color: #bb60d5">cljvaadin7</span> <span style="color: #4070a0">&quot;0.1.0-SNAPSHOT&quot;</span>
+  <span style="color: #517918">:description</span> <span style="color: #4070a0">&quot;Demonstrates how to integrate Clojure and Vaadin 7&quot;</span>
+  <span style="color: #517918">:url</span> <span style="color: #4070a0">&quot;https://github.com/codebrickie/cljvaadin7&quot;</span>
+  <span style="color: #517918">:license</span> {<span style="color: #517918">:name</span> <span style="color: #4070a0">&quot;Eclipse Public License&quot;</span>
+            <span style="color: #517918">:url</span> <span style="color: #4070a0">&quot;http://www.eclipse.org/legal/epl-v10.html&quot;</span>}
+  <span style="color: #517918">:dependencies</span> [[<span style="color: #bb60d5">org.clojure/clojure</span> <span style="color: #4070a0">&quot;1.4.0&quot;</span>]
+                 [<span style="color: #bb60d5">com.vaadin/vaadin-server</span> <span style="color: #4070a0">&quot;7.0.0&quot;</span>]
+                 [<span style="color: #bb60d5">com.vaadin/vaadin-client-compiled</span> <span style="color: #4070a0">&quot;7.0.0&quot;</span>]
+                 [<span style="color: #bb60d5">com.vaadin/vaadin-themes</span> <span style="color: #4070a0">&quot;7.0.0&quot;</span>]
+                 [<span style="color: #bb60d5">javax.servlet/servlet-api</span> <span style="color: #4070a0">&quot;2.5&quot;</span>]]
+  <span style="color: #517918">:aot</span> [<span style="color: #bb60d5">cljvaadin7.MyApplicationUI</span>])
+</pre></div>
+</p>
 
 <p>You can find the complete project on <a href="https://github.com/codebrickie/cljvaadin7">GitHub</a>.</p>
 
@@ -226,9 +227,6 @@ The helper function <code>create-button-click-listener</code> wraps a Vaadin <co
 
 
 </div>
-
-<script src="http://tobiasbayer.com/js/highlight.pack.js"></script>
-<script>hljs.initHighlightingOnLoad();</script>
 
 
 

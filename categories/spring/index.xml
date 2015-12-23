@@ -21,61 +21,59 @@ Fortunately Spring integration for Vaadin 7 is available as a &lt;a href=&#34;ht
 &lt;p&gt;Only two simple steps are necessary to get full autowiring support for your Vaadin classes.&lt;/p&gt;
 
 &lt;ul&gt;
-&lt;li&gt;Add the Spring integration as a dependency. Here&amp;rsquo;s the relevant excerpt of my &lt;code&gt;build.gradle&lt;/code&gt;:&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Add the Spring integration as a dependency. Here&amp;rsquo;s the relevant excerpt of my &lt;code&gt;build.gradle&lt;/code&gt;:
+&lt;div class=&#34;highlight&#34; style=&#34;background: #f0f0f0&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span style=&#34;color: #60a0b0; font-style: italic&#34;&gt;//...&lt;/span&gt;
+repositories &lt;span style=&#34;color: #666666&#34;&gt;{&lt;/span&gt;
+	mavenRepo &lt;span style=&#34;color: #002070; font-weight: bold&#34;&gt;url:&lt;/span&gt; &lt;span style=&#34;color: #4070a0&#34;&gt;&amp;#39;http://repo1.maven.org/maven2/&amp;#39;&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color: #002070; font-weight: bold&#34;&gt;artifactUrls:&lt;/span&gt; &lt;span style=&#34;color: #666666&#34;&gt;[&lt;/span&gt;&lt;span style=&#34;color: #4070a0&#34;&gt;&amp;#39;http://maven.springframework.org/milestone&amp;#39;&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color: #4070a0&#34;&gt;&amp;#39;http://maven.vaadin.com/vaadin-addons&amp;#39;&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;]&lt;/span&gt;
+&lt;span style=&#34;color: #666666&#34;&gt;}&lt;/span&gt;
+
+
+dependencies &lt;span style=&#34;color: #666666&#34;&gt;{&lt;/span&gt;
+	&lt;span style=&#34;color: #666666&#34;&gt;...&lt;/span&gt;
+	
+	runtime &lt;span style=&#34;color: #4070a0&#34;&gt;&amp;#39;ru.xpoft.vaadin:spring-vaadin-integration:1.6.2&amp;#39;&lt;/span&gt;
+	
+	&lt;span style=&#34;color: #666666&#34;&gt;...&lt;/span&gt;
+&lt;span style=&#34;color: #666666&#34;&gt;}&lt;/span&gt;
+&lt;span style=&#34;color: #666666&#34;&gt;...&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;Define the Spring integration servlet and your main UI bean in your &lt;code&gt;web.xml&lt;/code&gt;:
+&lt;div class=&#34;highlight&#34; style=&#34;background: #f0f0f0&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span style=&#34;color: #007020&#34;&gt;&amp;lt;?xml version=&amp;quot;1.0&amp;quot; encoding=&amp;quot;UTF-8&amp;quot;?&amp;gt;&lt;/span&gt;
+&lt;span style=&#34;color: #062873; font-weight: bold&#34;&gt;&amp;lt;web-app&lt;/span&gt; &lt;span style=&#34;color: #4070a0&#34;&gt;id=&amp;quot;WebApp_ID&amp;quot;&lt;/span&gt; &lt;span style=&#34;color: #4070a0&#34;&gt;version=&amp;quot;2.4&amp;quot;&lt;/span&gt;
+	&lt;span style=&#34;color: #4070a0&#34;&gt;xmlns=&amp;quot;http://java.sun.com/xml/ns/j2ee&amp;quot;&lt;/span&gt; &lt;span style=&#34;color: #4070a0&#34;&gt;xmlns:xsi=&amp;quot;http://www.w3.org/2001/XMLSchema-instance&amp;quot;&lt;/span&gt;
+	&lt;span style=&#34;color: #4070a0&#34;&gt;xsi:schemaLocation=&amp;quot;http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #062873; font-weight: bold&#34;&gt;&amp;gt;&lt;/span&gt;
+	&lt;span style=&#34;color: #062873; font-weight: bold&#34;&gt;&amp;lt;context-param&amp;gt;&lt;/span&gt;
+		&lt;span style=&#34;color: #062873; font-weight: bold&#34;&gt;&amp;lt;param-name&amp;gt;&lt;/span&gt;contextConfigLocation&lt;span style=&#34;color: #062873; font-weight: bold&#34;&gt;&amp;lt;/param-name&amp;gt;&lt;/span&gt;
+		&lt;span style=&#34;color: #062873; font-weight: bold&#34;&gt;&amp;lt;param-value&amp;gt;&lt;/span&gt;classpath*:applicationContext*.xml&lt;span style=&#34;color: #062873; font-weight: bold&#34;&gt;&amp;lt;/param-value&amp;gt;&lt;/span&gt;
+	&lt;span style=&#34;color: #062873; font-weight: bold&#34;&gt;&amp;lt;/context-param&amp;gt;&lt;/span&gt;
+
+	&lt;span style=&#34;color: #062873; font-weight: bold&#34;&gt;&amp;lt;listener&amp;gt;&lt;/span&gt;
+		&lt;span style=&#34;color: #062873; font-weight: bold&#34;&gt;&amp;lt;listener-class&amp;gt;&lt;/span&gt;org.springframework.web.context.ContextLoaderListener&lt;span style=&#34;color: #062873; font-weight: bold&#34;&gt;&amp;lt;/listener-class&amp;gt;&lt;/span&gt;
+	&lt;span style=&#34;color: #062873; font-weight: bold&#34;&gt;&amp;lt;/listener&amp;gt;&lt;/span&gt;
+	
+	&lt;span style=&#34;color: #062873; font-weight: bold&#34;&gt;&amp;lt;servlet&amp;gt;&lt;/span&gt;
+        &lt;span style=&#34;color: #062873; font-weight: bold&#34;&gt;&amp;lt;servlet-name&amp;gt;&lt;/span&gt;VaadinServlet&lt;span style=&#34;color: #062873; font-weight: bold&#34;&gt;&amp;lt;/servlet-name&amp;gt;&lt;/span&gt;
+        &lt;span style=&#34;color: #062873; font-weight: bold&#34;&gt;&amp;lt;servlet-class&amp;gt;&lt;/span&gt;ru.xpoft.vaadin.SpringVaadinServlet&lt;span style=&#34;color: #062873; font-weight: bold&#34;&gt;&amp;lt;/servlet-class&amp;gt;&lt;/span&gt;
+        &lt;span style=&#34;color: #062873; font-weight: bold&#34;&gt;&amp;lt;init-param&amp;gt;&lt;/span&gt;
+            &lt;span style=&#34;color: #062873; font-weight: bold&#34;&gt;&amp;lt;param-name&amp;gt;&lt;/span&gt;beanName&lt;span style=&#34;color: #062873; font-weight: bold&#34;&gt;&amp;lt;/param-name&amp;gt;&lt;/span&gt;
+            &lt;span style=&#34;color: #60a0b0; font-style: italic&#34;&gt;&amp;lt;!-- &lt;/span&gt;
+&lt;span style=&#34;color: #60a0b0; font-style: italic&#34;&gt;            	This is the name of your main Vaadin UI class.&lt;/span&gt;
+&lt;span style=&#34;color: #60a0b0; font-style: italic&#34;&gt;            	You should declare it as a prototype-scoped component (e.g. @Component @Scope(&amp;quot;protoype&amp;quot;)).&lt;/span&gt;
+&lt;span style=&#34;color: #60a0b0; font-style: italic&#34;&gt;            --&amp;gt;&lt;/span&gt;
+            &lt;span style=&#34;color: #062873; font-weight: bold&#34;&gt;&amp;lt;param-value&amp;gt;&lt;/span&gt;mainUI&lt;span style=&#34;color: #062873; font-weight: bold&#34;&gt;&amp;lt;/param-value&amp;gt;&lt;/span&gt; 
+        &lt;span style=&#34;color: #062873; font-weight: bold&#34;&gt;&amp;lt;/init-param&amp;gt;&lt;/span&gt;
+    &lt;span style=&#34;color: #062873; font-weight: bold&#34;&gt;&amp;lt;/servlet&amp;gt;&lt;/span&gt;
+
+    &lt;span style=&#34;color: #062873; font-weight: bold&#34;&gt;&amp;lt;servlet-mapping&amp;gt;&lt;/span&gt;
+        &lt;span style=&#34;color: #062873; font-weight: bold&#34;&gt;&amp;lt;servlet-name&amp;gt;&lt;/span&gt;VaadinServlet&lt;span style=&#34;color: #062873; font-weight: bold&#34;&gt;&amp;lt;/servlet-name&amp;gt;&lt;/span&gt;
+        &lt;span style=&#34;color: #062873; font-weight: bold&#34;&gt;&amp;lt;url-pattern&amp;gt;&lt;/span&gt;/*&lt;span style=&#34;color: #062873; font-weight: bold&#34;&gt;&amp;lt;/url-pattern&amp;gt;&lt;/span&gt;
+    &lt;span style=&#34;color: #062873; font-weight: bold&#34;&gt;&amp;lt;/servlet-mapping&amp;gt;&lt;/span&gt;
+&lt;span style=&#34;color: #062873; font-weight: bold&#34;&gt;&amp;lt;/web-app&amp;gt;&lt;/span&gt;    
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/p&gt;&lt;/li&gt;
 &lt;/ul&gt;
-
-&lt;pre&gt;&lt;code&gt;...
-repositories {
-	mavenRepo url: &#39;http://repo1.maven.org/maven2/&#39;, artifactUrls: [&#39;http://maven.springframework.org/milestone&#39;, &#39;http://maven.vaadin.com/vaadin-addons&#39;]
-}
-
-
-dependencies {
-	...
-	
-	runtime &#39;ru.xpoft.vaadin:spring-vaadin-integration:1.6.2&#39;
-	
-	...
-}
-...
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;ul&gt;
-&lt;li&gt;Define the Spring integration servlet and your main UI bean in your &lt;code&gt;web.xml&lt;/code&gt;:&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;pre&gt;&lt;code&gt;&amp;lt;?xml version=&amp;quot;1.0&amp;quot; encoding=&amp;quot;UTF-8&amp;quot;?&amp;gt;
-&amp;lt;web-app id=&amp;quot;WebApp_ID&amp;quot; version=&amp;quot;2.4&amp;quot;
-	xmlns=&amp;quot;http://java.sun.com/xml/ns/j2ee&amp;quot; xmlns:xsi=&amp;quot;http://www.w3.org/2001/XMLSchema-instance&amp;quot;
-	xsi:schemaLocation=&amp;quot;http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd&amp;quot;&amp;gt;
-	&amp;lt;context-param&amp;gt;
-		&amp;lt;param-name&amp;gt;contextConfigLocation&amp;lt;/param-name&amp;gt;
-		&amp;lt;param-value&amp;gt;classpath*:applicationContext*.xml&amp;lt;/param-value&amp;gt;
-	&amp;lt;/context-param&amp;gt;
-
-	&amp;lt;listener&amp;gt;
-		&amp;lt;listener-class&amp;gt;org.springframework.web.context.ContextLoaderListener&amp;lt;/listener-class&amp;gt;
-	&amp;lt;/listener&amp;gt;
-	
-	&amp;lt;servlet&amp;gt;
-        &amp;lt;servlet-name&amp;gt;VaadinServlet&amp;lt;/servlet-name&amp;gt;
-        &amp;lt;servlet-class&amp;gt;ru.xpoft.vaadin.SpringVaadinServlet&amp;lt;/servlet-class&amp;gt;
-        &amp;lt;init-param&amp;gt;
-            &amp;lt;param-name&amp;gt;beanName&amp;lt;/param-name&amp;gt;
-            &amp;lt;!-- 
-            	This is the name of your main Vaadin UI class.
-            	You should declare it as a prototype-scoped component (e.g. @Component @Scope(&amp;quot;protoype&amp;quot;)).
-            --&amp;gt;
-            &amp;lt;param-value&amp;gt;mainUI&amp;lt;/param-value&amp;gt; 
-        &amp;lt;/init-param&amp;gt;
-    &amp;lt;/servlet&amp;gt;
-
-    &amp;lt;servlet-mapping&amp;gt;
-        &amp;lt;servlet-name&amp;gt;VaadinServlet&amp;lt;/servlet-name&amp;gt;
-        &amp;lt;url-pattern&amp;gt;/*&amp;lt;/url-pattern&amp;gt;
-    &amp;lt;/servlet-mapping&amp;gt;
-&amp;lt;/web-app&amp;gt;    
-&lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;You can now autowire your views (declared as Spring beans) into your main ui class and display them as needed.&lt;/p&gt;
 </description>

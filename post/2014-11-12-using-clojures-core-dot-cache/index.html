@@ -21,7 +21,6 @@
   <link rel="stylesheet" href="http://tobiasbayer.com/css/responsive.css">
   <link rel="stylesheet" href="http://tobiasbayer.com/css/theme.css">
   <link rel="stylesheet" href="http://tobiasbayer.com/css/custom.css">
-  <link rel="stylesheet" href="https://yandex.st/highlightjs/8.0/styles/default.min.css">
   
   
   <link href="http://tobiasbayer.com/index.xml" rel="alternate" type="application/rss+xml" title="Tobias Bayer" />
@@ -31,9 +30,6 @@
   <script type="text/javascript">var switchTo5x=true;</script>
   <script type="text/javascript" src="https://ws.sharethis.com/button/buttons.js"></script>
   <script type="text/javascript">stLight.options({publisher: "2b9fffc6-b3fe-4988-a0ef-4f9dcce98eaa", doNotHash: true, doNotCopy: true, hashAddressBar: false});</script>
-
-  <script src="https://yandex.st/highlightjs/8.0/highlight.min.js"></script>
-  <script>hljs.initHighlightingOnLoad();</script>
 
   <link rel="shortcut icon" type="image/x-icon" href="http://tobiasbayer.com/favicon.ico">
 </head>
@@ -52,7 +48,7 @@
       </div>
       <div id="social" class="col span_6">
         <ul>
-	  <li><a href="http://tobiasbayer.com/about">About</a></li>
+	  <li><a href="tyleabout">About</a></li>
           
           
           <li><a href="https://github.com/tobiasbayer" target="_blank">GitHub</a></li>
@@ -87,14 +83,15 @@ have a minor dissent that can make it hard for a first time user to interact wit
 
 <p>The usage examples tell you to do this:</p>
 
-<pre><code>(def C (cache/fifo-cache-factory {:a 1, :b 2}))
+<p><div class="highlight" style="background: #f0f0f0"><pre style="line-height: 125%">(<span style="color: #007020; font-weight: bold">def </span><span style="color: #bb60d5">C</span> (<span style="color: #06287e">cache/fifo-cache-factory</span> {<span style="color: #517918">:a</span> <span style="color: #40a070">1</span>, <span style="color: #517918">:b</span> <span style="color: #40a070">2</span>}))
 
-(if (cache/has? C :c)
-  (cache/hit C :c)
-  (cache/miss C :c 42))
+(<span style="color: #007020; font-weight: bold">if </span>(<span style="color: #06287e">cache/has?</span> <span style="color: #bb60d5">C</span> <span style="color: #517918">:c</span>)
+  (<span style="color: #06287e">cache/hit</span> <span style="color: #bb60d5">C</span> <span style="color: #517918">:c</span>)
+  (<span style="color: #06287e">cache/miss</span> <span style="color: #bb60d5">C</span> <span style="color: #517918">:c</span> <span style="color: #40a070">42</span>))
   
-; =&gt; {:a 1, :b 2, :c 42}    
-</code></pre>
+<span style="color: #60a0b0; font-style: italic">; =&gt; {:a 1, :b 2, :c 42}</span>
+</pre></div>
+</p>
 
 <p>The naive first time user (that I was) could now assume that there&rsquo;s some magic going
 on behind the doors which does some state manipulation and another call to <code>(cache/has? C :c)</code>
@@ -104,18 +101,19 @@ But as you guessed it: No magic to see here.</p>
 <p>The point is, that <code>cache/miss</code> and <code>cache/hit</code> return a <strong>new</strong> cache instance with the new
 value associated. You&rsquo;ll have to do the state manipulation yourself (e.g. by using an atom):</p>
 
-<pre><code>(def C (atom (cache/fifo-cache-factory {:a 1, :b 2})))
+<p><div class="highlight" style="background: #f0f0f0"><pre style="line-height: 125%">(<span style="color: #007020; font-weight: bold">def </span><span style="color: #bb60d5">C</span> (<span style="color: #06287e">atom</span> (<span style="color: #06287e">cache/fifo-cache-factory</span> {<span style="color: #517918">:a</span> <span style="color: #40a070">1</span>, <span style="color: #517918">:b</span> <span style="color: #40a070">2</span>})))
 
-(if (cache/has? @C :c)
-  (swap! C #(cache/hit % :c))
-  (swap! C #(cache/miss % :c 42)))
+(<span style="color: #007020; font-weight: bold">if </span>(<span style="color: #06287e">cache/has?</span> <span style="color: #666666">@</span><span style="color: #bb60d5">C</span> <span style="color: #517918">:c</span>)
+  (<span style="color: #06287e">swap!</span> <span style="color: #bb60d5">C</span> <span style="color: #666666">#</span>(<span style="color: #06287e">cache/hit</span> <span style="color: #bb60d5">%</span> <span style="color: #517918">:c</span>))
+  (<span style="color: #06287e">swap!</span> <span style="color: #bb60d5">C</span> <span style="color: #666666">#</span>(<span style="color: #06287e">cache/miss</span> <span style="color: #bb60d5">%</span> <span style="color: #517918">:c</span> <span style="color: #40a070">42</span>)))
 
-; =&gt; {:a 1, :b 2, :c 42}
+<span style="color: #60a0b0; font-style: italic">; =&gt; {:a 1, :b 2, :c 42}</span>
 
-(cache/has? @C :c)
+(<span style="color: #06287e">cache/has?</span> <span style="color: #666666">@</span><span style="color: #bb60d5">C</span> <span style="color: #517918">:c</span>)
 
-; =&gt; true
-</code></pre>
+<span style="color: #60a0b0; font-style: italic">; =&gt; true</span>
+</pre></div>
+</p>
 
       
       
@@ -157,9 +155,6 @@ value associated. You&rsquo;ll have to do the state manipulation yourself (e.g. 
 
 
 </div>
-
-<script src="http://tobiasbayer.com/js/highlight.pack.js"></script>
-<script>hljs.initHighlightingOnLoad();</script>
 
 
 
