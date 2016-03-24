@@ -6,8 +6,20 @@
     <description>Recent content in Posts on Tobias Bayer</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Tue, 22 Dec 2015 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Thu, 24 Mar 2016 00:00:00 +0000</lastBuildDate>
     <atom:link href="http://tobiasbayer.com/post/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>The Dark Side of Microservices</title>
+      <link>http://tobiasbayer.com/post/2016-03-24-dunkle-seite-der-microservices/</link>
+      <pubDate>Thu, 24 Mar 2016 00:00:00 +0000</pubDate>
+      
+      <guid>http://tobiasbayer.com/post/2016-03-24-dunkle-seite-der-microservices/</guid>
+      <description>&lt;p&gt;Another (german) video of a talk on the challenges of Microservices my colleague Hendrik and I gave at W-JAX 2015.&lt;/p&gt;
+
+&lt;iframe src=&#34;https://player.vimeo.com/video/152280705&#34; width=&#34;640&#34; height=&#34;281&#34; frameborder=&#34;0&#34; webkitallowfullscreen mozallowfullscreen allowfullscreen&gt;&lt;/iframe&gt;
+</description>
+    </item>
     
     <item>
       <title>Clojure Intro Talk</title>
@@ -35,72 +47,72 @@
 
 &lt;p&gt;While &lt;code&gt;id&lt;/code&gt; and &lt;code&gt;description&lt;/code&gt; can be specified exactly by the consumer, the &lt;code&gt;random&lt;/code&gt;-field cannot. We just know the provider will return a random 6-digit number as a string. So we create a regular expression for that inside a &lt;code&gt;PactDslJsonBody&lt;/code&gt;.&lt;/p&gt;
 
-&lt;p&gt;&lt;div class=&#34;highlight&#34; style=&#34;background: #f0f0f0&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span style=&#34;color: #555555; font-weight: bold&#34;&gt;@Override&lt;/span&gt;
-&lt;span style=&#34;color: #007020; font-weight: bold&#34;&gt;protected&lt;/span&gt; PactFragment &lt;span style=&#34;color: #06287e&#34;&gt;createFragment&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #007020; font-weight: bold&#34;&gt;final&lt;/span&gt; ConsumerPactBuilder&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #4070a0&#34;&gt;PactDslWithProvider&lt;/span&gt; builder&lt;span style=&#34;color: #666666&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color: #666666&#34;&gt;{&lt;/span&gt;
-    Map&lt;span style=&#34;color: #666666&#34;&gt;&amp;lt;&lt;/span&gt;String&lt;span style=&#34;color: #666666&#34;&gt;,&lt;/span&gt; String&lt;span style=&#34;color: #666666&#34;&gt;&amp;gt;&lt;/span&gt; headers &lt;span style=&#34;color: #666666&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #007020; font-weight: bold&#34;&gt;new&lt;/span&gt; HashMap&lt;span style=&#34;color: #666666&#34;&gt;&amp;lt;&amp;gt;();&lt;/span&gt;
-    headers&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #4070a0&#34;&gt;put&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #4070a0&#34;&gt;&amp;quot;Content-Type&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color: #4070a0&#34;&gt;&amp;quot;application/json;charset=UTF-8&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;);&lt;/span&gt;
 
-    DslPart body &lt;span style=&#34;color: #666666&#34;&gt;=&lt;/span&gt; 
-            &lt;span style=&#34;color: #007020; font-weight: bold&#34;&gt;new&lt;/span&gt; PactDslJsonBody&lt;span style=&#34;color: #666666&#34;&gt;()&lt;/span&gt;
-                &lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #4070a0&#34;&gt;numberValue&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #4070a0&#34;&gt;&amp;quot;id&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color: #40a070&#34;&gt;1&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;)&lt;/span&gt;
-                &lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #4070a0&#34;&gt;stringValue&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #4070a0&#34;&gt;&amp;quot;description&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color: #4070a0&#34;&gt;&amp;quot;This is the description for product 1&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;)&lt;/span&gt;
-                &lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #4070a0&#34;&gt;stringMatcher&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #4070a0&#34;&gt;&amp;quot;random&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color: #4070a0&#34;&gt;&amp;quot;[0-9]{6}&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;);&lt;/span&gt;
+@Override
+protected PactFragment createFragment(final ConsumerPactBuilder.PactDslWithProvider builder) {
+    Map&lt;String, String&gt; headers = new HashMap&lt;&gt;();
+    headers.put(&#34;Content-Type&#34;, &#34;application/json;charset=UTF-8&#34;);
 
-    &lt;span style=&#34;color: #007020; font-weight: bold&#34;&gt;return&lt;/span&gt; builder
-            &lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #4070a0&#34;&gt;uponReceiving&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #4070a0&#34;&gt;&amp;quot;a request for product details&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;)&lt;/span&gt;
-            &lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #4070a0&#34;&gt;path&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #4070a0&#34;&gt;&amp;quot;/productdetails/1&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;)&lt;/span&gt;
-            &lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #4070a0&#34;&gt;method&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #4070a0&#34;&gt;&amp;quot;GET&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;)&lt;/span&gt;
-            &lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #4070a0&#34;&gt;willRespondWith&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;()&lt;/span&gt;
-            &lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #4070a0&#34;&gt;headers&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;(&lt;/span&gt;headers&lt;span style=&#34;color: #666666&#34;&gt;)&lt;/span&gt;
-            &lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #4070a0&#34;&gt;status&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #40a070&#34;&gt;200&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;)&lt;/span&gt;
-            &lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #4070a0&#34;&gt;body&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;(&lt;/span&gt;body&lt;span style=&#34;color: #666666&#34;&gt;)&lt;/span&gt;
-            &lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #4070a0&#34;&gt;toFragment&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;();&lt;/span&gt;
-&lt;span style=&#34;color: #666666&#34;&gt;}&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-&lt;/p&gt;
+    DslPart body = 
+            new PactDslJsonBody()
+                .numberValue(&#34;id&#34;, 1)
+                .stringValue(&#34;description&#34;, &#34;This is the description for product 1&#34;)
+                .stringMatcher(&#34;random&#34;, &#34;[0-9]{6}&#34;);
+
+    return builder
+            .uponReceiving(&#34;a request for product details&#34;)
+            .path(&#34;/productdetails/1&#34;)
+            .method(&#34;GET&#34;)
+            .willRespondWith()
+            .headers(headers)
+            .status(200)
+            .body(body)
+            .toFragment();
+}
+
 
 &lt;p&gt;When the consumer test is run, this Pactfile is created:&lt;/p&gt;
 
-&lt;p&gt;&lt;div class=&#34;highlight&#34; style=&#34;background: #f0f0f0&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;{
-  &lt;span style=&#34;color: #062873; font-weight: bold&#34;&gt;&amp;quot;provider&amp;quot;&lt;/span&gt; : {
-    &lt;span style=&#34;color: #062873; font-weight: bold&#34;&gt;&amp;quot;name&amp;quot;&lt;/span&gt; : &lt;span style=&#34;color: #4070a0&#34;&gt;&amp;quot;Product_Details_Service&amp;quot;&lt;/span&gt;
+&lt;p&gt;
+{
+  &#34;provider&#34; : {
+    &#34;name&#34; : &#34;Product_Details_Service&#34;
   },
-  &lt;span style=&#34;color: #062873; font-weight: bold&#34;&gt;&amp;quot;consumer&amp;quot;&lt;/span&gt; : {
-    &lt;span style=&#34;color: #062873; font-weight: bold&#34;&gt;&amp;quot;name&amp;quot;&lt;/span&gt; : &lt;span style=&#34;color: #4070a0&#34;&gt;&amp;quot;Product_Service&amp;quot;&lt;/span&gt;
+  &#34;consumer&#34; : {
+    &#34;name&#34; : &#34;Product_Service&#34;
   },
-  &lt;span style=&#34;color: #062873; font-weight: bold&#34;&gt;&amp;quot;interactions&amp;quot;&lt;/span&gt; : [ {
-    &lt;span style=&#34;color: #062873; font-weight: bold&#34;&gt;&amp;quot;description&amp;quot;&lt;/span&gt; : &lt;span style=&#34;color: #4070a0&#34;&gt;&amp;quot;a request for product details&amp;quot;&lt;/span&gt;,
-    &lt;span style=&#34;color: #062873; font-weight: bold&#34;&gt;&amp;quot;request&amp;quot;&lt;/span&gt; : {
-      &lt;span style=&#34;color: #062873; font-weight: bold&#34;&gt;&amp;quot;method&amp;quot;&lt;/span&gt; : &lt;span style=&#34;color: #4070a0&#34;&gt;&amp;quot;GET&amp;quot;&lt;/span&gt;,
-      &lt;span style=&#34;color: #062873; font-weight: bold&#34;&gt;&amp;quot;path&amp;quot;&lt;/span&gt; : &lt;span style=&#34;color: #4070a0&#34;&gt;&amp;quot;/productdetails/1&amp;quot;&lt;/span&gt;
+  &#34;interactions&#34; : [ {
+    &#34;description&#34; : &#34;a request for product details&#34;,
+    &#34;request&#34; : {
+      &#34;method&#34; : &#34;GET&#34;,
+      &#34;path&#34; : &#34;/productdetails/1&#34;
     },
-    &lt;span style=&#34;color: #062873; font-weight: bold&#34;&gt;&amp;quot;response&amp;quot;&lt;/span&gt; : {
-      &lt;span style=&#34;color: #062873; font-weight: bold&#34;&gt;&amp;quot;status&amp;quot;&lt;/span&gt; : &lt;span style=&#34;color: #40a070&#34;&gt;200&lt;/span&gt;,
-      &lt;span style=&#34;color: #062873; font-weight: bold&#34;&gt;&amp;quot;headers&amp;quot;&lt;/span&gt; : {
-        &lt;span style=&#34;color: #062873; font-weight: bold&#34;&gt;&amp;quot;Content-Type&amp;quot;&lt;/span&gt; : &lt;span style=&#34;color: #4070a0&#34;&gt;&amp;quot;application/json;charset=UTF-8&amp;quot;&lt;/span&gt;
+    &#34;response&#34; : {
+      &#34;status&#34; : 200,
+      &#34;headers&#34; : {
+        &#34;Content-Type&#34; : &#34;application/json;charset=UTF-8&#34;
       },
-      &lt;span style=&#34;color: #062873; font-weight: bold&#34;&gt;&amp;quot;body&amp;quot;&lt;/span&gt; : {
-        &lt;span style=&#34;color: #062873; font-weight: bold&#34;&gt;&amp;quot;id&amp;quot;&lt;/span&gt; : &lt;span style=&#34;color: #40a070&#34;&gt;1&lt;/span&gt;,
-        &lt;span style=&#34;color: #062873; font-weight: bold&#34;&gt;&amp;quot;description&amp;quot;&lt;/span&gt; : &lt;span style=&#34;color: #4070a0&#34;&gt;&amp;quot;This is the description for product 1&amp;quot;&lt;/span&gt;,
-        &lt;span style=&#34;color: #062873; font-weight: bold&#34;&gt;&amp;quot;random&amp;quot;&lt;/span&gt; : &lt;span style=&#34;color: #4070a0&#34;&gt;&amp;quot;413558&amp;quot;&lt;/span&gt;
+      &#34;body&#34; : {
+        &#34;id&#34; : 1,
+        &#34;description&#34; : &#34;This is the description for product 1&#34;,
+        &#34;random&#34; : &#34;413558&#34;
       },
-      &lt;span style=&#34;color: #062873; font-weight: bold&#34;&gt;&amp;quot;responseMatchingRules&amp;quot;&lt;/span&gt; : {
-        &lt;span style=&#34;color: #062873; font-weight: bold&#34;&gt;&amp;quot;$.body.random&amp;quot;&lt;/span&gt; : {
-          &lt;span style=&#34;color: #062873; font-weight: bold&#34;&gt;&amp;quot;regex&amp;quot;&lt;/span&gt; : &lt;span style=&#34;color: #4070a0&#34;&gt;&amp;quot;[0-9]{6}&amp;quot;&lt;/span&gt;
+      &#34;responseMatchingRules&#34; : {
+        &#34;$.body.random&#34; : {
+          &#34;regex&#34; : &#34;[0-9]{6}&#34;
         }
       }
     }
   } ],
-  &lt;span style=&#34;color: #062873; font-weight: bold&#34;&gt;&amp;quot;metadata&amp;quot;&lt;/span&gt; : {
-    &lt;span style=&#34;color: #062873; font-weight: bold&#34;&gt;&amp;quot;pact-specification&amp;quot;&lt;/span&gt; : {
-      &lt;span style=&#34;color: #062873; font-weight: bold&#34;&gt;&amp;quot;version&amp;quot;&lt;/span&gt; : &lt;span style=&#34;color: #4070a0&#34;&gt;&amp;quot;2.0.0&amp;quot;&lt;/span&gt;
+  &#34;metadata&#34; : {
+    &#34;pact-specification&#34; : {
+      &#34;version&#34; : &#34;2.0.0&#34;
     },
-    &lt;span style=&#34;color: #062873; font-weight: bold&#34;&gt;&amp;quot;pact-jvm&amp;quot;&lt;/span&gt; : {
-      &lt;span style=&#34;color: #062873; font-weight: bold&#34;&gt;&amp;quot;version&amp;quot;&lt;/span&gt; : &lt;span style=&#34;color: #4070a0&#34;&gt;&amp;quot;2.1.7&amp;quot;&lt;/span&gt;
+    &#34;pact-jvm&#34; : {
+      &#34;version&#34; : &#34;2.1.7&#34;
     }
   }
 }
-&lt;/pre&gt;&lt;/div&gt;
 &lt;/p&gt;
 
 &lt;p&gt;Note that Pact magically replaced the regex with a matching string inside the &lt;code&gt;body&lt;/code&gt; definition. This makes sure the provider-stub returns something useful for the consumer when the consumer tests are run. But when the pact is verified against the provider, Pact will use the regular expression inside &lt;code&gt;responseMatchingRules&lt;/code&gt; instead of just matching against the final string for each field in &lt;code&gt;body&lt;/code&gt; that has a corresponding regex.&lt;/p&gt;
@@ -121,15 +133,15 @@ have a minor dissent that can make it hard for a first time user to interact wit
 
 &lt;p&gt;The usage examples tell you to do this:&lt;/p&gt;
 
-&lt;p&gt;&lt;div class=&#34;highlight&#34; style=&#34;background: #f0f0f0&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;(&lt;span style=&#34;color: #007020; font-weight: bold&#34;&gt;def &lt;/span&gt;&lt;span style=&#34;color: #bb60d5&#34;&gt;C&lt;/span&gt; (&lt;span style=&#34;color: #06287e&#34;&gt;cache/fifo-cache-factory&lt;/span&gt; {&lt;span style=&#34;color: #517918&#34;&gt;:a&lt;/span&gt; &lt;span style=&#34;color: #40a070&#34;&gt;1&lt;/span&gt;, &lt;span style=&#34;color: #517918&#34;&gt;:b&lt;/span&gt; &lt;span style=&#34;color: #40a070&#34;&gt;2&lt;/span&gt;}))
 
-(&lt;span style=&#34;color: #007020; font-weight: bold&#34;&gt;if &lt;/span&gt;(&lt;span style=&#34;color: #06287e&#34;&gt;cache/has?&lt;/span&gt; &lt;span style=&#34;color: #bb60d5&#34;&gt;C&lt;/span&gt; &lt;span style=&#34;color: #517918&#34;&gt;:c&lt;/span&gt;)
-  (&lt;span style=&#34;color: #06287e&#34;&gt;cache/hit&lt;/span&gt; &lt;span style=&#34;color: #bb60d5&#34;&gt;C&lt;/span&gt; &lt;span style=&#34;color: #517918&#34;&gt;:c&lt;/span&gt;)
-  (&lt;span style=&#34;color: #06287e&#34;&gt;cache/miss&lt;/span&gt; &lt;span style=&#34;color: #bb60d5&#34;&gt;C&lt;/span&gt; &lt;span style=&#34;color: #517918&#34;&gt;:c&lt;/span&gt; &lt;span style=&#34;color: #40a070&#34;&gt;42&lt;/span&gt;))
+(def C (cache/fifo-cache-factory {:a 1, :b 2}))
+
+(if (cache/has? C :c)
+  (cache/hit C :c)
+  (cache/miss C :c 42))
   
-&lt;span style=&#34;color: #60a0b0; font-style: italic&#34;&gt;; =&amp;gt; {:a 1, :b 2, :c 42}&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-&lt;/p&gt;
+; =&gt; {:a 1, :b 2, :c 42}
+
 
 &lt;p&gt;The naive first time user (that I was) could now assume that there&amp;rsquo;s some magic going
 on behind the doors which does some state manipulation and another call to &lt;code&gt;(cache/has? C :c)&lt;/code&gt;
@@ -139,18 +151,18 @@ But as you guessed it: No magic to see here.&lt;/p&gt;
 &lt;p&gt;The point is, that &lt;code&gt;cache/miss&lt;/code&gt; and &lt;code&gt;cache/hit&lt;/code&gt; return a &lt;strong&gt;new&lt;/strong&gt; cache instance with the new
 value associated. You&amp;rsquo;ll have to do the state manipulation yourself (e.g. by using an atom):&lt;/p&gt;
 
-&lt;p&gt;&lt;div class=&#34;highlight&#34; style=&#34;background: #f0f0f0&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;(&lt;span style=&#34;color: #007020; font-weight: bold&#34;&gt;def &lt;/span&gt;&lt;span style=&#34;color: #bb60d5&#34;&gt;C&lt;/span&gt; (&lt;span style=&#34;color: #06287e&#34;&gt;atom&lt;/span&gt; (&lt;span style=&#34;color: #06287e&#34;&gt;cache/fifo-cache-factory&lt;/span&gt; {&lt;span style=&#34;color: #517918&#34;&gt;:a&lt;/span&gt; &lt;span style=&#34;color: #40a070&#34;&gt;1&lt;/span&gt;, &lt;span style=&#34;color: #517918&#34;&gt;:b&lt;/span&gt; &lt;span style=&#34;color: #40a070&#34;&gt;2&lt;/span&gt;})))
+&lt;p&gt;
+(def C (atom (cache/fifo-cache-factory {:a 1, :b 2})))
 
-(&lt;span style=&#34;color: #007020; font-weight: bold&#34;&gt;if &lt;/span&gt;(&lt;span style=&#34;color: #06287e&#34;&gt;cache/has?&lt;/span&gt; &lt;span style=&#34;color: #666666&#34;&gt;@&lt;/span&gt;&lt;span style=&#34;color: #bb60d5&#34;&gt;C&lt;/span&gt; &lt;span style=&#34;color: #517918&#34;&gt;:c&lt;/span&gt;)
-  (&lt;span style=&#34;color: #06287e&#34;&gt;swap!&lt;/span&gt; &lt;span style=&#34;color: #bb60d5&#34;&gt;C&lt;/span&gt; &lt;span style=&#34;color: #666666&#34;&gt;#&lt;/span&gt;(&lt;span style=&#34;color: #06287e&#34;&gt;cache/hit&lt;/span&gt; &lt;span style=&#34;color: #bb60d5&#34;&gt;%&lt;/span&gt; &lt;span style=&#34;color: #517918&#34;&gt;:c&lt;/span&gt;))
-  (&lt;span style=&#34;color: #06287e&#34;&gt;swap!&lt;/span&gt; &lt;span style=&#34;color: #bb60d5&#34;&gt;C&lt;/span&gt; &lt;span style=&#34;color: #666666&#34;&gt;#&lt;/span&gt;(&lt;span style=&#34;color: #06287e&#34;&gt;cache/miss&lt;/span&gt; &lt;span style=&#34;color: #bb60d5&#34;&gt;%&lt;/span&gt; &lt;span style=&#34;color: #517918&#34;&gt;:c&lt;/span&gt; &lt;span style=&#34;color: #40a070&#34;&gt;42&lt;/span&gt;)))
+(if (cache/has? @C :c)
+  (swap! C #(cache/hit % :c))
+  (swap! C #(cache/miss % :c 42)))
 
-&lt;span style=&#34;color: #60a0b0; font-style: italic&#34;&gt;; =&amp;gt; {:a 1, :b 2, :c 42}&lt;/span&gt;
+; =&gt; {:a 1, :b 2, :c 42}
 
-(&lt;span style=&#34;color: #06287e&#34;&gt;cache/has?&lt;/span&gt; &lt;span style=&#34;color: #666666&#34;&gt;@&lt;/span&gt;&lt;span style=&#34;color: #bb60d5&#34;&gt;C&lt;/span&gt; &lt;span style=&#34;color: #517918&#34;&gt;:c&lt;/span&gt;)
+(cache/has? @C :c)
 
-&lt;span style=&#34;color: #60a0b0; font-style: italic&#34;&gt;; =&amp;gt; true&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
+; =&gt; true
 &lt;/p&gt;
 </description>
     </item>
@@ -168,127 +180,127 @@ because of the relatively large amount of unintuitive code that is necessary for
 
 &lt;p&gt;First create a file in the client classpath with your custom CSS in it.&lt;/p&gt;
 
-&lt;p&gt;&lt;div class=&#34;highlight&#34; style=&#34;background: #f0f0f0&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span style=&#34;color: #0e84b5; font-weight: bold&#34;&gt;.cellDisabled&lt;/span&gt; {
-  &lt;span style=&#34;color: #007020; font-weight: bold&#34;&gt;background-color&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;:&lt;/span&gt; &lt;span style=&#34;color: #40a070&#34;&gt;#EEEEEE&lt;/span&gt; &lt;span style=&#34;color: #007020&#34;&gt;!important&lt;/span&gt;;
-  &lt;span style=&#34;color: #007020; font-weight: bold&#34;&gt;color&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;:&lt;/span&gt; &lt;span style=&#34;color: #40a070&#34;&gt;#000000&lt;/span&gt;;
+
+.cellDisabled {
+  background-color: #EEEEEE !important;
+  color: #000000;
 }
-&lt;/pre&gt;&lt;/div&gt;
-&lt;/p&gt;
+
 
 &lt;p&gt;Next, create a custom &lt;code&gt;MyGridAppearance&lt;/code&gt; that extends the &lt;code&gt;GridAppearance&lt;/code&gt; your application
 is using (e.g. &lt;code&gt;GrayGridAppearance&lt;/code&gt;).&lt;/p&gt;
 
-&lt;p&gt;&lt;div class=&#34;highlight&#34; style=&#34;background: #f0f0f0&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span style=&#34;color: #007020; font-weight: bold&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color: #007020; font-weight: bold&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color: #0e84b5; font-weight: bold&#34;&gt;MyGridAppearance&lt;/span&gt; &lt;span style=&#34;color: #007020; font-weight: bold&#34;&gt;extends&lt;/span&gt; GrayGridAppearance &lt;span style=&#34;color: #666666&#34;&gt;{&lt;/span&gt;
 
-&lt;span style=&#34;color: #666666&#34;&gt;}&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-&lt;/p&gt;
+public class MyGridAppearance extends GrayGridAppearance {
+
+}
+
 
 &lt;p&gt;In this &lt;code&gt;Appearance&lt;/code&gt; include an interface that extends the style of the component you want
 to add your custom style to. The interface must include a method named after your custom
 CSS style.&lt;/p&gt;
 
-&lt;p&gt;&lt;div class=&#34;highlight&#34; style=&#34;background: #f0f0f0&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span style=&#34;color: #007020; font-weight: bold&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color: #007020; font-weight: bold&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color: #0e84b5; font-weight: bold&#34;&gt;MyGridAppearance&lt;/span&gt; &lt;span style=&#34;color: #007020; font-weight: bold&#34;&gt;extends&lt;/span&gt; GrayGridAppearance &lt;span style=&#34;color: #666666&#34;&gt;{&lt;/span&gt;
 
-    &lt;span style=&#34;color: #007020; font-weight: bold&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color: #007020; font-weight: bold&#34;&gt;interface&lt;/span&gt; &lt;span style=&#34;color: #0e84b5; font-weight: bold&#34;&gt;MyGridStyle&lt;/span&gt; &lt;span style=&#34;color: #007020; font-weight: bold&#34;&gt;extends&lt;/span&gt; GrayGridStyle &lt;span style=&#34;color: #666666&#34;&gt;{&lt;/span&gt;
-        String &lt;span style=&#34;color: #06287e&#34;&gt;cellDisabled&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;();&lt;/span&gt;
-    &lt;span style=&#34;color: #666666&#34;&gt;}&lt;/span&gt;
-&lt;span style=&#34;color: #666666&#34;&gt;}&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-&lt;/p&gt;
+public class MyGridAppearance extends GrayGridAppearance {
+
+    public interface MyGridStyle extends GrayGridStyle {
+        String cellDisabled();
+    }
+}
+
 
 &lt;p&gt;Now include another interface that pulls your CSS file into the bundle. It must have a
 &lt;code&gt;@Source&lt;/code&gt; annotation with all the CSS files along the inheritance path and your custom CSS
 file as well.&lt;/p&gt;
 
-&lt;p&gt;&lt;div class=&#34;highlight&#34; style=&#34;background: #f0f0f0&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span style=&#34;color: #007020; font-weight: bold&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color: #007020; font-weight: bold&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color: #0e84b5; font-weight: bold&#34;&gt;MyGridAppearance&lt;/span&gt; &lt;span style=&#34;color: #007020; font-weight: bold&#34;&gt;extends&lt;/span&gt; GrayGridAppearance &lt;span style=&#34;color: #666666&#34;&gt;{&lt;/span&gt;
 
-    &lt;span style=&#34;color: #007020; font-weight: bold&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color: #007020; font-weight: bold&#34;&gt;interface&lt;/span&gt; &lt;span style=&#34;color: #0e84b5; font-weight: bold&#34;&gt;MyGridStyle&lt;/span&gt; &lt;span style=&#34;color: #007020; font-weight: bold&#34;&gt;extends&lt;/span&gt; GrayGridStyle &lt;span style=&#34;color: #666666&#34;&gt;{&lt;/span&gt;
-        String &lt;span style=&#34;color: #06287e&#34;&gt;cellDisabled&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;();&lt;/span&gt;
-    &lt;span style=&#34;color: #666666&#34;&gt;}&lt;/span&gt;
+public class MyGridAppearance extends GrayGridAppearance {
 
-    &lt;span style=&#34;color: #007020; font-weight: bold&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color: #007020; font-weight: bold&#34;&gt;interface&lt;/span&gt; &lt;span style=&#34;color: #0e84b5; font-weight: bold&#34;&gt;MyGridResources&lt;/span&gt; &lt;span style=&#34;color: #007020; font-weight: bold&#34;&gt;extends&lt;/span&gt; GrayGridResources&lt;span style=&#34;color: #666666&#34;&gt;,&lt;/span&gt; ClientBundle &lt;span style=&#34;color: #666666&#34;&gt;{&lt;/span&gt;
+    public interface MyGridStyle extends GrayGridStyle {
+        String cellDisabled();
+    }
 
-        &lt;span style=&#34;color: #555555; font-weight: bold&#34;&gt;@Override&lt;/span&gt;
-        &lt;span style=&#34;color: #555555; font-weight: bold&#34;&gt;@Source&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;({&lt;/span&gt; &lt;span style=&#34;color: #4070a0&#34;&gt;&amp;quot;com/sencha/gxt/theme/base/client/grid/Grid.css&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;,&lt;/span&gt;
-                &lt;span style=&#34;color: #4070a0&#34;&gt;&amp;quot;com/sencha/gxt/theme/gray/client/grid/GrayGrid.css&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;,&lt;/span&gt;
-                &lt;span style=&#34;color: #4070a0&#34;&gt;&amp;quot;com/codebrickie/sample/client/css/MyGrid.css&amp;quot;&lt;/span&gt; &lt;span style=&#34;color: #666666&#34;&gt;})&lt;/span&gt;
-        MyGridStyle &lt;span style=&#34;color: #06287e&#34;&gt;css&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;();&lt;/span&gt;
-    &lt;span style=&#34;color: #666666&#34;&gt;}&lt;/span&gt;
-&lt;span style=&#34;color: #666666&#34;&gt;}&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-&lt;/p&gt;
+    public interface MyGridResources extends GrayGridResources, ClientBundle {
+
+        @Override
+        @Source({ &#34;com/sencha/gxt/theme/base/client/grid/Grid.css&#34;,
+                &#34;com/sencha/gxt/theme/gray/client/grid/GrayGrid.css&#34;,
+                &#34;com/codebrickie/sample/client/css/MyGrid.css&#34; })
+        MyGridStyle css();
+    }
+}
+
 
 &lt;p&gt;The last step for the &lt;code&gt;Appearance&lt;/code&gt; is to implement two constructors.&lt;/p&gt;
 
-&lt;p&gt;&lt;div class=&#34;highlight&#34; style=&#34;background: #f0f0f0&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span style=&#34;color: #007020; font-weight: bold&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color: #007020; font-weight: bold&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color: #0e84b5; font-weight: bold&#34;&gt;MyGridAppearance&lt;/span&gt; &lt;span style=&#34;color: #007020; font-weight: bold&#34;&gt;extends&lt;/span&gt; GrayGridAppearance &lt;span style=&#34;color: #666666&#34;&gt;{&lt;/span&gt;
+&lt;p&gt;
+public class MyGridAppearance extends GrayGridAppearance {
 
-    &lt;span style=&#34;color: #007020; font-weight: bold&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color: #007020; font-weight: bold&#34;&gt;interface&lt;/span&gt; &lt;span style=&#34;color: #0e84b5; font-weight: bold&#34;&gt;MyGridStyle&lt;/span&gt; &lt;span style=&#34;color: #007020; font-weight: bold&#34;&gt;extends&lt;/span&gt; GrayGridStyle &lt;span style=&#34;color: #666666&#34;&gt;{&lt;/span&gt;
-        String &lt;span style=&#34;color: #06287e&#34;&gt;cellDisabled&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;();&lt;/span&gt;
-    &lt;span style=&#34;color: #666666&#34;&gt;}&lt;/span&gt;
+    public interface MyGridStyle extends GrayGridStyle {
+        String cellDisabled();
+    }
 
-    &lt;span style=&#34;color: #007020; font-weight: bold&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color: #007020; font-weight: bold&#34;&gt;interface&lt;/span&gt; &lt;span style=&#34;color: #0e84b5; font-weight: bold&#34;&gt;MyGridResources&lt;/span&gt; &lt;span style=&#34;color: #007020; font-weight: bold&#34;&gt;extends&lt;/span&gt; GrayGridResources&lt;span style=&#34;color: #666666&#34;&gt;,&lt;/span&gt; ClientBundle &lt;span style=&#34;color: #666666&#34;&gt;{&lt;/span&gt;
+    public interface MyGridResources extends GrayGridResources, ClientBundle {
 
-        &lt;span style=&#34;color: #555555; font-weight: bold&#34;&gt;@Override&lt;/span&gt;
-        &lt;span style=&#34;color: #555555; font-weight: bold&#34;&gt;@Source&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;({&lt;/span&gt; &lt;span style=&#34;color: #4070a0&#34;&gt;&amp;quot;com/sencha/gxt/theme/base/client/grid/Grid.css&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;,&lt;/span&gt;
-                &lt;span style=&#34;color: #4070a0&#34;&gt;&amp;quot;com/sencha/gxt/theme/gray/client/grid/GrayGrid.css&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;,&lt;/span&gt;
-                &lt;span style=&#34;color: #4070a0&#34;&gt;&amp;quot;com/codebrickie/sample/client/css/MyGrid.css&amp;quot;&lt;/span&gt; &lt;span style=&#34;color: #666666&#34;&gt;})&lt;/span&gt;
-        MyGridStyle &lt;span style=&#34;color: #06287e&#34;&gt;css&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;();&lt;/span&gt;
-    &lt;span style=&#34;color: #666666&#34;&gt;}&lt;/span&gt;
+        @Override
+        @Source({ &#34;com/sencha/gxt/theme/base/client/grid/Grid.css&#34;,
+                &#34;com/sencha/gxt/theme/gray/client/grid/GrayGrid.css&#34;,
+                &#34;com/codebrickie/sample/client/css/MyGrid.css&#34; })
+        MyGridStyle css();
+    }
     
-    &lt;span style=&#34;color: #007020; font-weight: bold&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color: #06287e&#34;&gt;MyGridAppearance&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;()&lt;/span&gt; &lt;span style=&#34;color: #666666&#34;&gt;{&lt;/span&gt;
-        &lt;span style=&#34;color: #007020; font-weight: bold&#34;&gt;this&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;(&lt;/span&gt;GWT&lt;span style=&#34;color: #666666&#34;&gt;.&amp;lt;&lt;/span&gt;MyGridResources&lt;span style=&#34;color: #666666&#34;&gt;&amp;gt;&lt;/span&gt; &lt;span style=&#34;color: #06287e&#34;&gt;create&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;(&lt;/span&gt;MyGridResources&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #4070a0&#34;&gt;class&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;));&lt;/span&gt;
-    &lt;span style=&#34;color: #666666&#34;&gt;}&lt;/span&gt;
+    public MyGridAppearance() {
+        this(GWT.&lt;MyGridResources&gt; create(MyGridResources.class));
+    }
 
-    &lt;span style=&#34;color: #007020; font-weight: bold&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color: #06287e&#34;&gt;MyGridAppearance&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #007020; font-weight: bold&#34;&gt;final&lt;/span&gt; MyGridResources resources&lt;span style=&#34;color: #666666&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color: #666666&#34;&gt;{&lt;/span&gt;
-        &lt;span style=&#34;color: #007020; font-weight: bold&#34;&gt;super&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;(&lt;/span&gt;resources&lt;span style=&#34;color: #666666&#34;&gt;);&lt;/span&gt;
-    &lt;span style=&#34;color: #666666&#34;&gt;}&lt;/span&gt;
-&lt;span style=&#34;color: #666666&#34;&gt;}&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
+    public MyGridAppearance(final MyGridResources resources) {
+        super(resources);
+    }
+}
 &lt;/p&gt;
 
 &lt;p&gt;Now that the &lt;code&gt;Appearance&lt;/code&gt; is finished, you have to set it to your grid upon creation.&lt;/p&gt;
 
-&lt;p&gt;&lt;div class=&#34;highlight&#34; style=&#34;background: #f0f0f0&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span style=&#34;color: #60a0b0; font-style: italic&#34;&gt;//...&lt;/span&gt;
+&lt;p&gt;
+//...
 
-grid &lt;span style=&#34;color: #666666&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #007020; font-weight: bold&#34;&gt;new&lt;/span&gt; Grid&lt;span style=&#34;color: #666666&#34;&gt;&amp;lt;&lt;/span&gt;MyModel&lt;span style=&#34;color: #666666&#34;&gt;&amp;gt;(&lt;/span&gt;store&lt;span style=&#34;color: #666666&#34;&gt;,&lt;/span&gt; columnModel&lt;span style=&#34;color: #666666&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color: #007020; font-weight: bold&#34;&gt;new&lt;/span&gt; GridView&lt;span style=&#34;color: #666666&#34;&gt;&amp;lt;&lt;/span&gt;MyModel&lt;span style=&#34;color: #666666&#34;&gt;&amp;gt;(&lt;/span&gt;
-                &lt;span style=&#34;color: #007020; font-weight: bold&#34;&gt;new&lt;/span&gt; MyGridAppearance&lt;span style=&#34;color: #666666&#34;&gt;()));&lt;/span&gt;
-&lt;span style=&#34;color: #60a0b0; font-style: italic&#34;&gt;//...&lt;/span&gt;
-&lt;span style=&#34;color: #666666&#34;&gt;}&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
+grid = new Grid&lt;MyModel&gt;(store, columnModel, new GridView&lt;MyModel&gt;(
+                new MyGridAppearance()));
+//...
+}
 &lt;/p&gt;
 
 &lt;p&gt;Afterwards you can use your custom style e.g. in &lt;code&gt;getColStyle()&lt;/code&gt;.&lt;/p&gt;
 
-&lt;p&gt;&lt;div class=&#34;highlight&#34; style=&#34;background: #f0f0f0&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span style=&#34;color: #60a0b0; font-style: italic&#34;&gt;//...&lt;/span&gt;
+&lt;p&gt;
+//...
 
-GridViewConfig&lt;span style=&#34;color: #666666&#34;&gt;&amp;lt;&lt;/span&gt;MyModel&lt;span style=&#34;color: #666666&#34;&gt;&amp;gt;&lt;/span&gt; viewConfig &lt;span style=&#34;color: #666666&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #007020; font-weight: bold&#34;&gt;new&lt;/span&gt; GridViewConfig&lt;span style=&#34;color: #666666&#34;&gt;&amp;lt;&lt;/span&gt;MyModel&lt;span style=&#34;color: #666666&#34;&gt;&amp;gt;()&lt;/span&gt; &lt;span style=&#34;color: #666666&#34;&gt;{&lt;/span&gt;
+GridViewConfig&lt;MyModel&gt; viewConfig = new GridViewConfig&lt;MyModel&gt;() {
 
-	&lt;span style=&#34;color: #007020; font-weight: bold&#34;&gt;final&lt;/span&gt; MyGridStyle styles &lt;span style=&#34;color: #666666&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #666666&#34;&gt;(&lt;/span&gt;MyGridStyle&lt;span style=&#34;color: #666666&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color: #666666&#34;&gt;((&lt;/span&gt;MyGridAppearance&lt;span style=&#34;color: #666666&#34;&gt;)&lt;/span&gt; grid
-		&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #4070a0&#34;&gt;getView&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;().&lt;/span&gt;&lt;span style=&#34;color: #4070a0&#34;&gt;getAppearance&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;())&lt;/span&gt;
-		&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #4070a0&#34;&gt;styles&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;();&lt;/span&gt;
+	final MyGridStyle styles = (MyGridStyle) ((MyGridAppearance) grid
+		.getView().getAppearance())
+		.styles();
 
-	&lt;span style=&#34;color: #555555; font-weight: bold&#34;&gt;@Override&lt;/span&gt;
-	&lt;span style=&#34;color: #007020; font-weight: bold&#34;&gt;public&lt;/span&gt; String &lt;span style=&#34;color: #06287e&#34;&gt;getColStyle&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #007020; font-weight: bold&#34;&gt;final&lt;/span&gt; MyModel model&lt;span style=&#34;color: #666666&#34;&gt;,&lt;/span&gt;
-			&lt;span style=&#34;color: #007020; font-weight: bold&#34;&gt;final&lt;/span&gt; ValueProvider&lt;span style=&#34;color: #666666&#34;&gt;&amp;lt;?&lt;/span&gt; &lt;span style=&#34;color: #007020; font-weight: bold&#34;&gt;super&lt;/span&gt; MyModel&lt;span style=&#34;color: #666666&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color: #666666&#34;&gt;?&amp;gt;&lt;/span&gt; valueProvider&lt;span style=&#34;color: #666666&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color: #007020; font-weight: bold&#34;&gt;final&lt;/span&gt; &lt;span style=&#34;color: #902000&#34;&gt;int&lt;/span&gt; rowIndex&lt;span style=&#34;color: #666666&#34;&gt;,&lt;/span&gt;
-			&lt;span style=&#34;color: #007020; font-weight: bold&#34;&gt;final&lt;/span&gt; &lt;span style=&#34;color: #902000&#34;&gt;int&lt;/span&gt; colIndex&lt;span style=&#34;color: #666666&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color: #666666&#34;&gt;{&lt;/span&gt;
-		String style &lt;span style=&#34;color: #666666&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #007020; font-weight: bold&#34;&gt;null&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;;&lt;/span&gt;
+	@Override
+	public String getColStyle(final MyModel model,
+			final ValueProvider&lt;? super MyModel, ?&gt; valueProvider, final int rowIndex,
+			final int colIndex) {
+		String style = null;
 
-		&lt;span style=&#34;color: #007020; font-weight: bold&#34;&gt;if&lt;/span&gt; &lt;span style=&#34;color: #666666&#34;&gt;(!&lt;/span&gt;model&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #4070a0&#34;&gt;isEnabled&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;())&lt;/span&gt; &lt;span style=&#34;color: #666666&#34;&gt;{&lt;/span&gt;
-			style &lt;span style=&#34;color: #666666&#34;&gt;=&lt;/span&gt; styles&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #4070a0&#34;&gt;cellDisabled&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;();&lt;/span&gt;
-		&lt;span style=&#34;color: #666666&#34;&gt;}&lt;/span&gt;
+		if (!model.isEnabled()) {
+			style = styles.cellDisabled();
+		}
 
-		&lt;span style=&#34;color: #007020; font-weight: bold&#34;&gt;return&lt;/span&gt; style&lt;span style=&#34;color: #666666&#34;&gt;;&lt;/span&gt;
-	&lt;span style=&#34;color: #666666&#34;&gt;}&lt;/span&gt;
+		return style;
+	}
 
-	&lt;span style=&#34;color: #555555; font-weight: bold&#34;&gt;@Override&lt;/span&gt;
-	&lt;span style=&#34;color: #007020; font-weight: bold&#34;&gt;public&lt;/span&gt; String &lt;span style=&#34;color: #06287e&#34;&gt;getRowStyle&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #007020; font-weight: bold&#34;&gt;final&lt;/span&gt; MyModel model&lt;span style=&#34;color: #666666&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color: #007020; font-weight: bold&#34;&gt;final&lt;/span&gt; &lt;span style=&#34;color: #902000&#34;&gt;int&lt;/span&gt; rowIndex&lt;span style=&#34;color: #666666&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color: #666666&#34;&gt;{&lt;/span&gt;
-		&lt;span style=&#34;color: #007020; font-weight: bold&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color: #007020; font-weight: bold&#34;&gt;null&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;;&lt;/span&gt;
-	&lt;span style=&#34;color: #666666&#34;&gt;}&lt;/span&gt;
-&lt;span style=&#34;color: #666666&#34;&gt;};&lt;/span&gt;
+	@Override
+	public String getRowStyle(final MyModel model, final int rowIndex) {
+		return null;
+	}
+};
         
-&lt;span style=&#34;color: #60a0b0; font-style: italic&#34;&gt;//...&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
+//...
 &lt;/p&gt;
 </description>
     </item>
@@ -304,11 +316,11 @@ current project.
 Like most other ticketing systems, it has the ability to link commits in your source code
 repositories to a ticket when the commit message refers the ticket number.&lt;/p&gt;
 
-&lt;p&gt;&lt;div class=&#34;highlight&#34; style=&#34;background: #f0f0f0&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;Changes foo to bar because of baz.
 
-refs &lt;span style=&#34;color: #60a0b0; font-style: italic&#34;&gt;#1234&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-&lt;/p&gt;
+Changes foo to bar because of baz.
+
+refs #1234
+
 
 &lt;p&gt;I became tired of adding the ticket number manually to each commit message.
 Fortunately, git can add the number by itself with the help of a little hook and a naming
@@ -320,14 +332,14 @@ convention for your feature branches.&lt;/p&gt;
 &lt;p&gt;Now create the file &lt;code&gt;.git/hooks/commit-msg&lt;/code&gt; in your local repository with the following
 content:&lt;/p&gt;
 
-&lt;p&gt;&lt;div class=&#34;highlight&#34; style=&#34;background: #f0f0f0&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span style=&#34;color: #60a0b0; font-style: italic&#34;&gt;#!/bin/sh&lt;/span&gt;
 
-&lt;span style=&#34;color: #bb60d5&#34;&gt;ticket&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color: #007020; font-weight: bold&#34;&gt;$(&lt;/span&gt;git symbolic-ref HEAD | awk -F- &lt;span style=&#34;color: #4070a0&#34;&gt;&amp;#39;/ticket-/ {print $2}&amp;#39;&lt;/span&gt;&lt;span style=&#34;color: #007020; font-weight: bold&#34;&gt;)&lt;/span&gt;
-&lt;span style=&#34;color: #007020; font-weight: bold&#34;&gt;if&lt;/span&gt; &lt;span style=&#34;color: #666666&#34;&gt;[&lt;/span&gt; -n &lt;span style=&#34;color: #4070a0&#34;&gt;&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #bb60d5&#34;&gt;$ticket&lt;/span&gt;&lt;span style=&#34;color: #4070a0&#34;&gt;&amp;quot;&lt;/span&gt; &lt;span style=&#34;color: #666666&#34;&gt;]&lt;/span&gt;; &lt;span style=&#34;color: #007020; font-weight: bold&#34;&gt;then&lt;/span&gt;
-	&lt;span style=&#34;color: #007020&#34;&gt;echo&lt;/span&gt; &lt;span style=&#34;color: #4070a0&#34;&gt;&amp;quot;\nrefs #&lt;/span&gt;&lt;span style=&#34;color: #bb60d5&#34;&gt;$ticket&lt;/span&gt;&lt;span style=&#34;color: #4070a0&#34;&gt;&amp;quot;&lt;/span&gt; &amp;gt;&amp;gt; &lt;span style=&#34;color: #bb60d5&#34;&gt;$1&lt;/span&gt;
-&lt;span style=&#34;color: #007020; font-weight: bold&#34;&gt;fi&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-&lt;/p&gt;
+#!/bin/sh
+
+ticket=$(git symbolic-ref HEAD | awk -F- &#39;/ticket-/ {print $2}&#39;)
+if [ -n &#34;$ticket&#34; ]; then
+	echo &#34;\nrefs #$ticket&#34; &gt;&gt; $1
+fi
+
 
 &lt;p&gt;This extracts the ticket number from the branch name.
 The ticket number is then appended to your commit message on each commit when git executes
@@ -348,43 +360,43 @@ In this post I will show you how to create a Clojure/Vaadin 7 web application.&l
 &lt;p&gt;First we need a &lt;code&gt;web.xml&lt;/code&gt; file in &lt;code&gt;src/main/webapp/WEB-INF&lt;/code&gt; that defines the Vaadin servlet and parametrizes
 it with our main UI class.&lt;/p&gt;
 
-&lt;p&gt;&lt;div class=&#34;highlight&#34; style=&#34;background: #f0f0f0&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span style=&#34;color: #007020&#34;&gt;&amp;lt;?xml version=&amp;quot;1.0&amp;quot; encoding=&amp;quot;UTF-8&amp;quot;?&amp;gt;&lt;/span&gt;
-&lt;span style=&#34;color: #062873; font-weight: bold&#34;&gt;&amp;lt;web-app&lt;/span&gt; &lt;span style=&#34;color: #4070a0&#34;&gt;xmlns=&amp;quot;http://java.sun.com/xml/ns/javaee&amp;quot;&lt;/span&gt;
-	&lt;span style=&#34;color: #4070a0&#34;&gt;xmlns:xsi=&amp;quot;http://www.w3.org/2001/XMLSchema-instance&amp;quot;&lt;/span&gt;
-	&lt;span style=&#34;color: #4070a0&#34;&gt;xsi:schemaLocation=&amp;quot;http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd&amp;quot;&lt;/span&gt;
-	&lt;span style=&#34;color: #4070a0&#34;&gt;version=&amp;quot;2.5&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #062873; font-weight: bold&#34;&gt;&amp;gt;&lt;/span&gt;
-    &lt;span style=&#34;color: #062873; font-weight: bold&#34;&gt;&amp;lt;display-name&amp;gt;&lt;/span&gt;Clojure Vaadin 7 Application&lt;span style=&#34;color: #062873; font-weight: bold&#34;&gt;&amp;lt;/display-name&amp;gt;&lt;/span&gt;
-    &lt;span style=&#34;color: #062873; font-weight: bold&#34;&gt;&amp;lt;context-param&amp;gt;&lt;/span&gt;
-        &lt;span style=&#34;color: #062873; font-weight: bold&#34;&gt;&amp;lt;description&amp;gt;&lt;/span&gt;Vaadin production mode&lt;span style=&#34;color: #062873; font-weight: bold&#34;&gt;&amp;lt;/description&amp;gt;&lt;/span&gt;
-        &lt;span style=&#34;color: #062873; font-weight: bold&#34;&gt;&amp;lt;param-name&amp;gt;&lt;/span&gt;productionMode&lt;span style=&#34;color: #062873; font-weight: bold&#34;&gt;&amp;lt;/param-name&amp;gt;&lt;/span&gt;
-        &lt;span style=&#34;color: #062873; font-weight: bold&#34;&gt;&amp;lt;param-value&amp;gt;&lt;/span&gt;false&lt;span style=&#34;color: #062873; font-weight: bold&#34;&gt;&amp;lt;/param-value&amp;gt;&lt;/span&gt;
-    &lt;span style=&#34;color: #062873; font-weight: bold&#34;&gt;&amp;lt;/context-param&amp;gt;&lt;/span&gt;
-    &lt;span style=&#34;color: #062873; font-weight: bold&#34;&gt;&amp;lt;servlet&amp;gt;&lt;/span&gt;
-        &lt;span style=&#34;color: #062873; font-weight: bold&#34;&gt;&amp;lt;servlet-name&amp;gt;&lt;/span&gt;Clojure Vaadin 7 Application&lt;span style=&#34;color: #062873; font-weight: bold&#34;&gt;&amp;lt;/servlet-name&amp;gt;&lt;/span&gt;
-        &lt;span style=&#34;color: #062873; font-weight: bold&#34;&gt;&amp;lt;servlet-class&amp;gt;&lt;/span&gt;com.vaadin.server.VaadinServlet&lt;span style=&#34;color: #062873; font-weight: bold&#34;&gt;&amp;lt;/servlet-class&amp;gt;&lt;/span&gt;
-        &lt;span style=&#34;color: #062873; font-weight: bold&#34;&gt;&amp;lt;init-param&amp;gt;&lt;/span&gt;
-            &lt;span style=&#34;color: #062873; font-weight: bold&#34;&gt;&amp;lt;description&amp;gt;&lt;/span&gt;Vaadin UI&lt;span style=&#34;color: #062873; font-weight: bold&#34;&gt;&amp;lt;/description&amp;gt;&lt;/span&gt;
-            &lt;span style=&#34;color: #062873; font-weight: bold&#34;&gt;&amp;lt;param-name&amp;gt;&lt;/span&gt;UI&lt;span style=&#34;color: #062873; font-weight: bold&#34;&gt;&amp;lt;/param-name&amp;gt;&lt;/span&gt;
-            &lt;span style=&#34;color: #062873; font-weight: bold&#34;&gt;&amp;lt;param-value&amp;gt;&lt;/span&gt;cljvaadin7.MyApplicationUI&lt;span style=&#34;color: #062873; font-weight: bold&#34;&gt;&amp;lt;/param-value&amp;gt;&lt;/span&gt;
-        &lt;span style=&#34;color: #062873; font-weight: bold&#34;&gt;&amp;lt;/init-param&amp;gt;&lt;/span&gt;
-    &lt;span style=&#34;color: #062873; font-weight: bold&#34;&gt;&amp;lt;/servlet&amp;gt;&lt;/span&gt;
-    &lt;span style=&#34;color: #062873; font-weight: bold&#34;&gt;&amp;lt;servlet-mapping&amp;gt;&lt;/span&gt;
-        &lt;span style=&#34;color: #062873; font-weight: bold&#34;&gt;&amp;lt;servlet-name&amp;gt;&lt;/span&gt;Clojure Vaadin 7 Application&lt;span style=&#34;color: #062873; font-weight: bold&#34;&gt;&amp;lt;/servlet-name&amp;gt;&lt;/span&gt;
-        &lt;span style=&#34;color: #062873; font-weight: bold&#34;&gt;&amp;lt;url-pattern&amp;gt;&lt;/span&gt;/*&lt;span style=&#34;color: #062873; font-weight: bold&#34;&gt;&amp;lt;/url-pattern&amp;gt;&lt;/span&gt;
-    &lt;span style=&#34;color: #062873; font-weight: bold&#34;&gt;&amp;lt;/servlet-mapping&amp;gt;&lt;/span&gt;
-&lt;span style=&#34;color: #062873; font-weight: bold&#34;&gt;&amp;lt;/web-app&amp;gt;&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-&lt;/p&gt;
+
+&lt;?xml version=&#34;1.0&#34; encoding=&#34;UTF-8&#34;?&gt;
+&lt;web-app xmlns=&#34;http://java.sun.com/xml/ns/javaee&#34;
+	xmlns:xsi=&#34;http://www.w3.org/2001/XMLSchema-instance&#34;
+	xsi:schemaLocation=&#34;http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd&#34;
+	version=&#34;2.5&#34;&gt;
+    &lt;display-name&gt;Clojure Vaadin 7 Application&lt;/display-name&gt;
+    &lt;context-param&gt;
+        &lt;description&gt;Vaadin production mode&lt;/description&gt;
+        &lt;param-name&gt;productionMode&lt;/param-name&gt;
+        &lt;param-value&gt;false&lt;/param-value&gt;
+    &lt;/context-param&gt;
+    &lt;servlet&gt;
+        &lt;servlet-name&gt;Clojure Vaadin 7 Application&lt;/servlet-name&gt;
+        &lt;servlet-class&gt;com.vaadin.server.VaadinServlet&lt;/servlet-class&gt;
+        &lt;init-param&gt;
+            &lt;description&gt;Vaadin UI&lt;/description&gt;
+            &lt;param-name&gt;UI&lt;/param-name&gt;
+            &lt;param-value&gt;cljvaadin7.MyApplicationUI&lt;/param-value&gt;
+        &lt;/init-param&gt;
+    &lt;/servlet&gt;
+    &lt;servlet-mapping&gt;
+        &lt;servlet-name&gt;Clojure Vaadin 7 Application&lt;/servlet-name&gt;
+        &lt;url-pattern&gt;/*&lt;/url-pattern&gt;
+    &lt;/servlet-mapping&gt;
+&lt;/web-app&gt;
+
 
 &lt;p&gt;As there is no such thing as a class in Clojure, we will use its Java interoperability to create
 a Java class that serves as our Vaadin UI main class.&lt;/p&gt;
 
-&lt;p&gt;&lt;div class=&#34;highlight&#34; style=&#34;background: #f0f0f0&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;(&lt;span style=&#34;color: #007020; font-weight: bold&#34;&gt;ns &lt;/span&gt;&lt;span style=&#34;color: #bb60d5&#34;&gt;cljvaadin7.MyApplicationUI&lt;/span&gt;
-  (&lt;span style=&#34;color: #007020&#34;&gt;import &lt;/span&gt;[&lt;span style=&#34;color: #bb60d5&#34;&gt;com.vaadin.ui&lt;/span&gt; &lt;span style=&#34;color: #bb60d5&#34;&gt;VerticalLayout&lt;/span&gt; &lt;span style=&#34;color: #bb60d5&#34;&gt;Label&lt;/span&gt; &lt;span style=&#34;color: #bb60d5&#34;&gt;Button&lt;/span&gt; &lt;span style=&#34;color: #bb60d5&#34;&gt;Button$ClickListener&lt;/span&gt; &lt;span style=&#34;color: #bb60d5&#34;&gt;Notification&lt;/span&gt;])
-  (&lt;span style=&#34;color: #517918&#34;&gt;:gen-class&lt;/span&gt;
-    &lt;span style=&#34;color: #517918&#34;&gt;:extends&lt;/span&gt; &lt;span style=&#34;color: #bb60d5&#34;&gt;com.vaadin.ui.UI&lt;/span&gt;))
-&lt;/pre&gt;&lt;/div&gt;
-&lt;/p&gt;
+
+(ns cljvaadin7.MyApplicationUI
+  (import [com.vaadin.ui VerticalLayout Label Button Button$ClickListener Notification])
+  (:gen-class
+    :extends com.vaadin.ui.UI))
+
 
 &lt;p&gt;&lt;code&gt;:gen-class&lt;/code&gt; will make the namespace available as a Java class.&lt;/p&gt;
 
@@ -394,20 +406,20 @@ has only one argument (&lt;code&gt;request&lt;/code&gt;). However, our Clojure &
 The reason is that the function will receive &amp;ldquo;&lt;code&gt;this&lt;/code&gt;&amp;rdquo; as the first argument.
 Now we can build our UI.&lt;/p&gt;
 
-&lt;p&gt;&lt;div class=&#34;highlight&#34; style=&#34;background: #f0f0f0&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;(&lt;span style=&#34;color: #007020; font-weight: bold&#34;&gt;defn- &lt;/span&gt;&lt;span style=&#34;color: #bb60d5&#34;&gt;create-button&lt;/span&gt;
-  [&lt;span style=&#34;color: #bb60d5&#34;&gt;caption&lt;/span&gt; &lt;span style=&#34;color: #bb60d5&#34;&gt;action&lt;/span&gt;]
-  (&lt;span style=&#34;color: #007020&#34;&gt;doto &lt;/span&gt;(&lt;span style=&#34;color: #06287e&#34;&gt;Button.&lt;/span&gt; &lt;span style=&#34;color: #bb60d5&#34;&gt;caption&lt;/span&gt;) (&lt;span style=&#34;color: #06287e&#34;&gt;add-action&lt;/span&gt; &lt;span style=&#34;color: #bb60d5&#34;&gt;action&lt;/span&gt;)))
+&lt;p&gt;
+(defn- create-button
+  [caption action]
+  (doto (Button. caption) (add-action action)))
 
-(&lt;span style=&#34;color: #007020; font-weight: bold&#34;&gt;defn- &lt;/span&gt;&lt;span style=&#34;color: #bb60d5&#34;&gt;create-main-layout&lt;/span&gt;
+(defn- create-main-layout
   []
-  (&lt;span style=&#34;color: #007020&#34;&gt;doto &lt;/span&gt;(&lt;span style=&#34;color: #06287e&#34;&gt;VerticalLayout.&lt;/span&gt;)
-	        (&lt;span style=&#34;color: #06287e&#34;&gt;.addComponent&lt;/span&gt; (&lt;span style=&#34;color: #06287e&#34;&gt;Label.&lt;/span&gt; &lt;span style=&#34;color: #4070a0&#34;&gt;&amp;quot;Hello Clojure-Vaadin 7!&amp;quot;&lt;/span&gt;))
-	        (&lt;span style=&#34;color: #06287e&#34;&gt;.addComponent&lt;/span&gt; (&lt;span style=&#34;color: #06287e&#34;&gt;create-button&lt;/span&gt; &lt;span style=&#34;color: #4070a0&#34;&gt;&amp;quot;Push me!&amp;quot;&lt;/span&gt; &lt;span style=&#34;color: #bb60d5&#34;&gt;show-click-message&lt;/span&gt;))))
+  (doto (VerticalLayout.)
+	        (.addComponent (Label. &#34;Hello Clojure-Vaadin 7!&#34;))
+	        (.addComponent (create-button &#34;Push me!&#34; show-click-message))))
 
-(&lt;span style=&#34;color: #007020; font-weight: bold&#34;&gt;defn &lt;/span&gt;&lt;span style=&#34;color: #bb60d5&#34;&gt;-init&lt;/span&gt;
-  [&lt;span style=&#34;color: #bb60d5&#34;&gt;main-ui&lt;/span&gt; &lt;span style=&#34;color: #bb60d5&#34;&gt;request&lt;/span&gt;]
-  (&lt;span style=&#34;color: #007020&#34;&gt;doto &lt;/span&gt;&lt;span style=&#34;color: #bb60d5&#34;&gt;main-ui&lt;/span&gt; (&lt;span style=&#34;color: #06287e&#34;&gt;.setContent&lt;/span&gt; (&lt;span style=&#34;color: #06287e&#34;&gt;create-main-layout&lt;/span&gt;))))
-&lt;/pre&gt;&lt;/div&gt;
+(defn -init
+  [main-ui request]
+  (doto main-ui (.setContent (create-main-layout))))
 &lt;/p&gt;
 
 &lt;p&gt;In Java, button actions are triggered by registering a click handler for the button. We have to do this in
@@ -416,37 +428,37 @@ We create a new function &lt;code&gt;add-action&lt;/code&gt; that expects a butt
 we want to be executed when the button is clicked.
 The helper function &lt;code&gt;create-button-click-listener&lt;/code&gt; wraps a Vaadin &lt;code&gt;ClickListener&lt;/code&gt; around the &lt;code&gt;action&lt;/code&gt; function.&lt;/p&gt;
 
-&lt;p&gt;&lt;div class=&#34;highlight&#34; style=&#34;background: #f0f0f0&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;(&lt;span style=&#34;color: #007020; font-weight: bold&#34;&gt;defn- &lt;/span&gt;&lt;span style=&#34;color: #bb60d5&#34;&gt;show-click-message&lt;/span&gt;
+&lt;p&gt;
+(defn- show-click-message
   []
-  (&lt;span style=&#34;color: #06287e&#34;&gt;Notification/show&lt;/span&gt; &lt;span style=&#34;color: #4070a0&#34;&gt;&amp;quot;Button clicked&amp;quot;&lt;/span&gt;))
+  (Notification/show &#34;Button clicked&#34;))
 
-(&lt;span style=&#34;color: #007020; font-weight: bold&#34;&gt;defn- &lt;/span&gt;&lt;span style=&#34;color: #bb60d5&#34;&gt;create-button-click-listener&lt;/span&gt; 
-  [&lt;span style=&#34;color: #bb60d5&#34;&gt;action&lt;/span&gt;]
-  (&lt;span style=&#34;color: #06287e&#34;&gt;reify&lt;/span&gt; &lt;span style=&#34;color: #bb60d5&#34;&gt;Button$ClickListener&lt;/span&gt; 
-            (&lt;span style=&#34;color: #06287e&#34;&gt;buttonClick&lt;/span&gt; 
-              [&lt;span style=&#34;color: #bb60d5&#34;&gt;_&lt;/span&gt; &lt;span style=&#34;color: #bb60d5&#34;&gt;evt&lt;/span&gt;]
-              (&lt;span style=&#34;color: #06287e&#34;&gt;action&lt;/span&gt;))))
+(defn- create-button-click-listener 
+  [action]
+  (reify Button$ClickListener 
+            (buttonClick 
+              [_ evt]
+              (action))))
 
-(&lt;span style=&#34;color: #007020; font-weight: bold&#34;&gt;defn- &lt;/span&gt;&lt;span style=&#34;color: #bb60d5&#34;&gt;add-action&lt;/span&gt;
-  [&lt;span style=&#34;color: #bb60d5&#34;&gt;button&lt;/span&gt; &lt;span style=&#34;color: #bb60d5&#34;&gt;action&lt;/span&gt;]
-  (&lt;span style=&#34;color: #06287e&#34;&gt;.addListener&lt;/span&gt; &lt;span style=&#34;color: #bb60d5&#34;&gt;button&lt;/span&gt; (&lt;span style=&#34;color: #06287e&#34;&gt;create-button-click-listener&lt;/span&gt; &lt;span style=&#34;color: #bb60d5&#34;&gt;action&lt;/span&gt;)))
-&lt;/pre&gt;&lt;/div&gt;
+(defn- add-action
+  [button action]
+  (.addListener button (create-button-click-listener action)))
 &lt;/p&gt;
 
 &lt;p&gt;The project file for building with Leiningen (and packaging with Maven) looks like this:&lt;/p&gt;
 
-&lt;p&gt;&lt;div class=&#34;highlight&#34; style=&#34;background: #f0f0f0&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;(&lt;span style=&#34;color: #007020; font-weight: bold&#34;&gt;defproject &lt;/span&gt;&lt;span style=&#34;color: #bb60d5&#34;&gt;cljvaadin7&lt;/span&gt; &lt;span style=&#34;color: #4070a0&#34;&gt;&amp;quot;0.1.0-SNAPSHOT&amp;quot;&lt;/span&gt;
-  &lt;span style=&#34;color: #517918&#34;&gt;:description&lt;/span&gt; &lt;span style=&#34;color: #4070a0&#34;&gt;&amp;quot;Demonstrates how to integrate Clojure and Vaadin 7&amp;quot;&lt;/span&gt;
-  &lt;span style=&#34;color: #517918&#34;&gt;:url&lt;/span&gt; &lt;span style=&#34;color: #4070a0&#34;&gt;&amp;quot;https://github.com/codebrickie/cljvaadin7&amp;quot;&lt;/span&gt;
-  &lt;span style=&#34;color: #517918&#34;&gt;:license&lt;/span&gt; {&lt;span style=&#34;color: #517918&#34;&gt;:name&lt;/span&gt; &lt;span style=&#34;color: #4070a0&#34;&gt;&amp;quot;Eclipse Public License&amp;quot;&lt;/span&gt;
-            &lt;span style=&#34;color: #517918&#34;&gt;:url&lt;/span&gt; &lt;span style=&#34;color: #4070a0&#34;&gt;&amp;quot;http://www.eclipse.org/legal/epl-v10.html&amp;quot;&lt;/span&gt;}
-  &lt;span style=&#34;color: #517918&#34;&gt;:dependencies&lt;/span&gt; [[&lt;span style=&#34;color: #bb60d5&#34;&gt;org.clojure/clojure&lt;/span&gt; &lt;span style=&#34;color: #4070a0&#34;&gt;&amp;quot;1.4.0&amp;quot;&lt;/span&gt;]
-                 [&lt;span style=&#34;color: #bb60d5&#34;&gt;com.vaadin/vaadin-server&lt;/span&gt; &lt;span style=&#34;color: #4070a0&#34;&gt;&amp;quot;7.0.0&amp;quot;&lt;/span&gt;]
-                 [&lt;span style=&#34;color: #bb60d5&#34;&gt;com.vaadin/vaadin-client-compiled&lt;/span&gt; &lt;span style=&#34;color: #4070a0&#34;&gt;&amp;quot;7.0.0&amp;quot;&lt;/span&gt;]
-                 [&lt;span style=&#34;color: #bb60d5&#34;&gt;com.vaadin/vaadin-themes&lt;/span&gt; &lt;span style=&#34;color: #4070a0&#34;&gt;&amp;quot;7.0.0&amp;quot;&lt;/span&gt;]
-                 [&lt;span style=&#34;color: #bb60d5&#34;&gt;javax.servlet/servlet-api&lt;/span&gt; &lt;span style=&#34;color: #4070a0&#34;&gt;&amp;quot;2.5&amp;quot;&lt;/span&gt;]]
-  &lt;span style=&#34;color: #517918&#34;&gt;:aot&lt;/span&gt; [&lt;span style=&#34;color: #bb60d5&#34;&gt;cljvaadin7.MyApplicationUI&lt;/span&gt;])
-&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;
+(defproject cljvaadin7 &#34;0.1.0-SNAPSHOT&#34;
+  :description &#34;Demonstrates how to integrate Clojure and Vaadin 7&#34;
+  :url &#34;https://github.com/codebrickie/cljvaadin7&#34;
+  :license {:name &#34;Eclipse Public License&#34;
+            :url &#34;http://www.eclipse.org/legal/epl-v10.html&#34;}
+  :dependencies [[org.clojure/clojure &#34;1.4.0&#34;]
+                 [com.vaadin/vaadin-server &#34;7.0.0&#34;]
+                 [com.vaadin/vaadin-client-compiled &#34;7.0.0&#34;]
+                 [com.vaadin/vaadin-themes &#34;7.0.0&#34;]
+                 [javax.servlet/servlet-api &#34;2.5&#34;]]
+  :aot [cljvaadin7.MyApplicationUI])
 &lt;/p&gt;
 
 &lt;p&gt;You can find the complete project on &lt;a href=&#34;https://github.com/codebrickie/cljvaadin7&#34;&gt;GitHub&lt;/a&gt;.&lt;/p&gt;
@@ -466,56 +478,56 @@ Fortunately Spring integration for Vaadin 7 is available as a &lt;a href=&#34;ht
 
 &lt;ul&gt;
 &lt;li&gt;&lt;p&gt;Add the Spring integration as a dependency. Here&amp;rsquo;s the relevant excerpt of my &lt;code&gt;build.gradle&lt;/code&gt;:
-&lt;div class=&#34;highlight&#34; style=&#34;background: #f0f0f0&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span style=&#34;color: #60a0b0; font-style: italic&#34;&gt;//...&lt;/span&gt;
-repositories &lt;span style=&#34;color: #666666&#34;&gt;{&lt;/span&gt;
-	mavenRepo &lt;span style=&#34;color: #002070; font-weight: bold&#34;&gt;url:&lt;/span&gt; &lt;span style=&#34;color: #4070a0&#34;&gt;&amp;#39;http://repo1.maven.org/maven2/&amp;#39;&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color: #002070; font-weight: bold&#34;&gt;artifactUrls:&lt;/span&gt; &lt;span style=&#34;color: #666666&#34;&gt;[&lt;/span&gt;&lt;span style=&#34;color: #4070a0&#34;&gt;&amp;#39;http://maven.springframework.org/milestone&amp;#39;&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color: #4070a0&#34;&gt;&amp;#39;http://maven.vaadin.com/vaadin-addons&amp;#39;&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;]&lt;/span&gt;
-&lt;span style=&#34;color: #666666&#34;&gt;}&lt;/span&gt;
+
+//...
+repositories {
+	mavenRepo url: &#39;http://repo1.maven.org/maven2/&#39;, artifactUrls: [&#39;http://maven.springframework.org/milestone&#39;, &#39;http://maven.vaadin.com/vaadin-addons&#39;]
+}
 
 
-dependencies &lt;span style=&#34;color: #666666&#34;&gt;{&lt;/span&gt;
-	&lt;span style=&#34;color: #666666&#34;&gt;...&lt;/span&gt;
+dependencies {
+	...
 	
-	runtime &lt;span style=&#34;color: #4070a0&#34;&gt;&amp;#39;ru.xpoft.vaadin:spring-vaadin-integration:1.6.2&amp;#39;&lt;/span&gt;
+	runtime &#39;ru.xpoft.vaadin:spring-vaadin-integration:1.6.2&#39;
 	
-	&lt;span style=&#34;color: #666666&#34;&gt;...&lt;/span&gt;
-&lt;span style=&#34;color: #666666&#34;&gt;}&lt;/span&gt;
-&lt;span style=&#34;color: #666666&#34;&gt;...&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
+	...
+}
+...
 &lt;/p&gt;&lt;/li&gt;
 
 &lt;li&gt;&lt;p&gt;Define the Spring integration servlet and your main UI bean in your &lt;code&gt;web.xml&lt;/code&gt;:
-&lt;div class=&#34;highlight&#34; style=&#34;background: #f0f0f0&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span style=&#34;color: #007020&#34;&gt;&amp;lt;?xml version=&amp;quot;1.0&amp;quot; encoding=&amp;quot;UTF-8&amp;quot;?&amp;gt;&lt;/span&gt;
-&lt;span style=&#34;color: #062873; font-weight: bold&#34;&gt;&amp;lt;web-app&lt;/span&gt; &lt;span style=&#34;color: #4070a0&#34;&gt;id=&amp;quot;WebApp_ID&amp;quot;&lt;/span&gt; &lt;span style=&#34;color: #4070a0&#34;&gt;version=&amp;quot;2.4&amp;quot;&lt;/span&gt;
-	&lt;span style=&#34;color: #4070a0&#34;&gt;xmlns=&amp;quot;http://java.sun.com/xml/ns/j2ee&amp;quot;&lt;/span&gt; &lt;span style=&#34;color: #4070a0&#34;&gt;xmlns:xsi=&amp;quot;http://www.w3.org/2001/XMLSchema-instance&amp;quot;&lt;/span&gt;
-	&lt;span style=&#34;color: #4070a0&#34;&gt;xsi:schemaLocation=&amp;quot;http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #062873; font-weight: bold&#34;&gt;&amp;gt;&lt;/span&gt;
-	&lt;span style=&#34;color: #062873; font-weight: bold&#34;&gt;&amp;lt;context-param&amp;gt;&lt;/span&gt;
-		&lt;span style=&#34;color: #062873; font-weight: bold&#34;&gt;&amp;lt;param-name&amp;gt;&lt;/span&gt;contextConfigLocation&lt;span style=&#34;color: #062873; font-weight: bold&#34;&gt;&amp;lt;/param-name&amp;gt;&lt;/span&gt;
-		&lt;span style=&#34;color: #062873; font-weight: bold&#34;&gt;&amp;lt;param-value&amp;gt;&lt;/span&gt;classpath*:applicationContext*.xml&lt;span style=&#34;color: #062873; font-weight: bold&#34;&gt;&amp;lt;/param-value&amp;gt;&lt;/span&gt;
-	&lt;span style=&#34;color: #062873; font-weight: bold&#34;&gt;&amp;lt;/context-param&amp;gt;&lt;/span&gt;
 
-	&lt;span style=&#34;color: #062873; font-weight: bold&#34;&gt;&amp;lt;listener&amp;gt;&lt;/span&gt;
-		&lt;span style=&#34;color: #062873; font-weight: bold&#34;&gt;&amp;lt;listener-class&amp;gt;&lt;/span&gt;org.springframework.web.context.ContextLoaderListener&lt;span style=&#34;color: #062873; font-weight: bold&#34;&gt;&amp;lt;/listener-class&amp;gt;&lt;/span&gt;
-	&lt;span style=&#34;color: #062873; font-weight: bold&#34;&gt;&amp;lt;/listener&amp;gt;&lt;/span&gt;
+&lt;?xml version=&#34;1.0&#34; encoding=&#34;UTF-8&#34;?&gt;
+&lt;web-app id=&#34;WebApp_ID&#34; version=&#34;2.4&#34;
+	xmlns=&#34;http://java.sun.com/xml/ns/j2ee&#34; xmlns:xsi=&#34;http://www.w3.org/2001/XMLSchema-instance&#34;
+	xsi:schemaLocation=&#34;http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd&#34;&gt;
+	&lt;context-param&gt;
+		&lt;param-name&gt;contextConfigLocation&lt;/param-name&gt;
+		&lt;param-value&gt;classpath*:applicationContext*.xml&lt;/param-value&gt;
+	&lt;/context-param&gt;
+
+	&lt;listener&gt;
+		&lt;listener-class&gt;org.springframework.web.context.ContextLoaderListener&lt;/listener-class&gt;
+	&lt;/listener&gt;
 	
-	&lt;span style=&#34;color: #062873; font-weight: bold&#34;&gt;&amp;lt;servlet&amp;gt;&lt;/span&gt;
-        &lt;span style=&#34;color: #062873; font-weight: bold&#34;&gt;&amp;lt;servlet-name&amp;gt;&lt;/span&gt;VaadinServlet&lt;span style=&#34;color: #062873; font-weight: bold&#34;&gt;&amp;lt;/servlet-name&amp;gt;&lt;/span&gt;
-        &lt;span style=&#34;color: #062873; font-weight: bold&#34;&gt;&amp;lt;servlet-class&amp;gt;&lt;/span&gt;ru.xpoft.vaadin.SpringVaadinServlet&lt;span style=&#34;color: #062873; font-weight: bold&#34;&gt;&amp;lt;/servlet-class&amp;gt;&lt;/span&gt;
-        &lt;span style=&#34;color: #062873; font-weight: bold&#34;&gt;&amp;lt;init-param&amp;gt;&lt;/span&gt;
-            &lt;span style=&#34;color: #062873; font-weight: bold&#34;&gt;&amp;lt;param-name&amp;gt;&lt;/span&gt;beanName&lt;span style=&#34;color: #062873; font-weight: bold&#34;&gt;&amp;lt;/param-name&amp;gt;&lt;/span&gt;
-            &lt;span style=&#34;color: #60a0b0; font-style: italic&#34;&gt;&amp;lt;!-- &lt;/span&gt;
-&lt;span style=&#34;color: #60a0b0; font-style: italic&#34;&gt;            	This is the name of your main Vaadin UI class.&lt;/span&gt;
-&lt;span style=&#34;color: #60a0b0; font-style: italic&#34;&gt;            	You should declare it as a prototype-scoped component (e.g. @Component @Scope(&amp;quot;protoype&amp;quot;)).&lt;/span&gt;
-&lt;span style=&#34;color: #60a0b0; font-style: italic&#34;&gt;            --&amp;gt;&lt;/span&gt;
-            &lt;span style=&#34;color: #062873; font-weight: bold&#34;&gt;&amp;lt;param-value&amp;gt;&lt;/span&gt;mainUI&lt;span style=&#34;color: #062873; font-weight: bold&#34;&gt;&amp;lt;/param-value&amp;gt;&lt;/span&gt; 
-        &lt;span style=&#34;color: #062873; font-weight: bold&#34;&gt;&amp;lt;/init-param&amp;gt;&lt;/span&gt;
-    &lt;span style=&#34;color: #062873; font-weight: bold&#34;&gt;&amp;lt;/servlet&amp;gt;&lt;/span&gt;
+	&lt;servlet&gt;
+        &lt;servlet-name&gt;VaadinServlet&lt;/servlet-name&gt;
+        &lt;servlet-class&gt;ru.xpoft.vaadin.SpringVaadinServlet&lt;/servlet-class&gt;
+        &lt;init-param&gt;
+            &lt;param-name&gt;beanName&lt;/param-name&gt;
+            &lt;!-- 
+            	This is the name of your main Vaadin UI class.
+            	You should declare it as a prototype-scoped component (e.g. @Component @Scope(&#34;protoype&#34;)).
+            --&gt;
+            &lt;param-value&gt;mainUI&lt;/param-value&gt; 
+        &lt;/init-param&gt;
+    &lt;/servlet&gt;
 
-    &lt;span style=&#34;color: #062873; font-weight: bold&#34;&gt;&amp;lt;servlet-mapping&amp;gt;&lt;/span&gt;
-        &lt;span style=&#34;color: #062873; font-weight: bold&#34;&gt;&amp;lt;servlet-name&amp;gt;&lt;/span&gt;VaadinServlet&lt;span style=&#34;color: #062873; font-weight: bold&#34;&gt;&amp;lt;/servlet-name&amp;gt;&lt;/span&gt;
-        &lt;span style=&#34;color: #062873; font-weight: bold&#34;&gt;&amp;lt;url-pattern&amp;gt;&lt;/span&gt;/*&lt;span style=&#34;color: #062873; font-weight: bold&#34;&gt;&amp;lt;/url-pattern&amp;gt;&lt;/span&gt;
-    &lt;span style=&#34;color: #062873; font-weight: bold&#34;&gt;&amp;lt;/servlet-mapping&amp;gt;&lt;/span&gt;
-&lt;span style=&#34;color: #062873; font-weight: bold&#34;&gt;&amp;lt;/web-app&amp;gt;&lt;/span&gt;    
-&lt;/pre&gt;&lt;/div&gt;
+    &lt;servlet-mapping&gt;
+        &lt;servlet-name&gt;VaadinServlet&lt;/servlet-name&gt;
+        &lt;url-pattern&gt;/*&lt;/url-pattern&gt;
+    &lt;/servlet-mapping&gt;
+&lt;/web-app&gt;    
 &lt;/p&gt;&lt;/li&gt;
 &lt;/ul&gt;
 
@@ -540,22 +552,22 @@ You achieve this by adding the key &lt;code&gt;LSUIElement&lt;/code&gt; with a v
 
 &lt;p&gt;Now, when your application launches, check whether you want to display the statusbar icon or the dock icon. I do this based on the user&amp;rsquo;s preference in this example.&lt;/p&gt;
 
-&lt;p&gt;&lt;div class=&#34;highlight&#34; style=&#34;background: #f0f0f0&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;- (&lt;span style=&#34;color: #902000&#34;&gt;void&lt;/span&gt;)&lt;span style=&#34;color: #06287e&#34;&gt;applicationDidFinishLaunching:&lt;/span&gt;(&lt;span style=&#34;color: #007020&#34;&gt;NSNotification&lt;/span&gt; &lt;span style=&#34;color: #666666&#34;&gt;*&lt;/span&gt;)&lt;span style=&#34;color: #bb60d5&#34;&gt;notification&lt;/span&gt; {
-	&lt;span style=&#34;color: #007020; font-weight: bold&#34;&gt;if&lt;/span&gt;(&lt;span style=&#34;color: #666666&#34;&gt;!&lt;/span&gt;[[&lt;span style=&#34;color: #007020&#34;&gt;NSUserDefaults&lt;/span&gt; standardUserDefaults] &lt;span style=&#34;color: #002070; font-weight: bold&#34;&gt;boolForKey&lt;/span&gt;:&lt;span style=&#34;color: #4070a0&#34;&gt;@&amp;quot;showDockIcon&amp;quot;&lt;/span&gt;]) {
-		&lt;span style=&#34;color: #60a0b0; font-style: italic&#34;&gt;// Create a status item and display it in the statusbar&lt;/span&gt;
-		&lt;span style=&#34;color: #007020&#34;&gt;self&lt;/span&gt;.statusItem &lt;span style=&#34;color: #666666&#34;&gt;=&lt;/span&gt; [[NSStatusBar systemStatusBar] &lt;span style=&#34;color: #002070; font-weight: bold&#34;&gt;statusItemWithLength&lt;/span&gt;:NSVariableStatusItemLength];
-		[&lt;span style=&#34;color: #007020&#34;&gt;self&lt;/span&gt;.statusItem &lt;span style=&#34;color: #002070; font-weight: bold&#34;&gt;setMenu&lt;/span&gt;:&lt;span style=&#34;color: #007020&#34;&gt;self&lt;/span&gt;.statusBarMenu];
-		[&lt;span style=&#34;color: #007020&#34;&gt;self&lt;/span&gt;.statusItem &lt;span style=&#34;color: #002070; font-weight: bold&#34;&gt;setHighlightMode&lt;/span&gt;:&lt;span style=&#34;color: #007020&#34;&gt;YES&lt;/span&gt;];
-		[&lt;span style=&#34;color: #007020&#34;&gt;self&lt;/span&gt;.statusItem &lt;span style=&#34;color: #002070; font-weight: bold&#34;&gt;setImage&lt;/span&gt;:[NSImage &lt;span style=&#34;color: #002070; font-weight: bold&#34;&gt;imageNamed&lt;/span&gt;:&lt;span style=&#34;color: #4070a0&#34;&gt;@&amp;quot;barimage&amp;quot;&lt;/span&gt;]];
-		[&lt;span style=&#34;color: #007020&#34;&gt;self&lt;/span&gt;.statusItem &lt;span style=&#34;color: #002070; font-weight: bold&#34;&gt;setAlternateImage&lt;/span&gt;:[NSImage &lt;span style=&#34;color: #002070; font-weight: bold&#34;&gt;imageNamed&lt;/span&gt;:&lt;span style=&#34;color: #4070a0&#34;&gt;@&amp;quot;barimage-highlighted&amp;quot;&lt;/span&gt;]];
-	} &lt;span style=&#34;color: #007020; font-weight: bold&#34;&gt;else&lt;/span&gt; {
-		&lt;span style=&#34;color: #60a0b0; font-style: italic&#34;&gt;// Bring the dock icon to the front (initially hidden with LSUIElement = YES in &amp;lt;Application&amp;gt;-Info.plist)&lt;/span&gt;
-		ProcessSerialNumber psn &lt;span style=&#34;color: #666666&#34;&gt;=&lt;/span&gt; { &lt;span style=&#34;color: #40a070&#34;&gt;0&lt;/span&gt;, kCurrentProcess };
-		TransformProcessType(&lt;span style=&#34;color: #666666&#34;&gt;&amp;amp;&lt;/span&gt;psn, kProcessTransformToForegroundApplication);
+
+- (void)applicationDidFinishLaunching:(NSNotification *)notification {
+	if(![[NSUserDefaults standardUserDefaults] boolForKey:@&#34;showDockIcon&#34;]) {
+		// Create a status item and display it in the statusbar
+		self.statusItem = [[NSStatusBar systemStatusBar] statusItemWithLength:NSVariableStatusItemLength];
+		[self.statusItem setMenu:self.statusBarMenu];
+		[self.statusItem setHighlightMode:YES];
+		[self.statusItem setImage:[NSImage imageNamed:@&#34;barimage&#34;]];
+		[self.statusItem setAlternateImage:[NSImage imageNamed:@&#34;barimage-highlighted&#34;]];
+	} else {
+		// Bring the dock icon to the front (initially hidden with LSUIElement = YES in &lt;Application&gt;-Info.plist)
+		ProcessSerialNumber psn = { 0, kCurrentProcess };
+		TransformProcessType(&amp;psn, kProcessTransformToForegroundApplication);
 	}
 }
-&lt;/pre&gt;&lt;/div&gt;
-&lt;/p&gt;
+
 </description>
     </item>
     
@@ -767,25 +779,6 @@ end
 
 &lt;li&gt;&lt;p&gt;Configure your build job in Jenkins to publish the Emma coverage results from &lt;code&gt;coverage/coverage.xml&lt;/code&gt;.&lt;/p&gt;&lt;/li&gt;
 &lt;/ul&gt;
-</description>
-    </item>
-    
-    <item>
-      <title>Suggested Reading</title>
-      <link>http://tobiasbayer.com/post/2012-01-28-suggested-reading/</link>
-      <pubDate>Sat, 28 Jan 2012 00:00:00 +0000</pubDate>
-      
-      <guid>http://tobiasbayer.com/post/2012-01-28-suggested-reading/</guid>
-      <description>&lt;p&gt;&lt;a href=&#34;http://rdegges.com/on-programming-deadlines&#34;&gt;On Programming Deadlines&lt;/a&gt;&lt;br /&gt;
-Guidelines for coping with deadlines&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&#34;http://mikebernat.com/blog/Egoless_Programming_-_Developing_Without_the_Attitude&#34;&gt;Egoless Programming - Developing Without the
-Attitude&lt;/a&gt;&lt;br /&gt;
-A little older article for those of us with a magnificent ego.&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&#34;http://www.smashingmagazine.com/2011/09/28/youre-pricing-it-wrong-software-pricing-demystified/&#34;&gt;You&amp;rsquo;re Pricing It Wrong: Software Pricing
-Demystified&lt;/a&gt;&lt;br /&gt;
-Basic economics for developers.&lt;/p&gt;
 </description>
     </item>
     

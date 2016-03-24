@@ -22,127 +22,127 @@ because of the relatively large amount of unintuitive code that is necessary for
 
 &lt;p&gt;First create a file in the client classpath with your custom CSS in it.&lt;/p&gt;
 
-&lt;p&gt;&lt;div class=&#34;highlight&#34; style=&#34;background: #f0f0f0&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span style=&#34;color: #0e84b5; font-weight: bold&#34;&gt;.cellDisabled&lt;/span&gt; {
-  &lt;span style=&#34;color: #007020; font-weight: bold&#34;&gt;background-color&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;:&lt;/span&gt; &lt;span style=&#34;color: #40a070&#34;&gt;#EEEEEE&lt;/span&gt; &lt;span style=&#34;color: #007020&#34;&gt;!important&lt;/span&gt;;
-  &lt;span style=&#34;color: #007020; font-weight: bold&#34;&gt;color&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;:&lt;/span&gt; &lt;span style=&#34;color: #40a070&#34;&gt;#000000&lt;/span&gt;;
+
+.cellDisabled {
+  background-color: #EEEEEE !important;
+  color: #000000;
 }
-&lt;/pre&gt;&lt;/div&gt;
-&lt;/p&gt;
+
 
 &lt;p&gt;Next, create a custom &lt;code&gt;MyGridAppearance&lt;/code&gt; that extends the &lt;code&gt;GridAppearance&lt;/code&gt; your application
 is using (e.g. &lt;code&gt;GrayGridAppearance&lt;/code&gt;).&lt;/p&gt;
 
-&lt;p&gt;&lt;div class=&#34;highlight&#34; style=&#34;background: #f0f0f0&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span style=&#34;color: #007020; font-weight: bold&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color: #007020; font-weight: bold&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color: #0e84b5; font-weight: bold&#34;&gt;MyGridAppearance&lt;/span&gt; &lt;span style=&#34;color: #007020; font-weight: bold&#34;&gt;extends&lt;/span&gt; GrayGridAppearance &lt;span style=&#34;color: #666666&#34;&gt;{&lt;/span&gt;
 
-&lt;span style=&#34;color: #666666&#34;&gt;}&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-&lt;/p&gt;
+public class MyGridAppearance extends GrayGridAppearance {
+
+}
+
 
 &lt;p&gt;In this &lt;code&gt;Appearance&lt;/code&gt; include an interface that extends the style of the component you want
 to add your custom style to. The interface must include a method named after your custom
 CSS style.&lt;/p&gt;
 
-&lt;p&gt;&lt;div class=&#34;highlight&#34; style=&#34;background: #f0f0f0&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span style=&#34;color: #007020; font-weight: bold&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color: #007020; font-weight: bold&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color: #0e84b5; font-weight: bold&#34;&gt;MyGridAppearance&lt;/span&gt; &lt;span style=&#34;color: #007020; font-weight: bold&#34;&gt;extends&lt;/span&gt; GrayGridAppearance &lt;span style=&#34;color: #666666&#34;&gt;{&lt;/span&gt;
 
-    &lt;span style=&#34;color: #007020; font-weight: bold&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color: #007020; font-weight: bold&#34;&gt;interface&lt;/span&gt; &lt;span style=&#34;color: #0e84b5; font-weight: bold&#34;&gt;MyGridStyle&lt;/span&gt; &lt;span style=&#34;color: #007020; font-weight: bold&#34;&gt;extends&lt;/span&gt; GrayGridStyle &lt;span style=&#34;color: #666666&#34;&gt;{&lt;/span&gt;
-        String &lt;span style=&#34;color: #06287e&#34;&gt;cellDisabled&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;();&lt;/span&gt;
-    &lt;span style=&#34;color: #666666&#34;&gt;}&lt;/span&gt;
-&lt;span style=&#34;color: #666666&#34;&gt;}&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-&lt;/p&gt;
+public class MyGridAppearance extends GrayGridAppearance {
+
+    public interface MyGridStyle extends GrayGridStyle {
+        String cellDisabled();
+    }
+}
+
 
 &lt;p&gt;Now include another interface that pulls your CSS file into the bundle. It must have a
 &lt;code&gt;@Source&lt;/code&gt; annotation with all the CSS files along the inheritance path and your custom CSS
 file as well.&lt;/p&gt;
 
-&lt;p&gt;&lt;div class=&#34;highlight&#34; style=&#34;background: #f0f0f0&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span style=&#34;color: #007020; font-weight: bold&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color: #007020; font-weight: bold&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color: #0e84b5; font-weight: bold&#34;&gt;MyGridAppearance&lt;/span&gt; &lt;span style=&#34;color: #007020; font-weight: bold&#34;&gt;extends&lt;/span&gt; GrayGridAppearance &lt;span style=&#34;color: #666666&#34;&gt;{&lt;/span&gt;
 
-    &lt;span style=&#34;color: #007020; font-weight: bold&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color: #007020; font-weight: bold&#34;&gt;interface&lt;/span&gt; &lt;span style=&#34;color: #0e84b5; font-weight: bold&#34;&gt;MyGridStyle&lt;/span&gt; &lt;span style=&#34;color: #007020; font-weight: bold&#34;&gt;extends&lt;/span&gt; GrayGridStyle &lt;span style=&#34;color: #666666&#34;&gt;{&lt;/span&gt;
-        String &lt;span style=&#34;color: #06287e&#34;&gt;cellDisabled&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;();&lt;/span&gt;
-    &lt;span style=&#34;color: #666666&#34;&gt;}&lt;/span&gt;
+public class MyGridAppearance extends GrayGridAppearance {
 
-    &lt;span style=&#34;color: #007020; font-weight: bold&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color: #007020; font-weight: bold&#34;&gt;interface&lt;/span&gt; &lt;span style=&#34;color: #0e84b5; font-weight: bold&#34;&gt;MyGridResources&lt;/span&gt; &lt;span style=&#34;color: #007020; font-weight: bold&#34;&gt;extends&lt;/span&gt; GrayGridResources&lt;span style=&#34;color: #666666&#34;&gt;,&lt;/span&gt; ClientBundle &lt;span style=&#34;color: #666666&#34;&gt;{&lt;/span&gt;
+    public interface MyGridStyle extends GrayGridStyle {
+        String cellDisabled();
+    }
 
-        &lt;span style=&#34;color: #555555; font-weight: bold&#34;&gt;@Override&lt;/span&gt;
-        &lt;span style=&#34;color: #555555; font-weight: bold&#34;&gt;@Source&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;({&lt;/span&gt; &lt;span style=&#34;color: #4070a0&#34;&gt;&amp;quot;com/sencha/gxt/theme/base/client/grid/Grid.css&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;,&lt;/span&gt;
-                &lt;span style=&#34;color: #4070a0&#34;&gt;&amp;quot;com/sencha/gxt/theme/gray/client/grid/GrayGrid.css&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;,&lt;/span&gt;
-                &lt;span style=&#34;color: #4070a0&#34;&gt;&amp;quot;com/codebrickie/sample/client/css/MyGrid.css&amp;quot;&lt;/span&gt; &lt;span style=&#34;color: #666666&#34;&gt;})&lt;/span&gt;
-        MyGridStyle &lt;span style=&#34;color: #06287e&#34;&gt;css&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;();&lt;/span&gt;
-    &lt;span style=&#34;color: #666666&#34;&gt;}&lt;/span&gt;
-&lt;span style=&#34;color: #666666&#34;&gt;}&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-&lt;/p&gt;
+    public interface MyGridResources extends GrayGridResources, ClientBundle {
+
+        @Override
+        @Source({ &#34;com/sencha/gxt/theme/base/client/grid/Grid.css&#34;,
+                &#34;com/sencha/gxt/theme/gray/client/grid/GrayGrid.css&#34;,
+                &#34;com/codebrickie/sample/client/css/MyGrid.css&#34; })
+        MyGridStyle css();
+    }
+}
+
 
 &lt;p&gt;The last step for the &lt;code&gt;Appearance&lt;/code&gt; is to implement two constructors.&lt;/p&gt;
 
-&lt;p&gt;&lt;div class=&#34;highlight&#34; style=&#34;background: #f0f0f0&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span style=&#34;color: #007020; font-weight: bold&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color: #007020; font-weight: bold&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color: #0e84b5; font-weight: bold&#34;&gt;MyGridAppearance&lt;/span&gt; &lt;span style=&#34;color: #007020; font-weight: bold&#34;&gt;extends&lt;/span&gt; GrayGridAppearance &lt;span style=&#34;color: #666666&#34;&gt;{&lt;/span&gt;
+&lt;p&gt;
+public class MyGridAppearance extends GrayGridAppearance {
 
-    &lt;span style=&#34;color: #007020; font-weight: bold&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color: #007020; font-weight: bold&#34;&gt;interface&lt;/span&gt; &lt;span style=&#34;color: #0e84b5; font-weight: bold&#34;&gt;MyGridStyle&lt;/span&gt; &lt;span style=&#34;color: #007020; font-weight: bold&#34;&gt;extends&lt;/span&gt; GrayGridStyle &lt;span style=&#34;color: #666666&#34;&gt;{&lt;/span&gt;
-        String &lt;span style=&#34;color: #06287e&#34;&gt;cellDisabled&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;();&lt;/span&gt;
-    &lt;span style=&#34;color: #666666&#34;&gt;}&lt;/span&gt;
+    public interface MyGridStyle extends GrayGridStyle {
+        String cellDisabled();
+    }
 
-    &lt;span style=&#34;color: #007020; font-weight: bold&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color: #007020; font-weight: bold&#34;&gt;interface&lt;/span&gt; &lt;span style=&#34;color: #0e84b5; font-weight: bold&#34;&gt;MyGridResources&lt;/span&gt; &lt;span style=&#34;color: #007020; font-weight: bold&#34;&gt;extends&lt;/span&gt; GrayGridResources&lt;span style=&#34;color: #666666&#34;&gt;,&lt;/span&gt; ClientBundle &lt;span style=&#34;color: #666666&#34;&gt;{&lt;/span&gt;
+    public interface MyGridResources extends GrayGridResources, ClientBundle {
 
-        &lt;span style=&#34;color: #555555; font-weight: bold&#34;&gt;@Override&lt;/span&gt;
-        &lt;span style=&#34;color: #555555; font-weight: bold&#34;&gt;@Source&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;({&lt;/span&gt; &lt;span style=&#34;color: #4070a0&#34;&gt;&amp;quot;com/sencha/gxt/theme/base/client/grid/Grid.css&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;,&lt;/span&gt;
-                &lt;span style=&#34;color: #4070a0&#34;&gt;&amp;quot;com/sencha/gxt/theme/gray/client/grid/GrayGrid.css&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;,&lt;/span&gt;
-                &lt;span style=&#34;color: #4070a0&#34;&gt;&amp;quot;com/codebrickie/sample/client/css/MyGrid.css&amp;quot;&lt;/span&gt; &lt;span style=&#34;color: #666666&#34;&gt;})&lt;/span&gt;
-        MyGridStyle &lt;span style=&#34;color: #06287e&#34;&gt;css&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;();&lt;/span&gt;
-    &lt;span style=&#34;color: #666666&#34;&gt;}&lt;/span&gt;
+        @Override
+        @Source({ &#34;com/sencha/gxt/theme/base/client/grid/Grid.css&#34;,
+                &#34;com/sencha/gxt/theme/gray/client/grid/GrayGrid.css&#34;,
+                &#34;com/codebrickie/sample/client/css/MyGrid.css&#34; })
+        MyGridStyle css();
+    }
     
-    &lt;span style=&#34;color: #007020; font-weight: bold&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color: #06287e&#34;&gt;MyGridAppearance&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;()&lt;/span&gt; &lt;span style=&#34;color: #666666&#34;&gt;{&lt;/span&gt;
-        &lt;span style=&#34;color: #007020; font-weight: bold&#34;&gt;this&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;(&lt;/span&gt;GWT&lt;span style=&#34;color: #666666&#34;&gt;.&amp;lt;&lt;/span&gt;MyGridResources&lt;span style=&#34;color: #666666&#34;&gt;&amp;gt;&lt;/span&gt; &lt;span style=&#34;color: #06287e&#34;&gt;create&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;(&lt;/span&gt;MyGridResources&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #4070a0&#34;&gt;class&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;));&lt;/span&gt;
-    &lt;span style=&#34;color: #666666&#34;&gt;}&lt;/span&gt;
+    public MyGridAppearance() {
+        this(GWT.&lt;MyGridResources&gt; create(MyGridResources.class));
+    }
 
-    &lt;span style=&#34;color: #007020; font-weight: bold&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color: #06287e&#34;&gt;MyGridAppearance&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #007020; font-weight: bold&#34;&gt;final&lt;/span&gt; MyGridResources resources&lt;span style=&#34;color: #666666&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color: #666666&#34;&gt;{&lt;/span&gt;
-        &lt;span style=&#34;color: #007020; font-weight: bold&#34;&gt;super&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;(&lt;/span&gt;resources&lt;span style=&#34;color: #666666&#34;&gt;);&lt;/span&gt;
-    &lt;span style=&#34;color: #666666&#34;&gt;}&lt;/span&gt;
-&lt;span style=&#34;color: #666666&#34;&gt;}&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
+    public MyGridAppearance(final MyGridResources resources) {
+        super(resources);
+    }
+}
 &lt;/p&gt;
 
 &lt;p&gt;Now that the &lt;code&gt;Appearance&lt;/code&gt; is finished, you have to set it to your grid upon creation.&lt;/p&gt;
 
-&lt;p&gt;&lt;div class=&#34;highlight&#34; style=&#34;background: #f0f0f0&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span style=&#34;color: #60a0b0; font-style: italic&#34;&gt;//...&lt;/span&gt;
+&lt;p&gt;
+//...
 
-grid &lt;span style=&#34;color: #666666&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #007020; font-weight: bold&#34;&gt;new&lt;/span&gt; Grid&lt;span style=&#34;color: #666666&#34;&gt;&amp;lt;&lt;/span&gt;MyModel&lt;span style=&#34;color: #666666&#34;&gt;&amp;gt;(&lt;/span&gt;store&lt;span style=&#34;color: #666666&#34;&gt;,&lt;/span&gt; columnModel&lt;span style=&#34;color: #666666&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color: #007020; font-weight: bold&#34;&gt;new&lt;/span&gt; GridView&lt;span style=&#34;color: #666666&#34;&gt;&amp;lt;&lt;/span&gt;MyModel&lt;span style=&#34;color: #666666&#34;&gt;&amp;gt;(&lt;/span&gt;
-                &lt;span style=&#34;color: #007020; font-weight: bold&#34;&gt;new&lt;/span&gt; MyGridAppearance&lt;span style=&#34;color: #666666&#34;&gt;()));&lt;/span&gt;
-&lt;span style=&#34;color: #60a0b0; font-style: italic&#34;&gt;//...&lt;/span&gt;
-&lt;span style=&#34;color: #666666&#34;&gt;}&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
+grid = new Grid&lt;MyModel&gt;(store, columnModel, new GridView&lt;MyModel&gt;(
+                new MyGridAppearance()));
+//...
+}
 &lt;/p&gt;
 
 &lt;p&gt;Afterwards you can use your custom style e.g. in &lt;code&gt;getColStyle()&lt;/code&gt;.&lt;/p&gt;
 
-&lt;p&gt;&lt;div class=&#34;highlight&#34; style=&#34;background: #f0f0f0&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span style=&#34;color: #60a0b0; font-style: italic&#34;&gt;//...&lt;/span&gt;
+&lt;p&gt;
+//...
 
-GridViewConfig&lt;span style=&#34;color: #666666&#34;&gt;&amp;lt;&lt;/span&gt;MyModel&lt;span style=&#34;color: #666666&#34;&gt;&amp;gt;&lt;/span&gt; viewConfig &lt;span style=&#34;color: #666666&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #007020; font-weight: bold&#34;&gt;new&lt;/span&gt; GridViewConfig&lt;span style=&#34;color: #666666&#34;&gt;&amp;lt;&lt;/span&gt;MyModel&lt;span style=&#34;color: #666666&#34;&gt;&amp;gt;()&lt;/span&gt; &lt;span style=&#34;color: #666666&#34;&gt;{&lt;/span&gt;
+GridViewConfig&lt;MyModel&gt; viewConfig = new GridViewConfig&lt;MyModel&gt;() {
 
-	&lt;span style=&#34;color: #007020; font-weight: bold&#34;&gt;final&lt;/span&gt; MyGridStyle styles &lt;span style=&#34;color: #666666&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #666666&#34;&gt;(&lt;/span&gt;MyGridStyle&lt;span style=&#34;color: #666666&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color: #666666&#34;&gt;((&lt;/span&gt;MyGridAppearance&lt;span style=&#34;color: #666666&#34;&gt;)&lt;/span&gt; grid
-		&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #4070a0&#34;&gt;getView&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;().&lt;/span&gt;&lt;span style=&#34;color: #4070a0&#34;&gt;getAppearance&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;())&lt;/span&gt;
-		&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #4070a0&#34;&gt;styles&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;();&lt;/span&gt;
+	final MyGridStyle styles = (MyGridStyle) ((MyGridAppearance) grid
+		.getView().getAppearance())
+		.styles();
 
-	&lt;span style=&#34;color: #555555; font-weight: bold&#34;&gt;@Override&lt;/span&gt;
-	&lt;span style=&#34;color: #007020; font-weight: bold&#34;&gt;public&lt;/span&gt; String &lt;span style=&#34;color: #06287e&#34;&gt;getColStyle&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #007020; font-weight: bold&#34;&gt;final&lt;/span&gt; MyModel model&lt;span style=&#34;color: #666666&#34;&gt;,&lt;/span&gt;
-			&lt;span style=&#34;color: #007020; font-weight: bold&#34;&gt;final&lt;/span&gt; ValueProvider&lt;span style=&#34;color: #666666&#34;&gt;&amp;lt;?&lt;/span&gt; &lt;span style=&#34;color: #007020; font-weight: bold&#34;&gt;super&lt;/span&gt; MyModel&lt;span style=&#34;color: #666666&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color: #666666&#34;&gt;?&amp;gt;&lt;/span&gt; valueProvider&lt;span style=&#34;color: #666666&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color: #007020; font-weight: bold&#34;&gt;final&lt;/span&gt; &lt;span style=&#34;color: #902000&#34;&gt;int&lt;/span&gt; rowIndex&lt;span style=&#34;color: #666666&#34;&gt;,&lt;/span&gt;
-			&lt;span style=&#34;color: #007020; font-weight: bold&#34;&gt;final&lt;/span&gt; &lt;span style=&#34;color: #902000&#34;&gt;int&lt;/span&gt; colIndex&lt;span style=&#34;color: #666666&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color: #666666&#34;&gt;{&lt;/span&gt;
-		String style &lt;span style=&#34;color: #666666&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #007020; font-weight: bold&#34;&gt;null&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;;&lt;/span&gt;
+	@Override
+	public String getColStyle(final MyModel model,
+			final ValueProvider&lt;? super MyModel, ?&gt; valueProvider, final int rowIndex,
+			final int colIndex) {
+		String style = null;
 
-		&lt;span style=&#34;color: #007020; font-weight: bold&#34;&gt;if&lt;/span&gt; &lt;span style=&#34;color: #666666&#34;&gt;(!&lt;/span&gt;model&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #4070a0&#34;&gt;isEnabled&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;())&lt;/span&gt; &lt;span style=&#34;color: #666666&#34;&gt;{&lt;/span&gt;
-			style &lt;span style=&#34;color: #666666&#34;&gt;=&lt;/span&gt; styles&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #4070a0&#34;&gt;cellDisabled&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;();&lt;/span&gt;
-		&lt;span style=&#34;color: #666666&#34;&gt;}&lt;/span&gt;
+		if (!model.isEnabled()) {
+			style = styles.cellDisabled();
+		}
 
-		&lt;span style=&#34;color: #007020; font-weight: bold&#34;&gt;return&lt;/span&gt; style&lt;span style=&#34;color: #666666&#34;&gt;;&lt;/span&gt;
-	&lt;span style=&#34;color: #666666&#34;&gt;}&lt;/span&gt;
+		return style;
+	}
 
-	&lt;span style=&#34;color: #555555; font-weight: bold&#34;&gt;@Override&lt;/span&gt;
-	&lt;span style=&#34;color: #007020; font-weight: bold&#34;&gt;public&lt;/span&gt; String &lt;span style=&#34;color: #06287e&#34;&gt;getRowStyle&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #007020; font-weight: bold&#34;&gt;final&lt;/span&gt; MyModel model&lt;span style=&#34;color: #666666&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color: #007020; font-weight: bold&#34;&gt;final&lt;/span&gt; &lt;span style=&#34;color: #902000&#34;&gt;int&lt;/span&gt; rowIndex&lt;span style=&#34;color: #666666&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color: #666666&#34;&gt;{&lt;/span&gt;
-		&lt;span style=&#34;color: #007020; font-weight: bold&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color: #007020; font-weight: bold&#34;&gt;null&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;;&lt;/span&gt;
-	&lt;span style=&#34;color: #666666&#34;&gt;}&lt;/span&gt;
-&lt;span style=&#34;color: #666666&#34;&gt;};&lt;/span&gt;
+	@Override
+	public String getRowStyle(final MyModel model, final int rowIndex) {
+		return null;
+	}
+};
         
-&lt;span style=&#34;color: #60a0b0; font-style: italic&#34;&gt;//...&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
+//...
 &lt;/p&gt;
 </description>
     </item>

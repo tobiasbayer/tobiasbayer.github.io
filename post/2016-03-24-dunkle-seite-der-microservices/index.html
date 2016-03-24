@@ -6,7 +6,7 @@
   
   <meta charset="UTF-8">
   <title>
-    Switching Between Dock and Status Bar Mode in Cocoa | Tobias Bayer
+    The Dark Side of Microservices | Tobias Bayer
   </title>
 
 
@@ -14,7 +14,7 @@
   <meta name="viewport" content="width=device-width,user-scalable=no,maximum-scale=1,initial-scale=1">
 
   
-  <link rel="canonical" href="http://tobiasbayer.com/post/2012-10-16-switching-between-dock-and-status-bar-mode-in-cocoa/"/>
+  <link rel="canonical" href="http://tobiasbayer.com/post/2016-03-24-dunkle-seite-der-microservices/"/>
 
   
   <link rel="stylesheet" href="http://tobiasbayer.com/css/sanitize.css">
@@ -62,48 +62,22 @@
   
   <main id="single" role="main">
     <div class="article-header">
-      <h1>Switching Between Dock and Status Bar Mode in Cocoa</h1>
+      <h1>The Dark Side of Microservices</h1>
       <div class="meta">
         
-          Oct 16, 2012 &nbsp;
+          Mar 24, 2016 &nbsp;
         
         
-          #<a href="http://tobiasbayer.com/categories/cocoa">cocoa</a>&nbsp;
+          #<a href="http://tobiasbayer.com/categories/microservices">microservices</a>&nbsp;
         
-          #<a href="http://tobiasbayer.com/categories/objective-c">objective-c</a>&nbsp;
-        
-          #<a href="http://tobiasbayer.com/categories/os-x">os x</a>&nbsp;
+          #<a href="http://tobiasbayer.com/categories/talk">talk</a>&nbsp;
         
       </div>
     </div>
     <article>
-      <p>In this blog post I&rsquo;ll show you how to make a Cocoa app that can switch between dock icon and statusbar icon mode.</p>
+      <p>Another (german) video of a talk on the challenges of Microservices my colleague Hendrik and I gave at W-JAX 2015.</p>
 
-<p>For the basics on how to create a statusbar app see <a href="http://cocoatutorial.grapewave.com/2010/01/creating-a-status-bar-application">Cocoa Tips and Tricks</a>.</p>
-
-<p>I&rsquo;ve tried several approaches to this topic but any other than the one I describe here had minor to major glitches such as not activating windows correctly when in statusbar mode for example.</p>
-
-<p>In order to work fine, your application has to be a statusbar app by default.
-You achieve this by adding the key <code>LSUIElement</code> with a value of <code>YES</code> to your <code>&lt;Application&gt;-Info.plist</code>.</p>
-
-<p>Now, when your application launches, check whether you want to display the statusbar icon or the dock icon. I do this based on the user&rsquo;s preference in this example.</p>
-
-
-- (void)applicationDidFinishLaunching:(NSNotification *)notification {
-	if(![[NSUserDefaults standardUserDefaults] boolForKey:@"showDockIcon"]) {
-		// Create a status item and display it in the statusbar
-		self.statusItem = [[NSStatusBar systemStatusBar] statusItemWithLength:NSVariableStatusItemLength];
-		[self.statusItem setMenu:self.statusBarMenu];
-		[self.statusItem setHighlightMode:YES];
-		[self.statusItem setImage:[NSImage imageNamed:@"barimage"]];
-		[self.statusItem setAlternateImage:[NSImage imageNamed:@"barimage-highlighted"]];
-	} else {
-		// Bring the dock icon to the front (initially hidden with LSUIElement = YES in <Application>-Info.plist)
-		ProcessSerialNumber psn = { 0, kCurrentProcess };
-		TransformProcessType(&psn, kProcessTransformToForegroundApplication);
-	}
-}
-
+<iframe src="https://player.vimeo.com/video/152280705" width="640" height="281" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
 
       
       
