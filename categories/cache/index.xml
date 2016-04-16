@@ -23,15 +23,15 @@ have a minor dissent that can make it hard for a first time user to interact wit
 
 &lt;p&gt;The usage examples tell you to do this:&lt;/p&gt;
 
-&lt;p&gt;&lt;div class=&#34;highlight&#34; style=&#34;background: #f0f0f0&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;(&lt;span style=&#34;color: #007020; font-weight: bold&#34;&gt;def &lt;/span&gt;&lt;span style=&#34;color: #bb60d5&#34;&gt;C&lt;/span&gt; (&lt;span style=&#34;color: #06287e&#34;&gt;cache/fifo-cache-factory&lt;/span&gt; {&lt;span style=&#34;color: #517918&#34;&gt;:a&lt;/span&gt; &lt;span style=&#34;color: #40a070&#34;&gt;1&lt;/span&gt;, &lt;span style=&#34;color: #517918&#34;&gt;:b&lt;/span&gt; &lt;span style=&#34;color: #40a070&#34;&gt;2&lt;/span&gt;}))
 
-(&lt;span style=&#34;color: #007020; font-weight: bold&#34;&gt;if &lt;/span&gt;(&lt;span style=&#34;color: #06287e&#34;&gt;cache/has?&lt;/span&gt; &lt;span style=&#34;color: #bb60d5&#34;&gt;C&lt;/span&gt; &lt;span style=&#34;color: #517918&#34;&gt;:c&lt;/span&gt;)
-  (&lt;span style=&#34;color: #06287e&#34;&gt;cache/hit&lt;/span&gt; &lt;span style=&#34;color: #bb60d5&#34;&gt;C&lt;/span&gt; &lt;span style=&#34;color: #517918&#34;&gt;:c&lt;/span&gt;)
-  (&lt;span style=&#34;color: #06287e&#34;&gt;cache/miss&lt;/span&gt; &lt;span style=&#34;color: #bb60d5&#34;&gt;C&lt;/span&gt; &lt;span style=&#34;color: #517918&#34;&gt;:c&lt;/span&gt; &lt;span style=&#34;color: #40a070&#34;&gt;42&lt;/span&gt;))
+(def C (cache/fifo-cache-factory {:a 1, :b 2}))
+
+(if (cache/has? C :c)
+  (cache/hit C :c)
+  (cache/miss C :c 42))
   
-&lt;span style=&#34;color: #60a0b0; font-style: italic&#34;&gt;; =&amp;gt; {:a 1, :b 2, :c 42}&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-&lt;/p&gt;
+; =&gt; {:a 1, :b 2, :c 42}
+
 
 &lt;p&gt;The naive first time user (that I was) could now assume that there&amp;rsquo;s some magic going
 on behind the doors which does some state manipulation and another call to &lt;code&gt;(cache/has? C :c)&lt;/code&gt;
@@ -41,18 +41,18 @@ But as you guessed it: No magic to see here.&lt;/p&gt;
 &lt;p&gt;The point is, that &lt;code&gt;cache/miss&lt;/code&gt; and &lt;code&gt;cache/hit&lt;/code&gt; return a &lt;strong&gt;new&lt;/strong&gt; cache instance with the new
 value associated. You&amp;rsquo;ll have to do the state manipulation yourself (e.g. by using an atom):&lt;/p&gt;
 
-&lt;p&gt;&lt;div class=&#34;highlight&#34; style=&#34;background: #f0f0f0&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;(&lt;span style=&#34;color: #007020; font-weight: bold&#34;&gt;def &lt;/span&gt;&lt;span style=&#34;color: #bb60d5&#34;&gt;C&lt;/span&gt; (&lt;span style=&#34;color: #06287e&#34;&gt;atom&lt;/span&gt; (&lt;span style=&#34;color: #06287e&#34;&gt;cache/fifo-cache-factory&lt;/span&gt; {&lt;span style=&#34;color: #517918&#34;&gt;:a&lt;/span&gt; &lt;span style=&#34;color: #40a070&#34;&gt;1&lt;/span&gt;, &lt;span style=&#34;color: #517918&#34;&gt;:b&lt;/span&gt; &lt;span style=&#34;color: #40a070&#34;&gt;2&lt;/span&gt;})))
+&lt;p&gt;
+(def C (atom (cache/fifo-cache-factory {:a 1, :b 2})))
 
-(&lt;span style=&#34;color: #007020; font-weight: bold&#34;&gt;if &lt;/span&gt;(&lt;span style=&#34;color: #06287e&#34;&gt;cache/has?&lt;/span&gt; &lt;span style=&#34;color: #666666&#34;&gt;@&lt;/span&gt;&lt;span style=&#34;color: #bb60d5&#34;&gt;C&lt;/span&gt; &lt;span style=&#34;color: #517918&#34;&gt;:c&lt;/span&gt;)
-  (&lt;span style=&#34;color: #06287e&#34;&gt;swap!&lt;/span&gt; &lt;span style=&#34;color: #bb60d5&#34;&gt;C&lt;/span&gt; &lt;span style=&#34;color: #666666&#34;&gt;#&lt;/span&gt;(&lt;span style=&#34;color: #06287e&#34;&gt;cache/hit&lt;/span&gt; &lt;span style=&#34;color: #bb60d5&#34;&gt;%&lt;/span&gt; &lt;span style=&#34;color: #517918&#34;&gt;:c&lt;/span&gt;))
-  (&lt;span style=&#34;color: #06287e&#34;&gt;swap!&lt;/span&gt; &lt;span style=&#34;color: #bb60d5&#34;&gt;C&lt;/span&gt; &lt;span style=&#34;color: #666666&#34;&gt;#&lt;/span&gt;(&lt;span style=&#34;color: #06287e&#34;&gt;cache/miss&lt;/span&gt; &lt;span style=&#34;color: #bb60d5&#34;&gt;%&lt;/span&gt; &lt;span style=&#34;color: #517918&#34;&gt;:c&lt;/span&gt; &lt;span style=&#34;color: #40a070&#34;&gt;42&lt;/span&gt;)))
+(if (cache/has? @C :c)
+  (swap! C #(cache/hit % :c))
+  (swap! C #(cache/miss % :c 42)))
 
-&lt;span style=&#34;color: #60a0b0; font-style: italic&#34;&gt;; =&amp;gt; {:a 1, :b 2, :c 42}&lt;/span&gt;
+; =&gt; {:a 1, :b 2, :c 42}
 
-(&lt;span style=&#34;color: #06287e&#34;&gt;cache/has?&lt;/span&gt; &lt;span style=&#34;color: #666666&#34;&gt;@&lt;/span&gt;&lt;span style=&#34;color: #bb60d5&#34;&gt;C&lt;/span&gt; &lt;span style=&#34;color: #517918&#34;&gt;:c&lt;/span&gt;)
+(cache/has? @C :c)
 
-&lt;span style=&#34;color: #60a0b0; font-style: italic&#34;&gt;; =&amp;gt; true&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
+; =&gt; true
 &lt;/p&gt;
 </description>
     </item>

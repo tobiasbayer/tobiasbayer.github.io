@@ -20,11 +20,11 @@ current project.
 Like most other ticketing systems, it has the ability to link commits in your source code
 repositories to a ticket when the commit message refers the ticket number.&lt;/p&gt;
 
-&lt;p&gt;&lt;div class=&#34;highlight&#34; style=&#34;background: #f0f0f0&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;Changes foo to bar because of baz.
 
-refs &lt;span style=&#34;color: #60a0b0; font-style: italic&#34;&gt;#1234&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-&lt;/p&gt;
+Changes foo to bar because of baz.
+
+refs #1234
+
 
 &lt;p&gt;I became tired of adding the ticket number manually to each commit message.
 Fortunately, git can add the number by itself with the help of a little hook and a naming
@@ -36,14 +36,14 @@ convention for your feature branches.&lt;/p&gt;
 &lt;p&gt;Now create the file &lt;code&gt;.git/hooks/commit-msg&lt;/code&gt; in your local repository with the following
 content:&lt;/p&gt;
 
-&lt;p&gt;&lt;div class=&#34;highlight&#34; style=&#34;background: #f0f0f0&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span style=&#34;color: #60a0b0; font-style: italic&#34;&gt;#!/bin/sh&lt;/span&gt;
 
-&lt;span style=&#34;color: #bb60d5&#34;&gt;ticket&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color: #007020; font-weight: bold&#34;&gt;$(&lt;/span&gt;git symbolic-ref HEAD | awk -F- &lt;span style=&#34;color: #4070a0&#34;&gt;&amp;#39;/ticket-/ {print $2}&amp;#39;&lt;/span&gt;&lt;span style=&#34;color: #007020; font-weight: bold&#34;&gt;)&lt;/span&gt;
-&lt;span style=&#34;color: #007020; font-weight: bold&#34;&gt;if&lt;/span&gt; &lt;span style=&#34;color: #666666&#34;&gt;[&lt;/span&gt; -n &lt;span style=&#34;color: #4070a0&#34;&gt;&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #bb60d5&#34;&gt;$ticket&lt;/span&gt;&lt;span style=&#34;color: #4070a0&#34;&gt;&amp;quot;&lt;/span&gt; &lt;span style=&#34;color: #666666&#34;&gt;]&lt;/span&gt;; &lt;span style=&#34;color: #007020; font-weight: bold&#34;&gt;then&lt;/span&gt;
-	&lt;span style=&#34;color: #007020&#34;&gt;echo&lt;/span&gt; &lt;span style=&#34;color: #4070a0&#34;&gt;&amp;quot;\nrefs #&lt;/span&gt;&lt;span style=&#34;color: #bb60d5&#34;&gt;$ticket&lt;/span&gt;&lt;span style=&#34;color: #4070a0&#34;&gt;&amp;quot;&lt;/span&gt; &amp;gt;&amp;gt; &lt;span style=&#34;color: #bb60d5&#34;&gt;$1&lt;/span&gt;
-&lt;span style=&#34;color: #007020; font-weight: bold&#34;&gt;fi&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-&lt;/p&gt;
+#!/bin/sh
+
+ticket=$(git symbolic-ref HEAD | awk -F- &#39;/ticket-/ {print $2}&#39;)
+if [ -n &#34;$ticket&#34; ]; then
+	echo &#34;\nrefs #$ticket&#34; &gt;&gt; $1
+fi
+
 
 &lt;p&gt;This extracts the ticket number from the branch name.
 The ticket number is then appended to your commit message on each commit when git executes

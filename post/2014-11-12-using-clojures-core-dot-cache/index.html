@@ -83,15 +83,15 @@ have a minor dissent that can make it hard for a first time user to interact wit
 
 <p>The usage examples tell you to do this:</p>
 
-<p><div class="highlight" style="background: #f0f0f0"><pre style="line-height: 125%">(<span style="color: #007020; font-weight: bold">def </span><span style="color: #bb60d5">C</span> (<span style="color: #06287e">cache/fifo-cache-factory</span> {<span style="color: #517918">:a</span> <span style="color: #40a070">1</span>, <span style="color: #517918">:b</span> <span style="color: #40a070">2</span>}))
 
-(<span style="color: #007020; font-weight: bold">if </span>(<span style="color: #06287e">cache/has?</span> <span style="color: #bb60d5">C</span> <span style="color: #517918">:c</span>)
-  (<span style="color: #06287e">cache/hit</span> <span style="color: #bb60d5">C</span> <span style="color: #517918">:c</span>)
-  (<span style="color: #06287e">cache/miss</span> <span style="color: #bb60d5">C</span> <span style="color: #517918">:c</span> <span style="color: #40a070">42</span>))
+(def C (cache/fifo-cache-factory {:a 1, :b 2}))
+
+(if (cache/has? C :c)
+  (cache/hit C :c)
+  (cache/miss C :c 42))
   
-<span style="color: #60a0b0; font-style: italic">; =&gt; {:a 1, :b 2, :c 42}</span>
-</pre></div>
-</p>
+; => {:a 1, :b 2, :c 42}
+
 
 <p>The naive first time user (that I was) could now assume that there&rsquo;s some magic going
 on behind the doors which does some state manipulation and another call to <code>(cache/has? C :c)</code>
@@ -101,18 +101,18 @@ But as you guessed it: No magic to see here.</p>
 <p>The point is, that <code>cache/miss</code> and <code>cache/hit</code> return a <strong>new</strong> cache instance with the new
 value associated. You&rsquo;ll have to do the state manipulation yourself (e.g. by using an atom):</p>
 
-<p><div class="highlight" style="background: #f0f0f0"><pre style="line-height: 125%">(<span style="color: #007020; font-weight: bold">def </span><span style="color: #bb60d5">C</span> (<span style="color: #06287e">atom</span> (<span style="color: #06287e">cache/fifo-cache-factory</span> {<span style="color: #517918">:a</span> <span style="color: #40a070">1</span>, <span style="color: #517918">:b</span> <span style="color: #40a070">2</span>})))
+<p>
+(def C (atom (cache/fifo-cache-factory {:a 1, :b 2})))
 
-(<span style="color: #007020; font-weight: bold">if </span>(<span style="color: #06287e">cache/has?</span> <span style="color: #666666">@</span><span style="color: #bb60d5">C</span> <span style="color: #517918">:c</span>)
-  (<span style="color: #06287e">swap!</span> <span style="color: #bb60d5">C</span> <span style="color: #666666">#</span>(<span style="color: #06287e">cache/hit</span> <span style="color: #bb60d5">%</span> <span style="color: #517918">:c</span>))
-  (<span style="color: #06287e">swap!</span> <span style="color: #bb60d5">C</span> <span style="color: #666666">#</span>(<span style="color: #06287e">cache/miss</span> <span style="color: #bb60d5">%</span> <span style="color: #517918">:c</span> <span style="color: #40a070">42</span>)))
+(if (cache/has? @C :c)
+  (swap! C #(cache/hit % :c))
+  (swap! C #(cache/miss % :c 42)))
 
-<span style="color: #60a0b0; font-style: italic">; =&gt; {:a 1, :b 2, :c 42}</span>
+; => {:a 1, :b 2, :c 42}
 
-(<span style="color: #06287e">cache/has?</span> <span style="color: #666666">@</span><span style="color: #bb60d5">C</span> <span style="color: #517918">:c</span>)
+(cache/has? @C :c)
 
-<span style="color: #60a0b0; font-style: italic">; =&gt; true</span>
-</pre></div>
+; => true
 </p>
 
       

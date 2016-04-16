@@ -88,22 +88,22 @@ You achieve this by adding the key <code>LSUIElement</code> with a value of <cod
 
 <p>Now, when your application launches, check whether you want to display the statusbar icon or the dock icon. I do this based on the user&rsquo;s preference in this example.</p>
 
-<p><div class="highlight" style="background: #f0f0f0"><pre style="line-height: 125%">- (<span style="color: #902000">void</span>)<span style="color: #06287e">applicationDidFinishLaunching:</span>(<span style="color: #007020">NSNotification</span> <span style="color: #666666">*</span>)<span style="color: #bb60d5">notification</span> {
-	<span style="color: #007020; font-weight: bold">if</span>(<span style="color: #666666">!</span>[[<span style="color: #007020">NSUserDefaults</span> standardUserDefaults] <span style="color: #002070; font-weight: bold">boolForKey</span>:<span style="color: #4070a0">@&quot;showDockIcon&quot;</span>]) {
-		<span style="color: #60a0b0; font-style: italic">// Create a status item and display it in the statusbar</span>
-		<span style="color: #007020">self</span>.statusItem <span style="color: #666666">=</span> [[NSStatusBar systemStatusBar] <span style="color: #002070; font-weight: bold">statusItemWithLength</span>:NSVariableStatusItemLength];
-		[<span style="color: #007020">self</span>.statusItem <span style="color: #002070; font-weight: bold">setMenu</span>:<span style="color: #007020">self</span>.statusBarMenu];
-		[<span style="color: #007020">self</span>.statusItem <span style="color: #002070; font-weight: bold">setHighlightMode</span>:<span style="color: #007020">YES</span>];
-		[<span style="color: #007020">self</span>.statusItem <span style="color: #002070; font-weight: bold">setImage</span>:[NSImage <span style="color: #002070; font-weight: bold">imageNamed</span>:<span style="color: #4070a0">@&quot;barimage&quot;</span>]];
-		[<span style="color: #007020">self</span>.statusItem <span style="color: #002070; font-weight: bold">setAlternateImage</span>:[NSImage <span style="color: #002070; font-weight: bold">imageNamed</span>:<span style="color: #4070a0">@&quot;barimage-highlighted&quot;</span>]];
-	} <span style="color: #007020; font-weight: bold">else</span> {
-		<span style="color: #60a0b0; font-style: italic">// Bring the dock icon to the front (initially hidden with LSUIElement = YES in &lt;Application&gt;-Info.plist)</span>
-		ProcessSerialNumber psn <span style="color: #666666">=</span> { <span style="color: #40a070">0</span>, kCurrentProcess };
-		TransformProcessType(<span style="color: #666666">&amp;</span>psn, kProcessTransformToForegroundApplication);
+
+- (void)applicationDidFinishLaunching:(NSNotification *)notification {
+	if(![[NSUserDefaults standardUserDefaults] boolForKey:@"showDockIcon"]) {
+		// Create a status item and display it in the statusbar
+		self.statusItem = [[NSStatusBar systemStatusBar] statusItemWithLength:NSVariableStatusItemLength];
+		[self.statusItem setMenu:self.statusBarMenu];
+		[self.statusItem setHighlightMode:YES];
+		[self.statusItem setImage:[NSImage imageNamed:@"barimage"]];
+		[self.statusItem setAlternateImage:[NSImage imageNamed:@"barimage-highlighted"]];
+	} else {
+		// Bring the dock icon to the front (initially hidden with LSUIElement = YES in <Application>-Info.plist)
+		ProcessSerialNumber psn = { 0, kCurrentProcess };
+		TransformProcessType(&psn, kProcessTransformToForegroundApplication);
 	}
 }
-</pre></div>
-</p>
+
 
       
       
