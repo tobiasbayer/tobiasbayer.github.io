@@ -22,43 +22,43 @@ In this post I will show you how to create a Clojure/Vaadin 7 web application.&l
 &lt;p&gt;First we need a &lt;code&gt;web.xml&lt;/code&gt; file in &lt;code&gt;src/main/webapp/WEB-INF&lt;/code&gt; that defines the Vaadin servlet and parametrizes
 it with our main UI class.&lt;/p&gt;
 
-
-&lt;?xml version=&#34;1.0&#34; encoding=&#34;UTF-8&#34;?&gt;
-&lt;web-app xmlns=&#34;http://java.sun.com/xml/ns/javaee&#34;
-	xmlns:xsi=&#34;http://www.w3.org/2001/XMLSchema-instance&#34;
-	xsi:schemaLocation=&#34;http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd&#34;
-	version=&#34;2.5&#34;&gt;
-    &lt;display-name&gt;Clojure Vaadin 7 Application&lt;/display-name&gt;
-    &lt;context-param&gt;
-        &lt;description&gt;Vaadin production mode&lt;/description&gt;
-        &lt;param-name&gt;productionMode&lt;/param-name&gt;
-        &lt;param-value&gt;false&lt;/param-value&gt;
-    &lt;/context-param&gt;
-    &lt;servlet&gt;
-        &lt;servlet-name&gt;Clojure Vaadin 7 Application&lt;/servlet-name&gt;
-        &lt;servlet-class&gt;com.vaadin.server.VaadinServlet&lt;/servlet-class&gt;
-        &lt;init-param&gt;
-            &lt;description&gt;Vaadin UI&lt;/description&gt;
-            &lt;param-name&gt;UI&lt;/param-name&gt;
-            &lt;param-value&gt;cljvaadin7.MyApplicationUI&lt;/param-value&gt;
-        &lt;/init-param&gt;
-    &lt;/servlet&gt;
-    &lt;servlet-mapping&gt;
-        &lt;servlet-name&gt;Clojure Vaadin 7 Application&lt;/servlet-name&gt;
-        &lt;url-pattern&gt;/*&lt;/url-pattern&gt;
-    &lt;/servlet-mapping&gt;
-&lt;/web-app&gt;
-
+&lt;p&gt;&lt;div class=&#34;highlight&#34; style=&#34;background: #f0f0f0&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span style=&#34;color: #007020&#34;&gt;&amp;lt;?xml version=&amp;quot;1.0&amp;quot; encoding=&amp;quot;UTF-8&amp;quot;?&amp;gt;&lt;/span&gt;
+&lt;span style=&#34;color: #062873; font-weight: bold&#34;&gt;&amp;lt;web-app&lt;/span&gt; &lt;span style=&#34;color: #4070a0&#34;&gt;xmlns=&amp;quot;http://java.sun.com/xml/ns/javaee&amp;quot;&lt;/span&gt;
+	&lt;span style=&#34;color: #4070a0&#34;&gt;xmlns:xsi=&amp;quot;http://www.w3.org/2001/XMLSchema-instance&amp;quot;&lt;/span&gt;
+	&lt;span style=&#34;color: #4070a0&#34;&gt;xsi:schemaLocation=&amp;quot;http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd&amp;quot;&lt;/span&gt;
+	&lt;span style=&#34;color: #4070a0&#34;&gt;version=&amp;quot;2.5&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #062873; font-weight: bold&#34;&gt;&amp;gt;&lt;/span&gt;
+    &lt;span style=&#34;color: #062873; font-weight: bold&#34;&gt;&amp;lt;display-name&amp;gt;&lt;/span&gt;Clojure Vaadin 7 Application&lt;span style=&#34;color: #062873; font-weight: bold&#34;&gt;&amp;lt;/display-name&amp;gt;&lt;/span&gt;
+    &lt;span style=&#34;color: #062873; font-weight: bold&#34;&gt;&amp;lt;context-param&amp;gt;&lt;/span&gt;
+        &lt;span style=&#34;color: #062873; font-weight: bold&#34;&gt;&amp;lt;description&amp;gt;&lt;/span&gt;Vaadin production mode&lt;span style=&#34;color: #062873; font-weight: bold&#34;&gt;&amp;lt;/description&amp;gt;&lt;/span&gt;
+        &lt;span style=&#34;color: #062873; font-weight: bold&#34;&gt;&amp;lt;param-name&amp;gt;&lt;/span&gt;productionMode&lt;span style=&#34;color: #062873; font-weight: bold&#34;&gt;&amp;lt;/param-name&amp;gt;&lt;/span&gt;
+        &lt;span style=&#34;color: #062873; font-weight: bold&#34;&gt;&amp;lt;param-value&amp;gt;&lt;/span&gt;false&lt;span style=&#34;color: #062873; font-weight: bold&#34;&gt;&amp;lt;/param-value&amp;gt;&lt;/span&gt;
+    &lt;span style=&#34;color: #062873; font-weight: bold&#34;&gt;&amp;lt;/context-param&amp;gt;&lt;/span&gt;
+    &lt;span style=&#34;color: #062873; font-weight: bold&#34;&gt;&amp;lt;servlet&amp;gt;&lt;/span&gt;
+        &lt;span style=&#34;color: #062873; font-weight: bold&#34;&gt;&amp;lt;servlet-name&amp;gt;&lt;/span&gt;Clojure Vaadin 7 Application&lt;span style=&#34;color: #062873; font-weight: bold&#34;&gt;&amp;lt;/servlet-name&amp;gt;&lt;/span&gt;
+        &lt;span style=&#34;color: #062873; font-weight: bold&#34;&gt;&amp;lt;servlet-class&amp;gt;&lt;/span&gt;com.vaadin.server.VaadinServlet&lt;span style=&#34;color: #062873; font-weight: bold&#34;&gt;&amp;lt;/servlet-class&amp;gt;&lt;/span&gt;
+        &lt;span style=&#34;color: #062873; font-weight: bold&#34;&gt;&amp;lt;init-param&amp;gt;&lt;/span&gt;
+            &lt;span style=&#34;color: #062873; font-weight: bold&#34;&gt;&amp;lt;description&amp;gt;&lt;/span&gt;Vaadin UI&lt;span style=&#34;color: #062873; font-weight: bold&#34;&gt;&amp;lt;/description&amp;gt;&lt;/span&gt;
+            &lt;span style=&#34;color: #062873; font-weight: bold&#34;&gt;&amp;lt;param-name&amp;gt;&lt;/span&gt;UI&lt;span style=&#34;color: #062873; font-weight: bold&#34;&gt;&amp;lt;/param-name&amp;gt;&lt;/span&gt;
+            &lt;span style=&#34;color: #062873; font-weight: bold&#34;&gt;&amp;lt;param-value&amp;gt;&lt;/span&gt;cljvaadin7.MyApplicationUI&lt;span style=&#34;color: #062873; font-weight: bold&#34;&gt;&amp;lt;/param-value&amp;gt;&lt;/span&gt;
+        &lt;span style=&#34;color: #062873; font-weight: bold&#34;&gt;&amp;lt;/init-param&amp;gt;&lt;/span&gt;
+    &lt;span style=&#34;color: #062873; font-weight: bold&#34;&gt;&amp;lt;/servlet&amp;gt;&lt;/span&gt;
+    &lt;span style=&#34;color: #062873; font-weight: bold&#34;&gt;&amp;lt;servlet-mapping&amp;gt;&lt;/span&gt;
+        &lt;span style=&#34;color: #062873; font-weight: bold&#34;&gt;&amp;lt;servlet-name&amp;gt;&lt;/span&gt;Clojure Vaadin 7 Application&lt;span style=&#34;color: #062873; font-weight: bold&#34;&gt;&amp;lt;/servlet-name&amp;gt;&lt;/span&gt;
+        &lt;span style=&#34;color: #062873; font-weight: bold&#34;&gt;&amp;lt;url-pattern&amp;gt;&lt;/span&gt;/*&lt;span style=&#34;color: #062873; font-weight: bold&#34;&gt;&amp;lt;/url-pattern&amp;gt;&lt;/span&gt;
+    &lt;span style=&#34;color: #062873; font-weight: bold&#34;&gt;&amp;lt;/servlet-mapping&amp;gt;&lt;/span&gt;
+&lt;span style=&#34;color: #062873; font-weight: bold&#34;&gt;&amp;lt;/web-app&amp;gt;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/p&gt;
 
 &lt;p&gt;As there is no such thing as a class in Clojure, we will use its Java interoperability to create
 a Java class that serves as our Vaadin UI main class.&lt;/p&gt;
 
-
-(ns cljvaadin7.MyApplicationUI
-  (import [com.vaadin.ui VerticalLayout Label Button Button$ClickListener Notification])
-  (:gen-class
-    :extends com.vaadin.ui.UI))
-
+&lt;p&gt;&lt;div class=&#34;highlight&#34; style=&#34;background: #f0f0f0&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;(&lt;span style=&#34;color: #007020; font-weight: bold&#34;&gt;ns &lt;/span&gt;&lt;span style=&#34;color: #bb60d5&#34;&gt;cljvaadin7.MyApplicationUI&lt;/span&gt;
+  (&lt;span style=&#34;color: #007020&#34;&gt;import &lt;/span&gt;[&lt;span style=&#34;color: #bb60d5&#34;&gt;com.vaadin.ui&lt;/span&gt; &lt;span style=&#34;color: #bb60d5&#34;&gt;VerticalLayout&lt;/span&gt; &lt;span style=&#34;color: #bb60d5&#34;&gt;Label&lt;/span&gt; &lt;span style=&#34;color: #bb60d5&#34;&gt;Button&lt;/span&gt; &lt;span style=&#34;color: #bb60d5&#34;&gt;Button$ClickListener&lt;/span&gt; &lt;span style=&#34;color: #bb60d5&#34;&gt;Notification&lt;/span&gt;])
+  (&lt;span style=&#34;color: #517918&#34;&gt;:gen-class&lt;/span&gt;
+    &lt;span style=&#34;color: #517918&#34;&gt;:extends&lt;/span&gt; &lt;span style=&#34;color: #bb60d5&#34;&gt;com.vaadin.ui.UI&lt;/span&gt;))
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/p&gt;
 
 &lt;p&gt;&lt;code&gt;:gen-class&lt;/code&gt; will make the namespace available as a Java class.&lt;/p&gt;
 
@@ -68,20 +68,20 @@ has only one argument (&lt;code&gt;request&lt;/code&gt;). However, our Clojure &
 The reason is that the function will receive &amp;ldquo;&lt;code&gt;this&lt;/code&gt;&amp;rdquo; as the first argument.
 Now we can build our UI.&lt;/p&gt;
 
-&lt;p&gt;
-(defn- create-button
-  [caption action]
-  (doto (Button. caption) (add-action action)))
+&lt;p&gt;&lt;div class=&#34;highlight&#34; style=&#34;background: #f0f0f0&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;(&lt;span style=&#34;color: #007020; font-weight: bold&#34;&gt;defn- &lt;/span&gt;&lt;span style=&#34;color: #bb60d5&#34;&gt;create-button&lt;/span&gt;
+  [&lt;span style=&#34;color: #bb60d5&#34;&gt;caption&lt;/span&gt; &lt;span style=&#34;color: #bb60d5&#34;&gt;action&lt;/span&gt;]
+  (&lt;span style=&#34;color: #007020&#34;&gt;doto &lt;/span&gt;(&lt;span style=&#34;color: #06287e&#34;&gt;Button.&lt;/span&gt; &lt;span style=&#34;color: #bb60d5&#34;&gt;caption&lt;/span&gt;) (&lt;span style=&#34;color: #06287e&#34;&gt;add-action&lt;/span&gt; &lt;span style=&#34;color: #bb60d5&#34;&gt;action&lt;/span&gt;)))
 
-(defn- create-main-layout
+(&lt;span style=&#34;color: #007020; font-weight: bold&#34;&gt;defn- &lt;/span&gt;&lt;span style=&#34;color: #bb60d5&#34;&gt;create-main-layout&lt;/span&gt;
   []
-  (doto (VerticalLayout.)
-	        (.addComponent (Label. &#34;Hello Clojure-Vaadin 7!&#34;))
-	        (.addComponent (create-button &#34;Push me!&#34; show-click-message))))
+  (&lt;span style=&#34;color: #007020&#34;&gt;doto &lt;/span&gt;(&lt;span style=&#34;color: #06287e&#34;&gt;VerticalLayout.&lt;/span&gt;)
+	        (&lt;span style=&#34;color: #06287e&#34;&gt;.addComponent&lt;/span&gt; (&lt;span style=&#34;color: #06287e&#34;&gt;Label.&lt;/span&gt; &lt;span style=&#34;color: #4070a0&#34;&gt;&amp;quot;Hello Clojure-Vaadin 7!&amp;quot;&lt;/span&gt;))
+	        (&lt;span style=&#34;color: #06287e&#34;&gt;.addComponent&lt;/span&gt; (&lt;span style=&#34;color: #06287e&#34;&gt;create-button&lt;/span&gt; &lt;span style=&#34;color: #4070a0&#34;&gt;&amp;quot;Push me!&amp;quot;&lt;/span&gt; &lt;span style=&#34;color: #bb60d5&#34;&gt;show-click-message&lt;/span&gt;))))
 
-(defn -init
-  [main-ui request]
-  (doto main-ui (.setContent (create-main-layout))))
+(&lt;span style=&#34;color: #007020; font-weight: bold&#34;&gt;defn &lt;/span&gt;&lt;span style=&#34;color: #bb60d5&#34;&gt;-init&lt;/span&gt;
+  [&lt;span style=&#34;color: #bb60d5&#34;&gt;main-ui&lt;/span&gt; &lt;span style=&#34;color: #bb60d5&#34;&gt;request&lt;/span&gt;]
+  (&lt;span style=&#34;color: #007020&#34;&gt;doto &lt;/span&gt;&lt;span style=&#34;color: #bb60d5&#34;&gt;main-ui&lt;/span&gt; (&lt;span style=&#34;color: #06287e&#34;&gt;.setContent&lt;/span&gt; (&lt;span style=&#34;color: #06287e&#34;&gt;create-main-layout&lt;/span&gt;))))
+&lt;/pre&gt;&lt;/div&gt;
 &lt;/p&gt;
 
 &lt;p&gt;In Java, button actions are triggered by registering a click handler for the button. We have to do this in
@@ -90,37 +90,37 @@ We create a new function &lt;code&gt;add-action&lt;/code&gt; that expects a butt
 we want to be executed when the button is clicked.
 The helper function &lt;code&gt;create-button-click-listener&lt;/code&gt; wraps a Vaadin &lt;code&gt;ClickListener&lt;/code&gt; around the &lt;code&gt;action&lt;/code&gt; function.&lt;/p&gt;
 
-&lt;p&gt;
-(defn- show-click-message
+&lt;p&gt;&lt;div class=&#34;highlight&#34; style=&#34;background: #f0f0f0&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;(&lt;span style=&#34;color: #007020; font-weight: bold&#34;&gt;defn- &lt;/span&gt;&lt;span style=&#34;color: #bb60d5&#34;&gt;show-click-message&lt;/span&gt;
   []
-  (Notification/show &#34;Button clicked&#34;))
+  (&lt;span style=&#34;color: #06287e&#34;&gt;Notification/show&lt;/span&gt; &lt;span style=&#34;color: #4070a0&#34;&gt;&amp;quot;Button clicked&amp;quot;&lt;/span&gt;))
 
-(defn- create-button-click-listener 
-  [action]
-  (reify Button$ClickListener 
-            (buttonClick 
-              [_ evt]
-              (action))))
+(&lt;span style=&#34;color: #007020; font-weight: bold&#34;&gt;defn- &lt;/span&gt;&lt;span style=&#34;color: #bb60d5&#34;&gt;create-button-click-listener&lt;/span&gt; 
+  [&lt;span style=&#34;color: #bb60d5&#34;&gt;action&lt;/span&gt;]
+  (&lt;span style=&#34;color: #06287e&#34;&gt;reify&lt;/span&gt; &lt;span style=&#34;color: #bb60d5&#34;&gt;Button$ClickListener&lt;/span&gt; 
+            (&lt;span style=&#34;color: #06287e&#34;&gt;buttonClick&lt;/span&gt; 
+              [&lt;span style=&#34;color: #bb60d5&#34;&gt;_&lt;/span&gt; &lt;span style=&#34;color: #bb60d5&#34;&gt;evt&lt;/span&gt;]
+              (&lt;span style=&#34;color: #06287e&#34;&gt;action&lt;/span&gt;))))
 
-(defn- add-action
-  [button action]
-  (.addListener button (create-button-click-listener action)))
+(&lt;span style=&#34;color: #007020; font-weight: bold&#34;&gt;defn- &lt;/span&gt;&lt;span style=&#34;color: #bb60d5&#34;&gt;add-action&lt;/span&gt;
+  [&lt;span style=&#34;color: #bb60d5&#34;&gt;button&lt;/span&gt; &lt;span style=&#34;color: #bb60d5&#34;&gt;action&lt;/span&gt;]
+  (&lt;span style=&#34;color: #06287e&#34;&gt;.addListener&lt;/span&gt; &lt;span style=&#34;color: #bb60d5&#34;&gt;button&lt;/span&gt; (&lt;span style=&#34;color: #06287e&#34;&gt;create-button-click-listener&lt;/span&gt; &lt;span style=&#34;color: #bb60d5&#34;&gt;action&lt;/span&gt;)))
+&lt;/pre&gt;&lt;/div&gt;
 &lt;/p&gt;
 
 &lt;p&gt;The project file for building with Leiningen (and packaging with Maven) looks like this:&lt;/p&gt;
 
-&lt;p&gt;
-(defproject cljvaadin7 &#34;0.1.0-SNAPSHOT&#34;
-  :description &#34;Demonstrates how to integrate Clojure and Vaadin 7&#34;
-  :url &#34;https://github.com/codebrickie/cljvaadin7&#34;
-  :license {:name &#34;Eclipse Public License&#34;
-            :url &#34;http://www.eclipse.org/legal/epl-v10.html&#34;}
-  :dependencies [[org.clojure/clojure &#34;1.4.0&#34;]
-                 [com.vaadin/vaadin-server &#34;7.0.0&#34;]
-                 [com.vaadin/vaadin-client-compiled &#34;7.0.0&#34;]
-                 [com.vaadin/vaadin-themes &#34;7.0.0&#34;]
-                 [javax.servlet/servlet-api &#34;2.5&#34;]]
-  :aot [cljvaadin7.MyApplicationUI])
+&lt;p&gt;&lt;div class=&#34;highlight&#34; style=&#34;background: #f0f0f0&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;(&lt;span style=&#34;color: #007020; font-weight: bold&#34;&gt;defproject &lt;/span&gt;&lt;span style=&#34;color: #bb60d5&#34;&gt;cljvaadin7&lt;/span&gt; &lt;span style=&#34;color: #4070a0&#34;&gt;&amp;quot;0.1.0-SNAPSHOT&amp;quot;&lt;/span&gt;
+  &lt;span style=&#34;color: #517918&#34;&gt;:description&lt;/span&gt; &lt;span style=&#34;color: #4070a0&#34;&gt;&amp;quot;Demonstrates how to integrate Clojure and Vaadin 7&amp;quot;&lt;/span&gt;
+  &lt;span style=&#34;color: #517918&#34;&gt;:url&lt;/span&gt; &lt;span style=&#34;color: #4070a0&#34;&gt;&amp;quot;https://github.com/codebrickie/cljvaadin7&amp;quot;&lt;/span&gt;
+  &lt;span style=&#34;color: #517918&#34;&gt;:license&lt;/span&gt; {&lt;span style=&#34;color: #517918&#34;&gt;:name&lt;/span&gt; &lt;span style=&#34;color: #4070a0&#34;&gt;&amp;quot;Eclipse Public License&amp;quot;&lt;/span&gt;
+            &lt;span style=&#34;color: #517918&#34;&gt;:url&lt;/span&gt; &lt;span style=&#34;color: #4070a0&#34;&gt;&amp;quot;http://www.eclipse.org/legal/epl-v10.html&amp;quot;&lt;/span&gt;}
+  &lt;span style=&#34;color: #517918&#34;&gt;:dependencies&lt;/span&gt; [[&lt;span style=&#34;color: #bb60d5&#34;&gt;org.clojure/clojure&lt;/span&gt; &lt;span style=&#34;color: #4070a0&#34;&gt;&amp;quot;1.4.0&amp;quot;&lt;/span&gt;]
+                 [&lt;span style=&#34;color: #bb60d5&#34;&gt;com.vaadin/vaadin-server&lt;/span&gt; &lt;span style=&#34;color: #4070a0&#34;&gt;&amp;quot;7.0.0&amp;quot;&lt;/span&gt;]
+                 [&lt;span style=&#34;color: #bb60d5&#34;&gt;com.vaadin/vaadin-client-compiled&lt;/span&gt; &lt;span style=&#34;color: #4070a0&#34;&gt;&amp;quot;7.0.0&amp;quot;&lt;/span&gt;]
+                 [&lt;span style=&#34;color: #bb60d5&#34;&gt;com.vaadin/vaadin-themes&lt;/span&gt; &lt;span style=&#34;color: #4070a0&#34;&gt;&amp;quot;7.0.0&amp;quot;&lt;/span&gt;]
+                 [&lt;span style=&#34;color: #bb60d5&#34;&gt;javax.servlet/servlet-api&lt;/span&gt; &lt;span style=&#34;color: #4070a0&#34;&gt;&amp;quot;2.5&amp;quot;&lt;/span&gt;]]
+  &lt;span style=&#34;color: #517918&#34;&gt;:aot&lt;/span&gt; [&lt;span style=&#34;color: #bb60d5&#34;&gt;cljvaadin7.MyApplicationUI&lt;/span&gt;])
+&lt;/pre&gt;&lt;/div&gt;
 &lt;/p&gt;
 
 &lt;p&gt;You can find the complete project on &lt;a href=&#34;https://github.com/codebrickie/cljvaadin7&#34;&gt;GitHub&lt;/a&gt;.&lt;/p&gt;
@@ -140,56 +140,56 @@ Fortunately Spring integration for Vaadin 7 is available as a &lt;a href=&#34;ht
 
 &lt;ul&gt;
 &lt;li&gt;&lt;p&gt;Add the Spring integration as a dependency. Here&amp;rsquo;s the relevant excerpt of my &lt;code&gt;build.gradle&lt;/code&gt;:
+&lt;div class=&#34;highlight&#34; style=&#34;background: #f0f0f0&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span style=&#34;color: #60a0b0; font-style: italic&#34;&gt;//...&lt;/span&gt;
+repositories &lt;span style=&#34;color: #666666&#34;&gt;{&lt;/span&gt;
+	mavenRepo &lt;span style=&#34;color: #002070; font-weight: bold&#34;&gt;url:&lt;/span&gt; &lt;span style=&#34;color: #4070a0&#34;&gt;&amp;#39;http://repo1.maven.org/maven2/&amp;#39;&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color: #002070; font-weight: bold&#34;&gt;artifactUrls:&lt;/span&gt; &lt;span style=&#34;color: #666666&#34;&gt;[&lt;/span&gt;&lt;span style=&#34;color: #4070a0&#34;&gt;&amp;#39;http://maven.springframework.org/milestone&amp;#39;&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color: #4070a0&#34;&gt;&amp;#39;http://maven.vaadin.com/vaadin-addons&amp;#39;&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;]&lt;/span&gt;
+&lt;span style=&#34;color: #666666&#34;&gt;}&lt;/span&gt;
 
-//...
-repositories {
-	mavenRepo url: &#39;http://repo1.maven.org/maven2/&#39;, artifactUrls: [&#39;http://maven.springframework.org/milestone&#39;, &#39;http://maven.vaadin.com/vaadin-addons&#39;]
-}
 
-
-dependencies {
-	...
+dependencies &lt;span style=&#34;color: #666666&#34;&gt;{&lt;/span&gt;
+	&lt;span style=&#34;color: #666666&#34;&gt;...&lt;/span&gt;
 	
-	runtime &#39;ru.xpoft.vaadin:spring-vaadin-integration:1.6.2&#39;
+	runtime &lt;span style=&#34;color: #4070a0&#34;&gt;&amp;#39;ru.xpoft.vaadin:spring-vaadin-integration:1.6.2&amp;#39;&lt;/span&gt;
 	
-	...
-}
-...
+	&lt;span style=&#34;color: #666666&#34;&gt;...&lt;/span&gt;
+&lt;span style=&#34;color: #666666&#34;&gt;}&lt;/span&gt;
+&lt;span style=&#34;color: #666666&#34;&gt;...&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
 &lt;/p&gt;&lt;/li&gt;
 
 &lt;li&gt;&lt;p&gt;Define the Spring integration servlet and your main UI bean in your &lt;code&gt;web.xml&lt;/code&gt;:
+&lt;div class=&#34;highlight&#34; style=&#34;background: #f0f0f0&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span style=&#34;color: #007020&#34;&gt;&amp;lt;?xml version=&amp;quot;1.0&amp;quot; encoding=&amp;quot;UTF-8&amp;quot;?&amp;gt;&lt;/span&gt;
+&lt;span style=&#34;color: #062873; font-weight: bold&#34;&gt;&amp;lt;web-app&lt;/span&gt; &lt;span style=&#34;color: #4070a0&#34;&gt;id=&amp;quot;WebApp_ID&amp;quot;&lt;/span&gt; &lt;span style=&#34;color: #4070a0&#34;&gt;version=&amp;quot;2.4&amp;quot;&lt;/span&gt;
+	&lt;span style=&#34;color: #4070a0&#34;&gt;xmlns=&amp;quot;http://java.sun.com/xml/ns/j2ee&amp;quot;&lt;/span&gt; &lt;span style=&#34;color: #4070a0&#34;&gt;xmlns:xsi=&amp;quot;http://www.w3.org/2001/XMLSchema-instance&amp;quot;&lt;/span&gt;
+	&lt;span style=&#34;color: #4070a0&#34;&gt;xsi:schemaLocation=&amp;quot;http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #062873; font-weight: bold&#34;&gt;&amp;gt;&lt;/span&gt;
+	&lt;span style=&#34;color: #062873; font-weight: bold&#34;&gt;&amp;lt;context-param&amp;gt;&lt;/span&gt;
+		&lt;span style=&#34;color: #062873; font-weight: bold&#34;&gt;&amp;lt;param-name&amp;gt;&lt;/span&gt;contextConfigLocation&lt;span style=&#34;color: #062873; font-weight: bold&#34;&gt;&amp;lt;/param-name&amp;gt;&lt;/span&gt;
+		&lt;span style=&#34;color: #062873; font-weight: bold&#34;&gt;&amp;lt;param-value&amp;gt;&lt;/span&gt;classpath*:applicationContext*.xml&lt;span style=&#34;color: #062873; font-weight: bold&#34;&gt;&amp;lt;/param-value&amp;gt;&lt;/span&gt;
+	&lt;span style=&#34;color: #062873; font-weight: bold&#34;&gt;&amp;lt;/context-param&amp;gt;&lt;/span&gt;
 
-&lt;?xml version=&#34;1.0&#34; encoding=&#34;UTF-8&#34;?&gt;
-&lt;web-app id=&#34;WebApp_ID&#34; version=&#34;2.4&#34;
-	xmlns=&#34;http://java.sun.com/xml/ns/j2ee&#34; xmlns:xsi=&#34;http://www.w3.org/2001/XMLSchema-instance&#34;
-	xsi:schemaLocation=&#34;http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd&#34;&gt;
-	&lt;context-param&gt;
-		&lt;param-name&gt;contextConfigLocation&lt;/param-name&gt;
-		&lt;param-value&gt;classpath*:applicationContext*.xml&lt;/param-value&gt;
-	&lt;/context-param&gt;
-
-	&lt;listener&gt;
-		&lt;listener-class&gt;org.springframework.web.context.ContextLoaderListener&lt;/listener-class&gt;
-	&lt;/listener&gt;
+	&lt;span style=&#34;color: #062873; font-weight: bold&#34;&gt;&amp;lt;listener&amp;gt;&lt;/span&gt;
+		&lt;span style=&#34;color: #062873; font-weight: bold&#34;&gt;&amp;lt;listener-class&amp;gt;&lt;/span&gt;org.springframework.web.context.ContextLoaderListener&lt;span style=&#34;color: #062873; font-weight: bold&#34;&gt;&amp;lt;/listener-class&amp;gt;&lt;/span&gt;
+	&lt;span style=&#34;color: #062873; font-weight: bold&#34;&gt;&amp;lt;/listener&amp;gt;&lt;/span&gt;
 	
-	&lt;servlet&gt;
-        &lt;servlet-name&gt;VaadinServlet&lt;/servlet-name&gt;
-        &lt;servlet-class&gt;ru.xpoft.vaadin.SpringVaadinServlet&lt;/servlet-class&gt;
-        &lt;init-param&gt;
-            &lt;param-name&gt;beanName&lt;/param-name&gt;
-            &lt;!-- 
-            	This is the name of your main Vaadin UI class.
-            	You should declare it as a prototype-scoped component (e.g. @Component @Scope(&#34;protoype&#34;)).
-            --&gt;
-            &lt;param-value&gt;mainUI&lt;/param-value&gt; 
-        &lt;/init-param&gt;
-    &lt;/servlet&gt;
+	&lt;span style=&#34;color: #062873; font-weight: bold&#34;&gt;&amp;lt;servlet&amp;gt;&lt;/span&gt;
+        &lt;span style=&#34;color: #062873; font-weight: bold&#34;&gt;&amp;lt;servlet-name&amp;gt;&lt;/span&gt;VaadinServlet&lt;span style=&#34;color: #062873; font-weight: bold&#34;&gt;&amp;lt;/servlet-name&amp;gt;&lt;/span&gt;
+        &lt;span style=&#34;color: #062873; font-weight: bold&#34;&gt;&amp;lt;servlet-class&amp;gt;&lt;/span&gt;ru.xpoft.vaadin.SpringVaadinServlet&lt;span style=&#34;color: #062873; font-weight: bold&#34;&gt;&amp;lt;/servlet-class&amp;gt;&lt;/span&gt;
+        &lt;span style=&#34;color: #062873; font-weight: bold&#34;&gt;&amp;lt;init-param&amp;gt;&lt;/span&gt;
+            &lt;span style=&#34;color: #062873; font-weight: bold&#34;&gt;&amp;lt;param-name&amp;gt;&lt;/span&gt;beanName&lt;span style=&#34;color: #062873; font-weight: bold&#34;&gt;&amp;lt;/param-name&amp;gt;&lt;/span&gt;
+            &lt;span style=&#34;color: #60a0b0; font-style: italic&#34;&gt;&amp;lt;!-- &lt;/span&gt;
+&lt;span style=&#34;color: #60a0b0; font-style: italic&#34;&gt;            	This is the name of your main Vaadin UI class.&lt;/span&gt;
+&lt;span style=&#34;color: #60a0b0; font-style: italic&#34;&gt;            	You should declare it as a prototype-scoped component (e.g. @Component @Scope(&amp;quot;protoype&amp;quot;)).&lt;/span&gt;
+&lt;span style=&#34;color: #60a0b0; font-style: italic&#34;&gt;            --&amp;gt;&lt;/span&gt;
+            &lt;span style=&#34;color: #062873; font-weight: bold&#34;&gt;&amp;lt;param-value&amp;gt;&lt;/span&gt;mainUI&lt;span style=&#34;color: #062873; font-weight: bold&#34;&gt;&amp;lt;/param-value&amp;gt;&lt;/span&gt; 
+        &lt;span style=&#34;color: #062873; font-weight: bold&#34;&gt;&amp;lt;/init-param&amp;gt;&lt;/span&gt;
+    &lt;span style=&#34;color: #062873; font-weight: bold&#34;&gt;&amp;lt;/servlet&amp;gt;&lt;/span&gt;
 
-    &lt;servlet-mapping&gt;
-        &lt;servlet-name&gt;VaadinServlet&lt;/servlet-name&gt;
-        &lt;url-pattern&gt;/*&lt;/url-pattern&gt;
-    &lt;/servlet-mapping&gt;
-&lt;/web-app&gt;    
+    &lt;span style=&#34;color: #062873; font-weight: bold&#34;&gt;&amp;lt;servlet-mapping&amp;gt;&lt;/span&gt;
+        &lt;span style=&#34;color: #062873; font-weight: bold&#34;&gt;&amp;lt;servlet-name&amp;gt;&lt;/span&gt;VaadinServlet&lt;span style=&#34;color: #062873; font-weight: bold&#34;&gt;&amp;lt;/servlet-name&amp;gt;&lt;/span&gt;
+        &lt;span style=&#34;color: #062873; font-weight: bold&#34;&gt;&amp;lt;url-pattern&amp;gt;&lt;/span&gt;/*&lt;span style=&#34;color: #062873; font-weight: bold&#34;&gt;&amp;lt;/url-pattern&amp;gt;&lt;/span&gt;
+    &lt;span style=&#34;color: #062873; font-weight: bold&#34;&gt;&amp;lt;/servlet-mapping&amp;gt;&lt;/span&gt;
+&lt;span style=&#34;color: #062873; font-weight: bold&#34;&gt;&amp;lt;/web-app&amp;gt;&lt;/span&gt;    
+&lt;/pre&gt;&lt;/div&gt;
 &lt;/p&gt;&lt;/li&gt;
 &lt;/ul&gt;
 

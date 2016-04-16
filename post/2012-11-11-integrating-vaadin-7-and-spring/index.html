@@ -86,56 +86,56 @@ Fortunately Spring integration for Vaadin 7 is available as a <a href="http://va
 
 <ul>
 <li><p>Add the Spring integration as a dependency. Here&rsquo;s the relevant excerpt of my <code>build.gradle</code>:
+<div class="highlight" style="background: #f0f0f0"><pre style="line-height: 125%"><span style="color: #60a0b0; font-style: italic">//...</span>
+repositories <span style="color: #666666">{</span>
+	mavenRepo <span style="color: #002070; font-weight: bold">url:</span> <span style="color: #4070a0">&#39;http://repo1.maven.org/maven2/&#39;</span><span style="color: #666666">,</span> <span style="color: #002070; font-weight: bold">artifactUrls:</span> <span style="color: #666666">[</span><span style="color: #4070a0">&#39;http://maven.springframework.org/milestone&#39;</span><span style="color: #666666">,</span> <span style="color: #4070a0">&#39;http://maven.vaadin.com/vaadin-addons&#39;</span><span style="color: #666666">]</span>
+<span style="color: #666666">}</span>
 
-//...
-repositories {
-	mavenRepo url: 'http://repo1.maven.org/maven2/', artifactUrls: ['http://maven.springframework.org/milestone', 'http://maven.vaadin.com/vaadin-addons']
-}
 
-
-dependencies {
-	...
+dependencies <span style="color: #666666">{</span>
+	<span style="color: #666666">...</span>
 	
-	runtime 'ru.xpoft.vaadin:spring-vaadin-integration:1.6.2'
+	runtime <span style="color: #4070a0">&#39;ru.xpoft.vaadin:spring-vaadin-integration:1.6.2&#39;</span>
 	
-	...
-}
-...
+	<span style="color: #666666">...</span>
+<span style="color: #666666">}</span>
+<span style="color: #666666">...</span>
+</pre></div>
 </p></li>
 
 <li><p>Define the Spring integration servlet and your main UI bean in your <code>web.xml</code>:
+<div class="highlight" style="background: #f0f0f0"><pre style="line-height: 125%"><span style="color: #007020">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</span>
+<span style="color: #062873; font-weight: bold">&lt;web-app</span> <span style="color: #4070a0">id=&quot;WebApp_ID&quot;</span> <span style="color: #4070a0">version=&quot;2.4&quot;</span>
+	<span style="color: #4070a0">xmlns=&quot;http://java.sun.com/xml/ns/j2ee&quot;</span> <span style="color: #4070a0">xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;</span>
+	<span style="color: #4070a0">xsi:schemaLocation=&quot;http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd&quot;</span><span style="color: #062873; font-weight: bold">&gt;</span>
+	<span style="color: #062873; font-weight: bold">&lt;context-param&gt;</span>
+		<span style="color: #062873; font-weight: bold">&lt;param-name&gt;</span>contextConfigLocation<span style="color: #062873; font-weight: bold">&lt;/param-name&gt;</span>
+		<span style="color: #062873; font-weight: bold">&lt;param-value&gt;</span>classpath*:applicationContext*.xml<span style="color: #062873; font-weight: bold">&lt;/param-value&gt;</span>
+	<span style="color: #062873; font-weight: bold">&lt;/context-param&gt;</span>
 
-<?xml version="1.0" encoding="UTF-8"?>
-<web-app id="WebApp_ID" version="2.4"
-	xmlns="http://java.sun.com/xml/ns/j2ee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
-	<context-param>
-		<param-name>contextConfigLocation</param-name>
-		<param-value>classpath*:applicationContext*.xml</param-value>
-	</context-param>
-
-	<listener>
-		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
-	</listener>
+	<span style="color: #062873; font-weight: bold">&lt;listener&gt;</span>
+		<span style="color: #062873; font-weight: bold">&lt;listener-class&gt;</span>org.springframework.web.context.ContextLoaderListener<span style="color: #062873; font-weight: bold">&lt;/listener-class&gt;</span>
+	<span style="color: #062873; font-weight: bold">&lt;/listener&gt;</span>
 	
-	<servlet>
-        <servlet-name>VaadinServlet</servlet-name>
-        <servlet-class>ru.xpoft.vaadin.SpringVaadinServlet</servlet-class>
-        <init-param>
-            <param-name>beanName</param-name>
-            <!-- 
-            	This is the name of your main Vaadin UI class.
-            	You should declare it as a prototype-scoped component (e.g. @Component @Scope("protoype")).
-            -->
-            <param-value>mainUI</param-value> 
-        </init-param>
-    </servlet>
+	<span style="color: #062873; font-weight: bold">&lt;servlet&gt;</span>
+        <span style="color: #062873; font-weight: bold">&lt;servlet-name&gt;</span>VaadinServlet<span style="color: #062873; font-weight: bold">&lt;/servlet-name&gt;</span>
+        <span style="color: #062873; font-weight: bold">&lt;servlet-class&gt;</span>ru.xpoft.vaadin.SpringVaadinServlet<span style="color: #062873; font-weight: bold">&lt;/servlet-class&gt;</span>
+        <span style="color: #062873; font-weight: bold">&lt;init-param&gt;</span>
+            <span style="color: #062873; font-weight: bold">&lt;param-name&gt;</span>beanName<span style="color: #062873; font-weight: bold">&lt;/param-name&gt;</span>
+            <span style="color: #60a0b0; font-style: italic">&lt;!-- </span>
+<span style="color: #60a0b0; font-style: italic">            	This is the name of your main Vaadin UI class.</span>
+<span style="color: #60a0b0; font-style: italic">            	You should declare it as a prototype-scoped component (e.g. @Component @Scope(&quot;protoype&quot;)).</span>
+<span style="color: #60a0b0; font-style: italic">            --&gt;</span>
+            <span style="color: #062873; font-weight: bold">&lt;param-value&gt;</span>mainUI<span style="color: #062873; font-weight: bold">&lt;/param-value&gt;</span> 
+        <span style="color: #062873; font-weight: bold">&lt;/init-param&gt;</span>
+    <span style="color: #062873; font-weight: bold">&lt;/servlet&gt;</span>
 
-    <servlet-mapping>
-        <servlet-name>VaadinServlet</servlet-name>
-        <url-pattern>/*</url-pattern>
-    </servlet-mapping>
-</web-app>    
+    <span style="color: #062873; font-weight: bold">&lt;servlet-mapping&gt;</span>
+        <span style="color: #062873; font-weight: bold">&lt;servlet-name&gt;</span>VaadinServlet<span style="color: #062873; font-weight: bold">&lt;/servlet-name&gt;</span>
+        <span style="color: #062873; font-weight: bold">&lt;url-pattern&gt;</span>/*<span style="color: #062873; font-weight: bold">&lt;/url-pattern&gt;</span>
+    <span style="color: #062873; font-weight: bold">&lt;/servlet-mapping&gt;</span>
+<span style="color: #062873; font-weight: bold">&lt;/web-app&gt;</span>    
+</pre></div>
 </p></li>
 </ul>
 

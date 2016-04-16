@@ -78,11 +78,11 @@ current project.
 Like most other ticketing systems, it has the ability to link commits in your source code
 repositories to a ticket when the commit message refers the ticket number.</p>
 
+<p><div class="highlight" style="background: #f0f0f0"><pre style="line-height: 125%">Changes foo to bar because of baz.
 
-Changes foo to bar because of baz.
-
-refs #1234
-
+refs <span style="color: #60a0b0; font-style: italic">#1234</span>
+</pre></div>
+</p>
 
 <p>I became tired of adding the ticket number manually to each commit message.
 Fortunately, git can add the number by itself with the help of a little hook and a naming
@@ -94,14 +94,14 @@ convention for your feature branches.</p>
 <p>Now create the file <code>.git/hooks/commit-msg</code> in your local repository with the following
 content:</p>
 
+<p><div class="highlight" style="background: #f0f0f0"><pre style="line-height: 125%"><span style="color: #60a0b0; font-style: italic">#!/bin/sh</span>
 
-#!/bin/sh
-
-ticket=$(git symbolic-ref HEAD | awk -F- '/ticket-/ {print $2}')
-if [ -n "$ticket" ]; then
-	echo "\nrefs #$ticket" >> $1
-fi
-
+<span style="color: #bb60d5">ticket</span><span style="color: #666666">=</span><span style="color: #007020; font-weight: bold">$(</span>git symbolic-ref HEAD | awk -F- <span style="color: #4070a0">&#39;/ticket-/ {print $2}&#39;</span><span style="color: #007020; font-weight: bold">)</span>
+<span style="color: #007020; font-weight: bold">if</span> <span style="color: #666666">[</span> -n <span style="color: #4070a0">&quot;</span><span style="color: #bb60d5">$ticket</span><span style="color: #4070a0">&quot;</span> <span style="color: #666666">]</span>; <span style="color: #007020; font-weight: bold">then</span>
+	<span style="color: #007020">echo</span> <span style="color: #4070a0">&quot;\nrefs #</span><span style="color: #bb60d5">$ticket</span><span style="color: #4070a0">&quot;</span> &gt;&gt; <span style="color: #bb60d5">$1</span>
+<span style="color: #007020; font-weight: bold">fi</span>
+</pre></div>
+</p>
 
 <p>This extracts the ticket number from the branch name.
 The ticket number is then appended to your commit message on each commit when git executes
