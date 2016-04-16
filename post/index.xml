@@ -6,8 +6,20 @@
     <description>Recent content in Posts on Tobias Bayer</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Tue, 22 Dec 2015 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Thu, 24 Mar 2016 00:00:00 +0000</lastBuildDate>
     <atom:link href="http://tobiasbayer.com/post/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>The Dark Side of Microservices</title>
+      <link>http://tobiasbayer.com/post/2016-03-24-dunkle-seite-der-microservices/</link>
+      <pubDate>Thu, 24 Mar 2016 00:00:00 +0000</pubDate>
+      
+      <guid>http://tobiasbayer.com/post/2016-03-24-dunkle-seite-der-microservices/</guid>
+      <description>&lt;p&gt;Another (german) video of a talk on the challenges of Microservices my colleague Hendrik and I gave at W-JAX 2015.&lt;/p&gt;
+
+&lt;iframe src=&#34;https://player.vimeo.com/video/152280705&#34; width=&#34;640&#34; height=&#34;281&#34; frameborder=&#34;0&#34; webkitallowfullscreen mozallowfullscreen allowfullscreen&gt;&lt;/iframe&gt;
+</description>
+    </item>
     
     <item>
       <title>Clojure Intro Talk</title>
@@ -767,25 +779,6 @@ end
 
 &lt;li&gt;&lt;p&gt;Configure your build job in Jenkins to publish the Emma coverage results from &lt;code&gt;coverage/coverage.xml&lt;/code&gt;.&lt;/p&gt;&lt;/li&gt;
 &lt;/ul&gt;
-</description>
-    </item>
-    
-    <item>
-      <title>Suggested Reading</title>
-      <link>http://tobiasbayer.com/post/2012-01-28-suggested-reading/</link>
-      <pubDate>Sat, 28 Jan 2012 00:00:00 +0000</pubDate>
-      
-      <guid>http://tobiasbayer.com/post/2012-01-28-suggested-reading/</guid>
-      <description>&lt;p&gt;&lt;a href=&#34;http://rdegges.com/on-programming-deadlines&#34;&gt;On Programming Deadlines&lt;/a&gt;&lt;br /&gt;
-Guidelines for coping with deadlines&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&#34;http://mikebernat.com/blog/Egoless_Programming_-_Developing_Without_the_Attitude&#34;&gt;Egoless Programming - Developing Without the
-Attitude&lt;/a&gt;&lt;br /&gt;
-A little older article for those of us with a magnificent ego.&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&#34;http://www.smashingmagazine.com/2011/09/28/youre-pricing-it-wrong-software-pricing-demystified/&#34;&gt;You&amp;rsquo;re Pricing It Wrong: Software Pricing
-Demystified&lt;/a&gt;&lt;br /&gt;
-Basic economics for developers.&lt;/p&gt;
 </description>
     </item>
     

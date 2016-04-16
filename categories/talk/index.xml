@@ -6,8 +6,20 @@
     <description>Recent content in Talk on Tobias Bayer</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Tue, 22 Dec 2015 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Thu, 24 Mar 2016 00:00:00 +0000</lastBuildDate>
     <atom:link href="http://tobiasbayer.com/categories/talk/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>The Dark Side of Microservices</title>
+      <link>http://tobiasbayer.com/post/2016-03-24-dunkle-seite-der-microservices/</link>
+      <pubDate>Thu, 24 Mar 2016 00:00:00 +0000</pubDate>
+      
+      <guid>http://tobiasbayer.com/post/2016-03-24-dunkle-seite-der-microservices/</guid>
+      <description>&lt;p&gt;Another (german) video of a talk on the challenges of Microservices my colleague Hendrik and I gave at W-JAX 2015.&lt;/p&gt;
+
+&lt;iframe src=&#34;https://player.vimeo.com/video/152280705&#34; width=&#34;640&#34; height=&#34;281&#34; frameborder=&#34;0&#34; webkitallowfullscreen mozallowfullscreen allowfullscreen&gt;&lt;/iframe&gt;
+</description>
+    </item>
     
     <item>
       <title>Clojure Intro Talk</title>
