@@ -35,72 +35,72 @@
 
 &lt;p&gt;While &lt;code&gt;id&lt;/code&gt; and &lt;code&gt;description&lt;/code&gt; can be specified exactly by the consumer, the &lt;code&gt;random&lt;/code&gt;-field cannot. We just know the provider will return a random 6-digit number as a string. So we create a regular expression for that inside a &lt;code&gt;PactDslJsonBody&lt;/code&gt;.&lt;/p&gt;
 
-&lt;p&gt;&lt;div class=&#34;highlight&#34; style=&#34;background: #f0f0f0&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span style=&#34;color: #555555; font-weight: bold&#34;&gt;@Override&lt;/span&gt;
-&lt;span style=&#34;color: #007020; font-weight: bold&#34;&gt;protected&lt;/span&gt; PactFragment &lt;span style=&#34;color: #06287e&#34;&gt;createFragment&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #007020; font-weight: bold&#34;&gt;final&lt;/span&gt; ConsumerPactBuilder&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #4070a0&#34;&gt;PactDslWithProvider&lt;/span&gt; builder&lt;span style=&#34;color: #666666&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color: #666666&#34;&gt;{&lt;/span&gt;
-    Map&lt;span style=&#34;color: #666666&#34;&gt;&amp;lt;&lt;/span&gt;String&lt;span style=&#34;color: #666666&#34;&gt;,&lt;/span&gt; String&lt;span style=&#34;color: #666666&#34;&gt;&amp;gt;&lt;/span&gt; headers &lt;span style=&#34;color: #666666&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #007020; font-weight: bold&#34;&gt;new&lt;/span&gt; HashMap&lt;span style=&#34;color: #666666&#34;&gt;&amp;lt;&amp;gt;();&lt;/span&gt;
-    headers&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #4070a0&#34;&gt;put&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #4070a0&#34;&gt;&amp;quot;Content-Type&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color: #4070a0&#34;&gt;&amp;quot;application/json;charset=UTF-8&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;);&lt;/span&gt;
 
-    DslPart body &lt;span style=&#34;color: #666666&#34;&gt;=&lt;/span&gt; 
-            &lt;span style=&#34;color: #007020; font-weight: bold&#34;&gt;new&lt;/span&gt; PactDslJsonBody&lt;span style=&#34;color: #666666&#34;&gt;()&lt;/span&gt;
-                &lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #4070a0&#34;&gt;numberValue&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #4070a0&#34;&gt;&amp;quot;id&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color: #40a070&#34;&gt;1&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;)&lt;/span&gt;
-                &lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #4070a0&#34;&gt;stringValue&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #4070a0&#34;&gt;&amp;quot;description&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color: #4070a0&#34;&gt;&amp;quot;This is the description for product 1&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;)&lt;/span&gt;
-                &lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #4070a0&#34;&gt;stringMatcher&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #4070a0&#34;&gt;&amp;quot;random&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color: #4070a0&#34;&gt;&amp;quot;[0-9]{6}&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;);&lt;/span&gt;
+@Override
+protected PactFragment createFragment(final ConsumerPactBuilder.PactDslWithProvider builder) {
+    Map&lt;String, String&gt; headers = new HashMap&lt;&gt;();
+    headers.put(&#34;Content-Type&#34;, &#34;application/json;charset=UTF-8&#34;);
 
-    &lt;span style=&#34;color: #007020; font-weight: bold&#34;&gt;return&lt;/span&gt; builder
-            &lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #4070a0&#34;&gt;uponReceiving&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #4070a0&#34;&gt;&amp;quot;a request for product details&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;)&lt;/span&gt;
-            &lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #4070a0&#34;&gt;path&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #4070a0&#34;&gt;&amp;quot;/productdetails/1&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;)&lt;/span&gt;
-            &lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #4070a0&#34;&gt;method&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #4070a0&#34;&gt;&amp;quot;GET&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;)&lt;/span&gt;
-            &lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #4070a0&#34;&gt;willRespondWith&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;()&lt;/span&gt;
-            &lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #4070a0&#34;&gt;headers&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;(&lt;/span&gt;headers&lt;span style=&#34;color: #666666&#34;&gt;)&lt;/span&gt;
-            &lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #4070a0&#34;&gt;status&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #40a070&#34;&gt;200&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;)&lt;/span&gt;
-            &lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #4070a0&#34;&gt;body&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;(&lt;/span&gt;body&lt;span style=&#34;color: #666666&#34;&gt;)&lt;/span&gt;
-            &lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #4070a0&#34;&gt;toFragment&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;();&lt;/span&gt;
-&lt;span style=&#34;color: #666666&#34;&gt;}&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-&lt;/p&gt;
+    DslPart body = 
+            new PactDslJsonBody()
+                .numberValue(&#34;id&#34;, 1)
+                .stringValue(&#34;description&#34;, &#34;This is the description for product 1&#34;)
+                .stringMatcher(&#34;random&#34;, &#34;[0-9]{6}&#34;);
+
+    return builder
+            .uponReceiving(&#34;a request for product details&#34;)
+            .path(&#34;/productdetails/1&#34;)
+            .method(&#34;GET&#34;)
+            .willRespondWith()
+            .headers(headers)
+            .status(200)
+            .body(body)
+            .toFragment();
+}
+
 
 &lt;p&gt;When the consumer test is run, this Pactfile is created:&lt;/p&gt;
 
-&lt;p&gt;&lt;div class=&#34;highlight&#34; style=&#34;background: #f0f0f0&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;{
-  &lt;span style=&#34;color: #062873; font-weight: bold&#34;&gt;&amp;quot;provider&amp;quot;&lt;/span&gt; : {
-    &lt;span style=&#34;color: #062873; font-weight: bold&#34;&gt;&amp;quot;name&amp;quot;&lt;/span&gt; : &lt;span style=&#34;color: #4070a0&#34;&gt;&amp;quot;Product_Details_Service&amp;quot;&lt;/span&gt;
+&lt;p&gt;
+{
+  &#34;provider&#34; : {
+    &#34;name&#34; : &#34;Product_Details_Service&#34;
   },
-  &lt;span style=&#34;color: #062873; font-weight: bold&#34;&gt;&amp;quot;consumer&amp;quot;&lt;/span&gt; : {
-    &lt;span style=&#34;color: #062873; font-weight: bold&#34;&gt;&amp;quot;name&amp;quot;&lt;/span&gt; : &lt;span style=&#34;color: #4070a0&#34;&gt;&amp;quot;Product_Service&amp;quot;&lt;/span&gt;
+  &#34;consumer&#34; : {
+    &#34;name&#34; : &#34;Product_Service&#34;
   },
-  &lt;span style=&#34;color: #062873; font-weight: bold&#34;&gt;&amp;quot;interactions&amp;quot;&lt;/span&gt; : [ {
-    &lt;span style=&#34;color: #062873; font-weight: bold&#34;&gt;&amp;quot;description&amp;quot;&lt;/span&gt; : &lt;span style=&#34;color: #4070a0&#34;&gt;&amp;quot;a request for product details&amp;quot;&lt;/span&gt;,
-    &lt;span style=&#34;color: #062873; font-weight: bold&#34;&gt;&amp;quot;request&amp;quot;&lt;/span&gt; : {
-      &lt;span style=&#34;color: #062873; font-weight: bold&#34;&gt;&amp;quot;method&amp;quot;&lt;/span&gt; : &lt;span style=&#34;color: #4070a0&#34;&gt;&amp;quot;GET&amp;quot;&lt;/span&gt;,
-      &lt;span style=&#34;color: #062873; font-weight: bold&#34;&gt;&amp;quot;path&amp;quot;&lt;/span&gt; : &lt;span style=&#34;color: #4070a0&#34;&gt;&amp;quot;/productdetails/1&amp;quot;&lt;/span&gt;
+  &#34;interactions&#34; : [ {
+    &#34;description&#34; : &#34;a request for product details&#34;,
+    &#34;request&#34; : {
+      &#34;method&#34; : &#34;GET&#34;,
+      &#34;path&#34; : &#34;/productdetails/1&#34;
     },
-    &lt;span style=&#34;color: #062873; font-weight: bold&#34;&gt;&amp;quot;response&amp;quot;&lt;/span&gt; : {
-      &lt;span style=&#34;color: #062873; font-weight: bold&#34;&gt;&amp;quot;status&amp;quot;&lt;/span&gt; : &lt;span style=&#34;color: #40a070&#34;&gt;200&lt;/span&gt;,
-      &lt;span style=&#34;color: #062873; font-weight: bold&#34;&gt;&amp;quot;headers&amp;quot;&lt;/span&gt; : {
-        &lt;span style=&#34;color: #062873; font-weight: bold&#34;&gt;&amp;quot;Content-Type&amp;quot;&lt;/span&gt; : &lt;span style=&#34;color: #4070a0&#34;&gt;&amp;quot;application/json;charset=UTF-8&amp;quot;&lt;/span&gt;
+    &#34;response&#34; : {
+      &#34;status&#34; : 200,
+      &#34;headers&#34; : {
+        &#34;Content-Type&#34; : &#34;application/json;charset=UTF-8&#34;
       },
-      &lt;span style=&#34;color: #062873; font-weight: bold&#34;&gt;&amp;quot;body&amp;quot;&lt;/span&gt; : {
-        &lt;span style=&#34;color: #062873; font-weight: bold&#34;&gt;&amp;quot;id&amp;quot;&lt;/span&gt; : &lt;span style=&#34;color: #40a070&#34;&gt;1&lt;/span&gt;,
-        &lt;span style=&#34;color: #062873; font-weight: bold&#34;&gt;&amp;quot;description&amp;quot;&lt;/span&gt; : &lt;span style=&#34;color: #4070a0&#34;&gt;&amp;quot;This is the description for product 1&amp;quot;&lt;/span&gt;,
-        &lt;span style=&#34;color: #062873; font-weight: bold&#34;&gt;&amp;quot;random&amp;quot;&lt;/span&gt; : &lt;span style=&#34;color: #4070a0&#34;&gt;&amp;quot;413558&amp;quot;&lt;/span&gt;
+      &#34;body&#34; : {
+        &#34;id&#34; : 1,
+        &#34;description&#34; : &#34;This is the description for product 1&#34;,
+        &#34;random&#34; : &#34;413558&#34;
       },
-      &lt;span style=&#34;color: #062873; font-weight: bold&#34;&gt;&amp;quot;responseMatchingRules&amp;quot;&lt;/span&gt; : {
-        &lt;span style=&#34;color: #062873; font-weight: bold&#34;&gt;&amp;quot;$.body.random&amp;quot;&lt;/span&gt; : {
-          &lt;span style=&#34;color: #062873; font-weight: bold&#34;&gt;&amp;quot;regex&amp;quot;&lt;/span&gt; : &lt;span style=&#34;color: #4070a0&#34;&gt;&amp;quot;[0-9]{6}&amp;quot;&lt;/span&gt;
+      &#34;responseMatchingRules&#34; : {
+        &#34;$.body.random&#34; : {
+          &#34;regex&#34; : &#34;[0-9]{6}&#34;
         }
       }
     }
   } ],
-  &lt;span style=&#34;color: #062873; font-weight: bold&#34;&gt;&amp;quot;metadata&amp;quot;&lt;/span&gt; : {
-    &lt;span style=&#34;color: #062873; font-weight: bold&#34;&gt;&amp;quot;pact-specification&amp;quot;&lt;/span&gt; : {
-      &lt;span style=&#34;color: #062873; font-weight: bold&#34;&gt;&amp;quot;version&amp;quot;&lt;/span&gt; : &lt;span style=&#34;color: #4070a0&#34;&gt;&amp;quot;2.0.0&amp;quot;&lt;/span&gt;
+  &#34;metadata&#34; : {
+    &#34;pact-specification&#34; : {
+      &#34;version&#34; : &#34;2.0.0&#34;
     },
-    &lt;span style=&#34;color: #062873; font-weight: bold&#34;&gt;&amp;quot;pact-jvm&amp;quot;&lt;/span&gt; : {
-      &lt;span style=&#34;color: #062873; font-weight: bold&#34;&gt;&amp;quot;version&amp;quot;&lt;/span&gt; : &lt;span style=&#34;color: #4070a0&#34;&gt;&amp;quot;2.1.7&amp;quot;&lt;/span&gt;
+    &#34;pact-jvm&#34; : {
+      &#34;version&#34; : &#34;2.1.7&#34;
     }
   }
 }
-&lt;/pre&gt;&lt;/div&gt;
 &lt;/p&gt;
 
 &lt;p&gt;Note that Pact magically replaced the regex with a matching string inside the &lt;code&gt;body&lt;/code&gt; definition. This makes sure the provider-stub returns something useful for the consumer when the consumer tests are run. But when the pact is verified against the provider, Pact will use the regular expression inside &lt;code&gt;responseMatchingRules&lt;/code&gt; instead of just matching against the final string for each field in &lt;code&gt;body&lt;/code&gt; that has a corresponding regex.&lt;/p&gt;
